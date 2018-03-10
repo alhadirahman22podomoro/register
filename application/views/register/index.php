@@ -2,7 +2,8 @@
 <link href="<?php echo base_url('assets/template/css/custom/style.css'); ?>" rel="stylesheet" type="text/css">
 <style type="text/css">
 	.lblcustom{
-		color: rgba(9, 0, 0, 0.5);
+    /*color: rgba(9, 0, 0, 0.5);*/
+		color: red;
 	}
 </style>
 <div class="col-md-8">
@@ -20,8 +21,8 @@
 	</div>-->
 	<div class="form">
       <ul class="tab-group">
-        <li class="tab active"><a href="#signup">Sign Up</a></li>
-        <li class="tab"><a href="#login">Log In</a></li>
+        <li class="tab active" id ="tabsignup"><a href="#signup">Sign Up</a></li>
+        <li class="tab" id ="tablogin"><a href="#login">Log In</a></li>
       </ul>
       <div class="tab-content">
         <div id="signup">   
@@ -31,21 +32,21 @@
               <label class = "lblcustom">
                 First Name<span class="req">*</span>
               </label>
-              <input required="" autocomplete="off" type="text">
+              <input required="" autocomplete="off" type="text" id="firstname">
             </div>
          
             <div class="field-wrap">
               <label class = "lblcustom">
                 Last Name<span class="req">*</span>
               </label>
-              <input required="" autocomplete="off" type="text">
+              <input required="" autocomplete="off" type="text" id="lastname">
             </div>
           </div>
           <div class="field-wrap">
             <label class = "lblcustom">
               Email Address<span class="req">*</span>
             </label>
-            <input required="" autocomplete="off" type="email">
+            <input required="" autocomplete="off" type="email" id="regEmail">
           </div>
           <hr>
 		  <p style="color: white;font-weight: bold;">Region : </p>
@@ -69,7 +70,7 @@
 				</div> <!--.row -->
 			</div>
 			<hr>			
-          <button type="button" class="button button-block">Register</button>
+          <button type="button" class="button button-block" id="sbmt-reg">Register</button>
         </div>
         <div id="login">   
           <h1>Welcome Back!</h1>
@@ -77,16 +78,16 @@
             <label class = "lblcustom">
               Email Address<span class="req">*</span>
             </label>
-            <input required="" autocomplete="off" type="email">
+            <input required="" autocomplete="off" type="email" id="loginEmail">
           </div>
           
           <div class="field-wrap">
             <label class = "lblcustom">
               Password<span class="req">*</span>
             </label>
-            <input required="" autocomplete="off" type="password">
+            <input required="" autocomplete="off" type="password" id="loginPwd">
           </div>
-          <button class="button button-block">Log In</button>
+          <button class="button button-block" id="sbmt-login">Log In</button>
           	<!-- Single-Sign-On (SSO) -->
 			    <div class="single-sign-on">
 			        <div align = "center"><span style="color: white;">OR</span></div>
@@ -119,8 +120,86 @@ $(document).ready(function() {
         loadDataSchool(this.value);
     });
 
-
+    $(document).on('click','#sbmt-reg',function () {
+      loading_button('#sbmt-reg');
+        var url = base_url_js + 'register/proses-register';
+        var firstname =$("#firstname").val().trim();
+        var lastname =$("#lastname").val().trim();
+        var regEmail = $("#regEmail").val().trim();
+        var region = $('#selectWilayah').val();
+        var schoolName = $('#schoolName').val();
+        var data = {
+          Firstname : firstname,
+          Lastname : lastname,
+          Email : regEmail,
+          SchoolName : schoolName
+        };
+        var token = jwt_encode(data,"UAP)(*");
+        var validationInput =validation(data);
+        if (validationInput) {
+            $.post(url,{token:token},function (data_json) {
+              var response = jQuery.parseJSON(data_json);
+                if (response.statusEmail == 0) {
+                  toastr.error(response.msgEmail, 'Failed!!');
+                }
+                else
+                {
+                  toastr.options.fadeOut = 10000;
+                  toastr.success("Please check your email <br>" + response.statusDB, 'Success!');
+                }
+                console.log(data_json);
+                //toastr.success("Done", 'Success!');
+                $('#sbmt-reg').prop('disabled',false).html('Register');
+                moveTab();
+            })
+        }
+        else
+        {
+          $('#sbmt-reg').prop('disabled',false).html('Register');
+        }
+    });
 });
+
+function moveTab()
+{
+  var element = $("#tablogin a");
+  element.parent().addClass('active');
+  $("#tabsignup a").parent().removeClass('active');
+  target = element.attr('href');
+  $('.tab-content > div').not(target).hide();
+  $(target).fadeIn(600);
+}
+
+function validation(arr)
+{
+  var toatString = "";
+  var result = "";
+  for(var key in arr) {
+     switch(key)
+     {
+      case  "SchoolName" :
+      case  "Lastname" :
+            break;
+      case  "Email" :
+            result = Validation_email(arr[key],key);
+            if (result['status'] == 0) {
+              toatString += result['messages'] + "<br>";
+            }
+            break;
+      default :
+            result = Validation_leastCharacter(3,arr[key],key);
+            if (result['status'] == 0) {
+              toatString += result['messages'] + "<br>";
+            }       
+     }
+  }
+  if (toatString != "") {
+    toastr.error(toatString, 'Failed!!');
+    return false;
+  }
+
+  return true;
+}
 
 function loadDataSelectOption()
 {
@@ -140,7 +219,7 @@ function loadDataSelectOption()
     //loadDataSchool();
     setTimeout(function () {
         $('#NotificationModal').modal('hide');
-    },2000);
+    },1000);
 
 }
 
@@ -173,6 +252,7 @@ function loadDataSchool(selectWilayah)
             wilayah : selectWilayah
         };
 	var token = jwt_encode(data,"UAP)(*");
+  $('#schoolName').empty()
 	$.post(url,{token:token},function (data_json) {
         for(var i=0;i<data_json.length;i++){
             var selected = (i==0) ? 'selected' : '';
@@ -182,7 +262,7 @@ function loadDataSchool(selectWilayah)
         $('#schoolName').select2({
            allowClear: true
         });
-    })
+  })
 
 }
 </script>

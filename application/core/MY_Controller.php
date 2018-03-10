@@ -21,7 +21,7 @@ class MY_Controller extends CI_Controller {
     public function template($content)
     {
 
-        $data['include'] = $this->load->view('template/include','',true);
+        $data['include'] = $this->load->view('template/include3','',true);
 
         $data['header'] = $this->menu_header();
         $data['crumbs'] = $this->crumbs();
@@ -32,7 +32,7 @@ class MY_Controller extends CI_Controller {
     }
 
     public function blank_temp($content){
-        $data['include'] = $this->load->view('template/include','',true);
+        $data['include'] = $this->load->view('template/include3','',true);
         $data['content'] = $content;
         $this->load->view('template/blank',$data);
     }

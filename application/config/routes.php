@@ -6,6 +6,8 @@ $route['default_controller'] = 'c_register';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+// === register ===
+$route['register/proses-register'] = 'c_register/proses_register';
 
 // === AUTH ===
 $route['uath/authUserPassword'] = 'c_login/authUserPassword';

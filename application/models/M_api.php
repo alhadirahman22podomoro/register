@@ -2,7 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_api extends CI_Model {
-
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     public function __getGradeByIDKurikulum($CurriculumID){
         $data = $this->db->query('SELECT * FROM db_academic.grade WHERE CurriculumID = "'.$CurriculumID.'" ');
@@ -627,6 +630,80 @@ class M_api extends CI_Model {
         $sql = "select * from db_admission.school as a where a.CityID = ? ";
         $query=$this->db->query($sql, array($kode_wilayah))->result_array();
         return $query;
+    }
+
+    public function sendEmail($to,$subject,$text = array(null,null))
+    {   
+        $arr = array(
+            'status' => 1,
+            'msg'=>''
+            );
+        $config_email = $this->loadEmailConfig();
+        $getDeadline = $this->getDeadline();
+        $max_execution_time = 630;
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', $max_execution_time); //60 seconds = 1 minutes
+
+        $this->load->library('email', $config_email['setting']);
+        $text = "Dear Candidate,<br><br>".$config_email['text']." Your email : ".$to."<br> Password : ".$text[0]."<br><br>"."Please transfer to 111111(BCA Account) as much as: <strong><br>Rp ".number_format($text[1],2,",",".")."</strong><br> To get a formulir registration.<br><br>";
+        $text .= "The deadline for your payment is ".$getDeadline." <br>";
+        $text .= "Note :<br><strong>If we do not receive your payment until the time limit specified then your account will be suspended</strong>";
+        $text .= "<br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)";
+
+        $this->email->set_newline("\r\n");
+        $this->email->from('it@podomorouniversity.ac.id','IT Podomoro');
+        $this->email->to($to);
+        $this->email->subject($subject);
+        $this->email->message($text);
+        //var_dump($this->email->send());
+        if($this->email->send())
+        {
+          $arr['status'] = 1;
+          $arr['msg'] = "Email Send";
+        }
+        else
+        {
+            $arr['status'] = 0;
+            $arr['msg'] = $this->email->print_debugger();
+        }
+        return $arr;
+    }
+
+    public function loadEmailConfig()
+    {
+        $config_email_db = $this->config_email_db();
+        return $config_email_db;
+    }
+
+    public function config_email_db()
+    {
+        $sql = "select * from db_admission.email_set as a limit 1";
+        $query=$this->db->query($sql, array())->result_array();
+        $config = array('setting' => array(
+                                    'protocol' => 'smtp',
+                                    'smtp_host' => $query[0]['smtp_host'],
+                                    'smtp_port' => $query[0]['smtp_port'],
+                                    'smtp_user' => $query[0]['email'], 
+                                    'smtp_pass' => $query[0]['pass'],
+                                    'mailtype' => 'html',
+                                    'charset' => 'iso-8859-1',
+                                    'wordwrap' => TRUE
+                        ),
+                        'text' => $query[0]['text'],
+          
+        );
+        return $config;
+    }
+
+    public function getDeadline()
+    {
+        $date = date("Y-m-d");
+        $this->load->model('register/M_register','m_reg',TRUE);
+        $longtime = $this->m_reg->getDeadline();
+        $getDeadline = date('Y-m-d', strtotime($date. ' + '.$longtime.' days'));
+        $getDeadline = date('F j, Y',strtotime($getDeadline));
+        return $getDeadline;
+
     }
 
 
