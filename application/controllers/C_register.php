@@ -59,16 +59,24 @@ class C_register extends CI_Controller {
             $alreadyExistingEmail = $this->alreadyExistingEmail();
             if ($this->GlobalProses['errorMSG'] == "") {
                 $priceFormulir = $this->getPriceFormulir();
-                $password = $this->getPasswordRegister();
-                $sendEmail = $this->sendEmailtoUser($priceFormulir,$this->GlobalProses['clearPassword']);
+                //$password = $this->getPasswordRegister();
+                $getUrlEncrypt = $this->input->post('token');
+                $momenUnix = $this->getMomenUnix();
+                $sendEmail = $this->sendEmailtoUser($priceFormulir,$getUrlEncrypt);
                 $this->GlobalProses['statusEmail'] = $sendEmail['status'];
                 $this->GlobalProses['msgEmail'] = $sendEmail['msg'];
                 if ($this->GlobalProses['statusEmail'] == 1) {
-                    $saveData = $this->saveToDBRegister($priceFormulir,$password);
+                    $saveData = $this->saveToDBRegister($priceFormulir,$momenUnix);
                 }
             }
             return print_r(json_encode($this->GlobalProses));
         }
+    }
+
+    public function getMomenUnix()
+    {
+        $input = $this->getInputToken();
+        return $input['momentUnix'];
     }
 
     public function alreadyExistingEmail()
@@ -94,22 +102,54 @@ class C_register extends CI_Controller {
         return $password;
     }
 
-    public function sendEmailtoUser($priceFormulir,$password)
+    public function sendEmailtoUser($priceFormulir,$getUrlEncrypt)
     {
         $input = $this->getInputToken();
         $to = $input['Email'];
         $subject = "Podomoro University Registration";
-        $text = array($password,$priceFormulir);
+        $text = array($getUrlEncrypt,$priceFormulir);
         $sendEmail = $this->m_api->sendEmail($to,$subject,$text);
         return $sendEmail;
     }
 
-    public function saveToDBRegister($priceFormulir,$password)
+    public function saveToDBRegister($priceFormulir,$momenUnix)
     {
         $input = $this->getInputToken();
         $name = ucwords($input['Firstname']). " ".ucwords($input['Lastname']);
-        $saveToDBRegister = $this->m_reg->saveToDBRegister($name,$input['Email'],$input['SchoolName'],$priceFormulir,$password);
+        $saveToDBRegister = $this->m_reg->saveToDBRegister($name,$input['Email'],$input['SchoolName'],$priceFormulir,$momenUnix);
         $this->GlobalProses['statusDB'] = "The data has been saved to db";
+    }
+
+    public function formupload($url)
+    {
+        $checkURL = $this->checkURL($url);
+        if ($checkURL) {
+            $content = $this->load->view('register/form_upload','',true);
+            $this->temp($content);    
+
+        }
+        else
+        {
+            redirect(base_url());
+        }
+    }
+
+    public function checkURL($url)
+    {
+        error_reporting(0);
+        try{
+            $key = "UAP)(*";
+            $data_arr = (array) $this->jwt->decode($url,$key);
+            $email = $data_arr['Email'];
+            $momenUnix = $data_arr['momentUnix'];
+            $queryCheckUrl= $this->m_reg->checkURL($email,$momenUnix);
+        }   
+        catch(Exception $e)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     public function authGoogle(){

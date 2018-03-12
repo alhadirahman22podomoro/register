@@ -54,12 +54,12 @@ class M_register extends CI_Model {
         return $arr_temp;
     }
 
-    public function saveToDBRegister($name,$Email,$SchoolName,$priceFormulir,$password)
+    public function saveToDBRegister($name,$Email,$SchoolName,$priceFormulir,$momenUnix)
     {
         $dataSave = array(
                 'Name' => $name,
                 'Email' => $Email,
-                'Password' => $password,
+                'MomenUnix' => $momenUnix,
                 'SchoolID' => $SchoolName,
                 'PriceFormulir' => $priceFormulir,
                 'RegisterAT' => date("Y-m-d"),
@@ -84,5 +84,19 @@ class M_register extends CI_Model {
             $arr['errorMSG'] = "Your email has been registered on the database";
         }
         return $arr;
+    }
+
+    public function checkURL($email,$momentUnix)
+    {
+        $sql = "select * from db_admission.register as a where a.Email = ? and a.MomenUnix = ?";
+        $query=$this->db->query($sql, array($email,$momentUnix))->result_array();
+        if (count($query) > 0) {
+            $this->session->set_userdata('register_id',$query[0]['ID']);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

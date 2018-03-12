@@ -25,3 +25,7 @@ $route['db/(:any)'] = 'auth/c_auth/db/$1';
 // === api ==
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';
 $route['api/__getSMAWilayah'] = 'api/c_api/getSMAWilayah';
+
+
+//url upload data
+$route['register/formupload/(:any)'] = 'c_register/formupload/$1';

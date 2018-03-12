@@ -12,15 +12,7 @@
 	<?php echo $header; ?>
 	<!--<div id="container" class="fixed-header sidebar-closed">-->
 	<div id="container">
-		<?php //echo $navigation; ?>
-		<div id="content">
-			<div class="container" style="position:relative;">
-				<div class="row">
-					<?php echo $content; ?>
-				</div>	
-			</div>
-			<!-- /.container -->
-		</div>
+		<?php echo $content; ?>
 	</div>
 	<div class="formFooter">
     	<p class="text-center"><strong>Copyright @ 2018 Podomoro University, All rights reserved.</strong></p>
