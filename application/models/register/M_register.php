@@ -74,4 +74,15 @@ class M_register extends CI_Model {
         $query=$this->db->query($sql, array())->result_array();
         return $query[0]['Longtime'];
     }
+
+    public function alreadyExistingEmail($Email)
+    {
+        $arr = array('errorMSG' => '');
+        $sql = "select count(*) as total from db_admission.register as a where a.Email = ? ";
+        $query=$this->db->query($sql, array($Email))->result_array();
+        if ($query[0]['total'] > 0) {
+            $arr['errorMSG'] = "Your email has been registered on the database";
+        }
+        return $arr;
+    }
 }

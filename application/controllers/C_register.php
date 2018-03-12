@@ -41,13 +41,6 @@ class C_register extends CI_Controller {
         $this->load->view('template/template',$data);
     }
 
-    /*public function index()
-    {
-        $data['loginURL'] = $this->google->loginURL();
-        $content = $this->load->view('auth/login',$data,true);
-        $this->temp($content);
-    }*/
-
     public function index()
     {
         $content = $this->load->view('register/index','',true);
@@ -62,17 +55,28 @@ class C_register extends CI_Controller {
         }
         else
         {
-            $priceFormulir = $this->getPriceFormulir();
-            $password = $this->getPasswordRegister();
-            $sendEmail = $this->sendEmailtoUser($priceFormulir,$this->GlobalProses['clearPassword']);
-            $this->GlobalProses['statusEmail'] = $sendEmail['status'];
-            $this->GlobalProses['msgEmail'] = $sendEmail['msg'];
-            if ($this->GlobalProses['statusEmail'] == 1) {
-                $saveData = $this->saveToDBRegister($priceFormulir,$password);
+            $this->GlobalProses['errorMSG'] = "";
+            $alreadyExistingEmail = $this->alreadyExistingEmail();
+            if ($this->GlobalProses['errorMSG'] == "") {
+                $priceFormulir = $this->getPriceFormulir();
+                $password = $this->getPasswordRegister();
+                $sendEmail = $this->sendEmailtoUser($priceFormulir,$this->GlobalProses['clearPassword']);
+                $this->GlobalProses['statusEmail'] = $sendEmail['status'];
+                $this->GlobalProses['msgEmail'] = $sendEmail['msg'];
+                if ($this->GlobalProses['statusEmail'] == 1) {
+                    $saveData = $this->saveToDBRegister($priceFormulir,$password);
+                }
             }
-            
             return print_r(json_encode($this->GlobalProses));
         }
+    }
+
+    public function alreadyExistingEmail()
+    {
+        $input = $this->getInputToken();
+        $alreadyExistingEmail = $this->m_reg->alreadyExistingEmail($input['Email']);
+        $this->GlobalProses['errorMSG'] = $alreadyExistingEmail['errorMSG'];
+        return $alreadyExistingEmail;
     }
 
     public function getPriceFormulir()

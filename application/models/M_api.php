@@ -645,10 +645,81 @@ class M_api extends CI_Model {
         ini_set('max_execution_time', $max_execution_time); //60 seconds = 1 minutes
 
         $this->load->library('email', $config_email['setting']);
-        $text = "Dear Candidate,<br><br>".$config_email['text']." Your email : ".$to."<br> Password : ".$text[0]."<br><br>"."Please transfer to 111111(BCA Account) as much as: <strong><br>Rp ".number_format($text[1],2,",",".")."</strong><br> To get a formulir registration.<br><br>";
+        /*$text = "Dear Candidate,<br><br>".$config_email['text']." Your email : ".$to."<br> Password : ".$text[0]."<br><br>"."Please transfer to 111111(BCA Account) as much as: <strong><br>Rp ".number_format($text[1],2,",",".")."</strong><br> To get a formulir registration.<br><br>";
         $text .= "The deadline for your payment is ".$getDeadline." <br>";
         $text .= "Note :<br><strong>If we do not receive your payment until the time limit specified then your account will be suspended</strong>";
-        $text .= "<br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)";
+        $text .= "<br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)";*/
+        $text = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
+                <div class="adM">
+                <br>
+                </div>
+                <table style="width:600px;margin:0 auto;background-color:#ebebeb" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                <td></td>
+                <td style="background-color:#fff;padding:0 30px;color:#333;vertical-align:top">
+                <br>
+                <div style="font-family:Proxima Nova Semi-bold,Helvetica,sans-serif;font-weight:bold;font-size:24px;line-height:24px;color:#2196f3">
+                Podomoro University Registration
+                </div>
+                <div style="font-family:Proxima Nova Reg,Helvetica,sans-serif">
+                <div style="max-width:600px;margin:30px 0;display:block;font-size:14px;text-align:left!important">
+                Dear Candidate,<br><br>
+
+                '.$config_email['text'].' Your email : '.$to.'<br> Password : '.$text[0].'<br><br> Please transfer to 111111(BCA Account) as much as:  <strong><br>Rp '.number_format($text[1],2,",",".").'</strong><br> To get a formulir registration.<br><br>
+                Note :<br><strong>If we do not receive your payment until the time limit specified then your account will be suspended</strong>
+                <br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)
+                <br><br><br>
+                <p style="color:#EB6936;"><i>*) Do not reply, this email is sent automatically</i> </p>
+
+                </div>
+
+                </td>
+                <td></td>
+                </tr>
+                <tr>
+                <td colspan="3">
+                <div style="background-color:#fff;border-top:1px solid #ddd; ">';
+        /*$text = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
+                <div class="adM">
+                <br>
+                </div>
+                <table style="width:600px;margin:0 auto;background-color:#ebebeb" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                <td></td>
+                <td style="background-color:#fff;padding:0 30px;color:#333;vertical-align:top">
+                <br>
+                <div style="font-family:Proxima Nova Semi-bold,Helvetica,sans-serif;font-weight:bold;font-size:24px;line-height:24px;color:#2196f3">
+                HORE BERHASIL KIRIM EMAIL HTML
+                </div>
+                <div style="font-family:Proxima Nova Reg,Helvetica,sans-serif">
+                <div style="max-width:600px;margin:30px 0;display:block;font-size:14px;text-align:left!important">
+                Hai Nandang Mulyadi,<br><br>
+
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <br/>
+                <a href="https://gist.github.com/ndang17/a787a7d4ef571753b04e551af95c4903" style="text-decoration:none;color:#fff;background-color:#337ab7;border:0;line-height:2;font-weight:bold;margin-right:10px;text-align:center;display:inline-block;border-radius:3px;padding:6px 12px;font-size:14px" target="_blank">Log Me In</a>
+                <br><br>
+                Atau klik link di bawah ini :
+                <br>
+                <a href="https://gist.github.com/ndang17/a787a7d4ef571753b04e551af95c4903" target="_blank">https://gist.github.com/ndang17/a787a7d4ef571753b04e551af95c4903</a>
+                <br><br><br>
+                <p style="color:#EB6936;"><i>*) Jangan dibalas, e-mail ini dikirim secara otomatis</i> </p>
+
+                </div>
+
+                </td>
+                <td></td>
+                </tr>
+                <tr>
+                <td colspan="3">
+                <div style="background-color:#fff;border-top:1px solid #ddd; ">';*/        
 
         $this->email->set_newline("\r\n");
         $this->email->from('it@podomorouniversity.ac.id','IT Podomoro');

@@ -22,12 +22,6 @@ $route['gen/(:any)/(:any)'] = 'c_login/gen/$1/$2';
 
 $route['db/(:any)'] = 'auth/c_auth/db/$1';
 
-
-// === Dashboard ===
-$route['dashboard'] = 'dashboard/c_dashboard';
-$route['profile/(:any)'] = 'dashboard/c_dashboard/profile/$1';
-
-
 // === api ==
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';
 $route['api/__getSMAWilayah'] = 'api/c_api/getSMAWilayah';

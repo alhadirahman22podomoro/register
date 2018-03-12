@@ -139,6 +139,7 @@ $(document).ready(function() {
         if (validationInput) {
             $.post(url,{token:token},function (data_json) {
               var response = jQuery.parseJSON(data_json);
+              if (response.errorMSG == "") {
                 if (response.statusEmail == 0) {
                   toastr.error(response.msgEmail, 'Failed!!');
                 }
@@ -148,9 +149,13 @@ $(document).ready(function() {
                   toastr.success("Please check your email <br>" + response.statusDB, 'Success!');
                 }
                 console.log(data_json);
-                //toastr.success("Done", 'Success!');
-                $('#sbmt-reg').prop('disabled',false).html('Register');
                 moveTab();
+              }
+              else
+              {
+                toastr.error(response.errorMSG, 'Failed!!');
+              }
+              $('#sbmt-reg').prop('disabled',false).html('Register');
             })
         }
         else
