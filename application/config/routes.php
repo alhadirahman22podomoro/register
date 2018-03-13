@@ -29,3 +29,4 @@ $route['api/__getSMAWilayah'] = 'api/c_api/getSMAWilayah';
 
 //url upload data
 $route['register/formupload/(:any)'] = 'c_register/formupload/$1';
+$route['register/formupload_submit'] = 'c_register/formupload_submit';

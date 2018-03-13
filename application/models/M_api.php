@@ -662,9 +662,11 @@ class M_api extends CI_Model {
                 <div style="font-family:Proxima Nova Reg,Helvetica,sans-serif">
                 <div style="max-width:600px;margin:30px 0;display:block;font-size:14px;text-align:left!important">
                 Dear Candidate,<br><br>
-
-                '.$config_email['text'].$url.'<br><br> Please transfer to 111111(BCA Account) as much as:  <strong><br>Rp '.number_format($text[1],2,",",".").'</strong><br> To get a formulir registration.<br><br>
-                Note :<br><strong>If we do not receive your payment until the time limit specified then The Link will be suspended</strong>
+                Please transfer to 111111(BCA Account) as much as:  <strong><br>Rp '.number_format($text[1],2,",",".").'</strong><br> To get a formulir registration.<br><br>
+                Deadline : <br>
+                <strong>'.$getDeadline.'<br><br>
+                '.$config_email['text'].$url.'<br>
+                Note :<br><strong>If we do not receive your payment until the time limit specified then The link will be suspended</strong><br>
                 <br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)
                 <br><br><br>
                 <p style="color:#EB6936;"><i>*) Do not reply, this email is sent automatically</i> </p>
@@ -726,10 +728,47 @@ class M_api extends CI_Model {
     {
         $date = date("Y-m-d");
         $this->load->model('register/M_register','m_reg',TRUE);
-        $longtime = $this->m_reg->getDeadline();
+        $longtime = $this->m_reg->Longtime();
         $getDeadline = date('Y-m-d', strtotime($date. ' + '.$longtime.' days'));
-        $getDeadline = date('F j, Y',strtotime($getDeadline));
+        $getDeadline = $this->passHariLibur($getDeadline);
         return $getDeadline;
+
+    }
+
+    public function passHariLibur($date)
+    {
+        // check hari libur,
+        // jika hari libur sabtu expirednya hingga hari senin malam
+        // jika hari liburnya minggu expirednya hingga hari selasa malam
+        $day = $this->checkhari($date);
+        $add = 2;
+        switch ($day) {
+            case "Saturday":
+            case "Sunday":
+                $date = date('Y-m-d', strtotime($date. ' + '.$add.' days'));
+                break;
+            default:
+                $date = $date;
+        }
+        $date = date('F j, Y',strtotime($date));
+        return $date;
+    }
+
+    public function checkhari($date)
+    {
+        $day = date('l', strtotime($date));
+        return $day; 
+    }
+
+    public function dateDiffInteger($start, $end) {
+
+        $start_ts = strtotime($start);
+
+        $end_ts = strtotime($end);
+
+        $diff = $end_ts - $start_ts;
+
+        return round($diff / 86400);
 
     }
 

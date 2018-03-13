@@ -14,8 +14,13 @@ class C_register extends CI_Controller {
         $this->load->model('m_auth');
         $this->load->model('register/M_register','m_reg',TRUE);
         $this->load->model('m_api');
+        $this->MoveTableRegister();
+    }
 
-
+    public function MoveTableRegister()
+    {
+        $longtime = $this->m_reg->Longtime();
+        $geenerateData = $this->m_reg->prosesMoveTableRegister($longtime);
     }
 
     public function getInputToken()
@@ -143,6 +148,7 @@ class C_register extends CI_Controller {
             $email = $data_arr['Email'];
             $momenUnix = $data_arr['momentUnix'];
             $queryCheckUrl= $this->m_reg->checkURL($email,$momenUnix);
+            return $queryCheckUrl;
         }   
         catch(Exception $e)
         {
@@ -150,6 +156,51 @@ class C_register extends CI_Controller {
         }
         
         return true;
+    }
+
+    public function formupload_submit()
+    {
+        if (!$this->input->is_ajax_request()) 
+        {
+            exit('No direct script access allowed');
+        }
+        else
+        {
+            $uploadFile = $this->uploadFile($this->session->userdata('Email'));
+            if (is_array($uploadFile)) {
+                $this->m_reg->saveDataToVerification($uploadFile['file_name']);
+                echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1));
+            }
+            else
+            {
+                echo json_encode(array('msg' => 'The file did not upload successfully','status' => 0));
+            }
+
+        }
+    }
+
+    public function uploadFile($email)
+    {
+         // upload file
+         $filename = md5($email);
+         $config['upload_path']   = './upload/';
+         $config['overwrite'] = TRUE; 
+         $config['allowed_types'] = 'png|PNG|jpg|JPG|jpeg|jpeg'; 
+         $config['file_name'] = $filename;
+         //$config['max_size']      = 100; 
+         //$config['max_width']     = 300; 
+         //$config['max_height']    = 300;  
+         $this->load->library('upload', $config);
+            
+         if ( ! $this->upload->do_upload('fileData')) {
+            return $error = $this->upload->display_errors(); 
+            //$this->load->view('upload_form', $error); 
+         }
+            
+         else { 
+           return $data =  $this->upload->data(); 
+            //$this->load->view('upload_success', $data); 
+         }
     }
 
     public function authGoogle(){
