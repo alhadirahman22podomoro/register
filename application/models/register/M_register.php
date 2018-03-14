@@ -130,17 +130,24 @@ class M_register extends CI_Model {
             $dateNow = date("Y-m-d");
             $dateDiffDate = $this->m_api->dateDiffInteger($dateNow, $date);
             if ($dateDiffDate < 0) { // filtering yang melewati expired
-                if ($registerID == "") {
-                    $registerID .= $id.",";
-                }
-                else if(count($query) == $count)
-                {
+                if (count($query) == 1) {
                     $registerID .= $id;
                 }
                 else
                 {
-                    $registerID .= $id.",";
+                    if ($count == 1) {
+                        $registerID .= $id.",";
+                    }
+                    else if(count($query) == $count)    
+                    {
+                        $registerID .= $id;
+                    }
+                    else
+                    {
+                        $registerID .= $id.",";
+                    }
                 }
+                
             }
             $count++;
         }
