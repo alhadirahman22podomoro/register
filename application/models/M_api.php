@@ -111,7 +111,7 @@ class M_api extends CI_Model {
 
         $url = base_url().'register/formupload/'.$text[0];
         $this->load->library('email', $config_email['setting']);
-        $text = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
+        /*$text = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
                 <div class="adM">
                 <br>
                 </div>
@@ -143,12 +143,45 @@ class M_api extends CI_Model {
                 </tr>
                 <tr>
                 <td colspan="3">
+                <div style="background-color:#fff;border-top:1px solid #ddd; ">';*/
+        $msg = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
+                <div class="adM">
+                <br>
+                </div>
+                <table style="width:600px;margin:0 auto;background-color:#ebebeb" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                <td></td>
+                <td style="background-color:#fff;padding:0 30px;color:#333;vertical-align:top">
+                <br>';
+        $SHeader = '<div style="font-family:Proxima Nova Semi-bold,Helvetica,sans-serif;font-weight:bold;font-size:24px;line-height:24px;color:#2196f3">';
+        $EHeader = '</div>';
+        $msg .= $config_email['text'];
+        $msg .= '<br><br><br>
+                <p style="color:#EB6936;"><i>*) Do not reply, this email is sent automatically</i> </p>
+
+                </div>
+
+                </td>
+                <td></td>
+                </tr>
+                <tr>
+                <td colspan="3">
                 <div style="background-color:#fff;border-top:1px solid #ddd; ">';
+        $payment = "Rp. ".number_format($text[1],2,",",".");
+        $msg = str_replace('[#payment]', $payment, $msg);
+        $deadline = $getDeadline;
+        $msg = str_replace('[#deadline]', $deadline, $msg);
+        $msg = str_replace('[#url]', $url, $msg);
+        $msg = str_replace("[#styleheader1]", $SHeader, $msg);
+        $msg = str_replace("[#styleheader2]", $EHeader, $msg);
+
+
         $this->email->set_newline("\r\n");
         $this->email->from('it@podomorouniversity.ac.id','IT Podomoro');
         $this->email->to($to);
         $this->email->subject($subject);
-        $this->email->message($text);
+        $this->email->message($msg);
         //var_dump($this->email->send());
         if($this->email->send())
         {
