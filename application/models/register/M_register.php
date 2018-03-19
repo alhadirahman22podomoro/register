@@ -109,6 +109,7 @@ class M_register extends CI_Model {
         $dataSave = array(
                 'RegisterID' => $this->session->userdata('register_id'),
                 'FileUpload' => $filename,
+                'CreateAT' => date("Y-m-d"),
                         );
 
         $this->db->insert('db_admission.register_verification', $dataSave);
