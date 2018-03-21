@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_register extends CI_Controller {
 
-    private $GlobalProses = array();
+    private $GlobalProses = array('urlSiak' => 'http://localhost/siak/');
 
     function __construct()
     {
@@ -14,6 +14,7 @@ class C_register extends CI_Controller {
         $this->load->model('m_auth');
         $this->load->model('register/M_register','m_reg',TRUE);
         $this->load->model('m_api');
+        $this->load->model('m_sendemail');
         $this->MoveTableRegister();
     }
 
@@ -169,6 +170,14 @@ class C_register extends CI_Controller {
             $uploadFile = $this->uploadFile($this->session->userdata('Email'));
             if (is_array($uploadFile)) {
                 $this->m_reg->saveDataToVerification($uploadFile['file_name']);
+                $url_toVerifikasiFinance = "finance/penerimaan-pembayaran/verifikasi-pembayaran/registration_online";
+                $text = 'Dear Team,<br><br>
+                            You have notification by Registration Online, Please check in url below :<br>
+                            '.$this->GlobalProses['urlSiak'].$url_toVerifikasiFinance.'    
+                        ';
+                $to = $this->m_sendemail->getToEmail('Notify Upload Payment');
+                $subject = "Notify Upload Payment Registration Online";
+                $sendEmail = $this->m_sendemail->sendEmail($to,$subject,null,null,null,null,$text);
                 echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1));
             }
             else
@@ -201,6 +210,23 @@ class C_register extends CI_Controller {
            return $data =  $this->upload->data(); 
             //$this->load->view('upload_success', $data); 
          }
+    }
+
+    public function formulir_registration($url)
+    {
+        error_reporting(0);
+        try{
+            $key = "UAP)(*";
+            $data = $this->jwt->decode($url,$key);
+            $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
+            $content = $this->load->view('register/formulir_registration','',true);
+            $this->temp($content); 
+        }
+        catch(Exception $e)
+        {
+            redirect(base_url());
+        }
+        
     }
 
     public function authGoogle(){

@@ -26,8 +26,11 @@ $route['db/(:any)'] = 'auth/c_auth/db/$1';
 // === api ==
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';
 $route['api/__getSMAWilayah'] = 'api/c_api/getSMAWilayah';
+$route['api/__getProgramStudy'] = 'api/c_api/getProgramStudy';
 
 
 //url upload data
 $route['register/formupload/(:any)'] = 'c_register/formupload/$1';
 $route['register/formupload_submit'] = 'c_register/formupload_submit';
+$route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
+

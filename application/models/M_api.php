@@ -111,39 +111,6 @@ class M_api extends CI_Model {
 
         $url = base_url().'register/formupload/'.$text[0];
         $this->load->library('email', $config_email['setting']);
-        /*$text = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
-                <div class="adM">
-                <br>
-                </div>
-                <table style="width:600px;margin:0 auto;background-color:#ebebeb" border="0" cellpadding="0" cellspacing="0">
-                <tbody>
-                <tr>
-                <td></td>
-                <td style="background-color:#fff;padding:0 30px;color:#333;vertical-align:top">
-                <br>
-                <div style="font-family:Proxima Nova Semi-bold,Helvetica,sans-serif;font-weight:bold;font-size:24px;line-height:24px;color:#2196f3">
-                Podomoro University Registration
-                </div>
-                <div style="font-family:Proxima Nova Reg,Helvetica,sans-serif">
-                <div style="max-width:600px;margin:30px 0;display:block;font-size:14px;text-align:left!important">
-                Dear Candidate,<br><br>
-                Please transfer to 111111(BCA Account) as much as:  <strong><br>Rp '.number_format($text[1],2,",",".").'</strong><br> To get a formulir registration.<br><br>
-                Deadline : <br>
-                <strong>'.$getDeadline.'<br><br>
-                '.$config_email['text'].$url.'<br>
-                Note :<br><strong>If we do not receive your payment until the time limit specified then The link will be suspended</strong><br>
-                <br><br>Best Regard, <br> IT Podomoro University (it@podomorouniversity.ac.id)
-                <br><br><br>
-                <p style="color:#EB6936;"><i>*) Do not reply, this email is sent automatically</i> </p>
-
-                </div>
-
-                </td>
-                <td></td>
-                </tr>
-                <tr>
-                <td colspan="3">
-                <div style="background-color:#fff;border-top:1px solid #ddd; ">';*/
         $msg = '<div style="margin:0;padding:10px 0;background-color:#ebebeb;font-size:14px;line-height:20px;font-family:Helvetica,sans-serif;width:100%;text-align:center">
                 <div class="adM">
                 <br>
@@ -269,6 +236,15 @@ class M_api extends CI_Model {
         return round($diff / 86400);
 
     }
+
+    public function getProgramStudy()
+    {
+        $sql = "select * from db_academic.program_study where status = 1";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    
 
 
 }

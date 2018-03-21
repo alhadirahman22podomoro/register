@@ -43,4 +43,10 @@ class C_api extends CI_Controller {
         return print_r(json_encode($result));
     }
 
+    public function getProgramStudy()
+    {
+        $generate = $this->m_api->getProgramStudy();
+        echo json_encode($generate);
+    }
+
 }
