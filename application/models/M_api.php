@@ -244,7 +244,49 @@ class M_api extends CI_Model {
         return $query;
     }
 
-    
+    public function getCountry()
+    {
+        $sql = "select * from db_admission.country where ctr_active = 1";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getAgama()
+    {
+        $sql = "select * from db_employees.religion";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getJenisTempatTinggal()
+    {
+        $sql = "select * from db_admission.register_jtinggal_m";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getProvinsi()
+    {
+        $sql = "select * from db_admission.province";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getRegion($selectProvinsi)
+    {
+        $sql = "select a.RegionID,b.RegionName from db_admission.province_region as a, db_admission.region as b
+where a.RegionID = b.RegionID and a.ProvinceID = ?";
+        $query=$this->db->query($sql, array($selectProvinsi))->result_array();
+        return $query;
+    }
+
+    public function getKecamatan($selectRegion)
+    {
+        $sql = "select a.DistrictID,b.DistrictName from db_admission.region_district as a, db_admission.district as b
+where a.DistrictID = b.DistrictID and a.RegionID = ?";
+        $query=$this->db->query($sql, array($selectRegion))->result_array();
+        return $query;
+    }
 
 
 }

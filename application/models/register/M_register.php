@@ -242,8 +242,8 @@ class M_register extends CI_Model {
             $this->session->set_userdata('register_id',$query[0]['ID']);
             $this->session->set_userdata('Name',$query[0]['Name']);
             $this->session->set_userdata('Email',$query[0]['Email']);
-            $this->session->set_userdata('SchoolID',$query[0]['Email']);
-            $this->session->set_userdata('SchoolName',$query[0]['Email']);
+            $this->session->set_userdata('SchoolID',$query[0]['SchoolID']);
+            $this->session->set_userdata('SchoolName',$query[0]['SchoolName']);
             $this->session->set_userdata('FormulirCode',$query[0]['FormulirCode']);
             return true;
         }

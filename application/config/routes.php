@@ -27,6 +27,13 @@ $route['db/(:any)'] = 'auth/c_auth/db/$1';
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';
 $route['api/__getSMAWilayah'] = 'api/c_api/getSMAWilayah';
 $route['api/__getProgramStudy'] = 'api/c_api/getProgramStudy';
+$route['api/__getCountry'] = 'api/c_api/getCountry';
+$route['api/__getAgama'] = 'api/c_api/getAgama';
+$route['api/__getJenisTempatTinggal'] = 'api/c_api/getJenisTempatTinggal';
+$route['api/__getProvinsi'] = 'api/c_api/getProvinsi';
+$route['api/__getRegion'] = 'api/c_api/getRegion';
+$route['api/__getKecamatan'] = 'api/c_api/getKecamatan';
+
 
 
 //url upload data
