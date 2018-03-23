@@ -32,6 +32,9 @@
 			}
 	.form-horizontal .control-label {
 	    text-align: left;
+	}
+	.required{
+		color: #c3222d;
 	}		
 </style>
 <div class="container">
@@ -60,8 +63,8 @@
     					<br>
     					<div class = row>
     						<div class="panel panel-primary">
-								<div class="panel-heading">
-									<h3 class="panel-title">Study Program / Program Studi</h3>
+								<div class="panel-heading" style="border-radius: 0px;">
+									<h3 class="panel-title">Study Program / Program Studi <span class="required">*</span></h3>
 								</div>
 								<div class="panel-body">
 									<div class="form-group">
@@ -73,20 +76,20 @@
     					</div>
     					<div class = row>
     						<div class="panel panel-primary">
-								<div class="panel-heading">
+								<div class="panel-heading" style="border-radius: 0px;">
 									<h3 class="panel-title">Part 1 Data of Prospective Students / Bagian 1 Data Calon Mahasiswa</h3>
 								</div>
 								<div class="panel-body">
 									<div class="form-horizontal">
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Full Name / Nama Lengkap</label>
+										    <label class="col-lg-3 control-label">Full Name / Nama Lengkap </label>
 										    <div class="col-md-6">
 										      <input type="text" name="weight" placeholder="Input Full Name..." id = "FullName" value = "<?php echo $this->session->userdata('Name') ?>">
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Gender / Jenis Kelamin</label>
+										    <label class="col-lg-3 control-label">Gender / Jenis Kelamin <span class="required">*</span></label>
 										    <div class="col-md-8">
 										      	<label class="radio-inline">
 								              		<input type="radio" name="radio" value = "L"> Male / Pria
@@ -98,14 +101,14 @@
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Identity Card / NIK</label>
+										    <label class="col-lg-3 control-label">Identity Card / NIK <span class="required">*</span></label>
 										    <div class="col-md-3">
 										      <input type="text" name="weight" placeholder="Input Identiy Card..." id = "FullName" maxlength="16">
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Nationality / Kewarganegaraan</label>
+										    <label class="col-lg-3 control-label">Nationality / Kewarganegaraan <span class="required">*</span></label>
 										    <div class="col-md-2">
 										        <label class="checkbox-inline">
 										             <input type="checkbox" class = "Nationality" name="radio" id = "NationalityWNI"> WNI
@@ -119,31 +122,31 @@
 										    </div>
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Religion / Agama</label>
+										    <label class="col-lg-3 control-label">Religion / Agama <span class="required">*</span></label>
 										    <div class="col-md-6" id = Agama>
 										      
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir</label>
+										    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir <span class="required">*</span></label>
 										    <div class="col-md-2">
 										      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahir" >
 										    </div>
 										    <div class="col-md-2">
-										      <input type="text" name="regular" id= "Tgl_lahir" data-date-format="yyyy-mm-dd">
+										      <input type="text" name="regular" id= "Tgl_lahir" data-date-format="yyyy-mm-dd" placeholder="Date...">
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Type of Residence / Jenis Tempat Tinggal</label>
+										    <label class="col-lg-3 control-label">Type of Residence / Jenis Tempat Tinggal <span class="required">*</span></label>
 										    <div class="col-md-6" id = JenisTempatTinggal>
 										      
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="panel panel-primary">
-											<div class="panel-heading">
+											<div class="panel-heading" style="border-radius: 0px;">
 												<h3 class="panel-title">Your Address / Alamat Anda</h3>
 											</div>
 											<div class="panel-body">
@@ -157,7 +160,7 @@
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
-												    <label class="col-lg-3 control-label">Province / Provinsi</label>
+												    <label class="col-lg-3 control-label">Province / Provinsi <span class="required">*</span></label>
 												    	<div class="col-md-6">
 												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectProvinsi">
 												    	    <option></option>
@@ -166,7 +169,7 @@
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
-												    <label class="col-lg-3 control-label">Region / Kota dan Kabupaten</label>
+												    <label class="col-lg-3 control-label">Region / Kota dan Kabupaten <span class="required">*</span></label>
 												    	<div class="col-md-6">
 												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectRegion">
 												    	    <option></option>
@@ -175,7 +178,7 @@
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
-												    <label class="col-lg-3 control-label">Districts / Kecamatan</label>
+												    <label class="col-lg-3 control-label">Districts / Kecamatan <span class="required">*</span></label>
 												    	<div class="col-md-6">
 												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectKecamatan">
 												    	    <option></option>
@@ -184,26 +187,33 @@
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
-												    <label class="col-lg-3 control-label">District / Kelurahan</label>
+												    <label class="col-lg-3 control-label">District / Kelurahan <span class="required">*</span></label>
 												    <div class="col-md-6">
 												      <input type="text" name="weight" placeholder="Input District..." id = "Kelurahan">
 												    </div>
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
-												    <label class="col-lg-3 control-label">Address / Alamat</label>
+												    <label class="col-lg-3 control-label">Address / Alamat <span class="required">*</span></label>
 												    <div class="col-md-8">
 														<textarea rows="3" cols="5" name="textarea" class="limited form-control" data-limit="150" maxlength="150" id = "Alamat"></textarea>
 														<span id="chars">150</span> characters remaining
 												    </div>
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Pos Code / Kode Pos</label>
+												    <div class="col-md-3">
+												      <input type="text" name="weight" placeholder="Input Pos Code..." id = "KodePos">
+												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
 											</div><!-- exit panel body -->
 										</div><!-- exit panel primary -->
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">Phone Number / No Hp</label>
-										    	<div class="col-md-6">
-										    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "Kelurahan">
+										    <label class="col-lg-3 control-label">Phone Number / No Hp <span class="required">*</span></label>
+										    	<div class="col-md-3">
+										    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "noHP">
 										    	</div>
 										    <div class="help-block"> ex : +6281111111442</div> 
 										</div>
@@ -213,18 +223,324 @@
 										    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "Email" value = "<?php echo $this->session->userdata('Email') ?>">
 										    	</div>
 										</div>
+										<div class="panel panel-primary">
+											<div class="panel-heading" style="border-radius: 0px;">
+												<h3 class="panel-title">Your School / Sekolah Anda</h3>
+											</div>
+											<div class="panel-body">
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">School / Sekolah</label>
+												    	<div class="col-md-6">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectSchool">
+												    	    <option value ="<?php echo $this->session->userdata('SchoolID') ?>" selected = "selected"><?php echo $this->session->userdata('SchoolName') ?></option>
+												    	  </select>
+												    	</div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">School Type / Tipe Sekolah <span class="required">*</span></label>
+												    <div class="col-md-6" id = TipeSekolah>
+												      
+												    </div>	
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">School Major / Jurusan Sekolah <span class="required">*</span></label>
+												    <div class="col-md-6" id = SchoolMajor>
+												      
+												    </div>	
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Country / Negara</label>
+												    	<div class="col-md-6">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectNegaraSchool">
+												    	    <option></option>
+												    	  </select>
+												    	</div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Province / Provinsi</label>
+												    	<div class="col-md-6">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectProvinsiSchool">
+												    	    <option></option>
+												    	  </select>
+												    	</div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Region / Kota dan Kabupaten</label>
+												    	<div class="col-md-6">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectRegionSchool">
+												    	    <option></option>
+												    	  </select>
+												    	</div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Address / Alamat</label>
+												    <div class="col-md-8">
+														<textarea rows="3" cols="5" name="textarea" class="limited form-control" id = "AlamatSchool"></textarea>
+												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Graduation Year / Tahun Lulus <span class="required">*</span></label>
+												    <div class="col-md-3">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectTahunLulus">
+												    	    <option></option>
+												    	  </select>
+												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+											</div>
+										</div><!-- exit div panel primary -->
 										<div class="form-group">
-										    <label class="col-lg-3 control-label">School / Sekolah</label>
-										    	<div class="col-md-6">
-										    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectSchool">
-										    	    <option value ="<?php echo $this->session->userdata('SchoolID') ?>" selected = "selected"><?php echo $this->session->userdata('SchoolName') ?></option>
-										    	  </select>
+										    <label class="col-lg-3 control-label">Receiver KPS / Penerima KPS <span class="required">*</span></label>
+										    <div class="col-md-3" id ="pagePenerimaKPS">
+										    	  
+										    </div>
+										    <div class="hide" id ="pageInputNOkPS"> 
+										    	<div class="col-md-4">
+										    		<input type="text" name="weight" placeholder="Input KPS Number..." id = "NoKPS">
 										    	</div>
+										    </div>
+										</div>
+										<div class="form-group">
+										    <label class="col-lg-3 control-label">Jacket Size / Ukuran Jacket <span class="required">*</span></label>
+										    <div class="col-md-6" id = UkuranJacket>
+										      
+										    </div>	
 										</div>
 									</div>
 								</div>
-							</div>
-    					</div>
+							</div><!-- exit panel primary -->
+    					</div><!-- exit row -->
+    					<div class = "row">
+    						<div class="panel panel-primary">
+								<div class="panel-heading" style="border-radius: 0px;">
+									<h3 class="panel-title">Part 2 Data of Your Parent / Bagian 2 Data Orang Tua atau Wali</h3>
+								</div>
+								<div class="panel-body">
+									<div class = "panel panel-primary">
+										<div class = "panel-heading" style="border-radius: 0px;">
+											<h3 class="panel-title">Father's Data / Data Ayah</h3>
+										</div>
+										<div class = "panel-body">
+											<div class="form-horizontal">
+												<div class = "form-group">
+													<label class = "col-lg-3 control-label">Name / Nama <span class="required">*</span></label>
+													<div class = "col-md-6">
+														<input type="text" name="" placeholder="Input Name..." id = "NamaAyah">
+													</div>
+												</div>
+												<div class = "form-group">
+													<label class = "col-lg-3 control-label">Identity Card / NIK <span class="required">*</span></label>
+													<div class = "col-md-3">
+														<input type="text" name="" placeholder="Input Identity Card..." id = "NikAyah">
+													</div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir <span class="required">*</span></label>
+												    <div class="col-md-2">
+												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirAyah" >
+												    </div>
+												    <div class="col-md-2">
+												      <input type="text" name="regular" id= "Tgl_lahirAyah" data-date-format="yyyy-mm-dd" placeholder="Date...">
+												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Status <span class="required">*</span></label>
+													<div class="col-md-6">
+												        <label class="checkbox-inline">
+												             <input class="statusAyah" name="radio" id="HidupAyah" class = "hidupayah" type="checkbox">Still Alive / Masih Hidup
+												        </label>
+												        <label class="checkbox-inline">
+												             <input class="statusAyah" name="radio" id="MeninggalAyah" type="checkbox" class = "meninggalayah"> Died / Meninggal
+												        </label>
+												    </div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Phone Number / No Hp <span class="required">*</span></label>
+												    	<div class="col-md-3">
+												    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "noHPAyah">
+												    	</div>
+												    <div class="help-block"> ex : +6281111111442</div> 
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Occupation / Pekerjaan <span class="required">*</span></label>
+													<div class="col-md-6" id = "pagePekerjaanAyah">
+														
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Income / Penghasilan <span class="required">*</span></label>
+													<div class="col-md-6" id ="pagePenghasilanAyah">
+														
+													</div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Whether the address is the same as your address ? / Apakah alamat ini sama dengan alamat anda ? <span class="required">*</span></label>
+												    <div class="col-md-12">
+												      	<label class="radio-inline">
+										              		<input type="radio" name="radio" value = "Ya" id = "AlamatAyahSama" class = "radioAlamatAyah"> Yes
+										            	</label>
+										            	<label class="radio-inline">
+    									              		<input type="radio" name="radio" value = "Tidak" id = "AlamatAyahTdkSama" class = "radioAlamatAyah"> No
+    									            	</label>
+        										    </div>
+												</div>
+												<div id ="AlamatAyah" class = "hide">
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Country / Negara</label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectNegaraAyah">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Province / Provinsi <span class="required">*</span></label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectProvinsiAyah">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Region / Kota dan Kabupaten <span class="required">*</span></label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectRegionAyah">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Address / Alamat <span class="required">*</span></label>
+													    <div class="col-md-8">
+															<textarea rows="3" cols="5" name="textarea" class="limited form-control" data-limit="150" maxlength="150" id = "AlamatAyahtextarea"></textarea>
+															<span id="charsAyah">150</span> characters remaining
+													    </div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+												</div>
+											</div>
+										</div><!-- exit panel body -->
+									</div><!-- exit panel primary -->
+									<div class = "panel panel-primary">
+										<div class = "panel-heading" style="border-radius: 0px;">
+											<h3 class="panel-title">Mother's Data / Data Ibu</h3>
+										</div>
+										<div class = "panel-body">
+											<div class="form-horizontal">
+												<div class = "form-group">
+													<label class = "col-lg-3 control-label">Name / Nama <span class="required">*</span></label>
+													<div class = "col-md-6">
+														<input type="text" name="" placeholder="Input Name..." id = "NamaIbu">
+													</div>
+												</div>
+												<div class = "form-group">
+													<label class = "col-lg-3 control-label">Identity Card / NIK <span class="required">*</span></label>
+													<div class = "col-md-3">
+														<input type="text" name="" placeholder="Input Identity Card..." id = "NikIbu">
+													</div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir <span class="required">*</span></label>
+												    <div class="col-md-2">
+												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirAyah" >
+												    </div>
+												    <div class="col-md-2">
+												      <input type="text" name="regular" id= "Tgl_lahirIbu" data-date-format="yyyy-mm-dd" placeholder="Date...">
+												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Status <span class="required">*</span></label>
+													<div class="col-md-6">
+												        <label class="checkbox-inline">
+												             <input class="statusIbu" name="radio" id="HidupIbu" class = "hidupibu"  type="checkbox">Still Alive / Masih Hidup
+												        </label>
+												        <label class="checkbox-inline">
+												             <input class="statusIbu" name="radio" id="MeninggalIbu" type="checkbox" class = "meninggalibu"> Died / Meninggal
+												        </label>
+												    </div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Phone Number / No Hp <span class="required">*</span></label>
+												    	<div class="col-md-3">
+												    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "noHPIbu">
+												    	</div>
+												    <div class="help-block"> ex : +6281111111442</div> 
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Occupation / Pekerjaan <span class="required">*</span></label>
+													<div class="col-md-6" id = "pagePekerjaanIbu">
+														
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-lg-3 control-label">Income / Penghasilan <span class="required">*</span></label>
+													<div class="col-md-6" id ="pagePenghasilanIbu">
+														
+													</div>
+												</div>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Whether the address is the same as your address ? / Apakah alamat ini sama dengan alamat anda ? <span class="required">*</span></label>
+												    <div class="col-md-12">
+												      	<label class="radio-inline">
+										              		<input type="radio" name="radio" value = "Ya" id = "AlamatIbuSama" class = "radioAlamatIbu"> Yes
+										            	</label>
+										            	<label class="radio-inline">
+    									              		<input type="radio" name="radio" value = "Tidak" id = "AlamatIbuTdkSama" class = "radioAlamatIbu"> No
+    									            	</label>
+        										    </div>
+												</div>
+												<div id ="AlamatIbu" class = "hide">
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Country / Negara</label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectNegaraIbu">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Province / Provinsi <span class="required">*</span></label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectProvinsiIbu">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Region / Kota dan Kabupaten <span class="required">*</span></label>
+													    	<div class="col-md-6">
+													    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectRegionIbu">
+													    	    <option></option>
+													    	  </select>
+													    	</div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+													<div class="form-group">
+													    <label class="col-lg-3 control-label">Address / Alamat <span class="required">*</span></label>
+													    <div class="col-md-8">
+															<textarea rows="3" cols="5" name="textarea" class="limited form-control" data-limit="150" maxlength="150" id = "AlamatIbutextarea"></textarea>
+															<span id="charsIbu">150</span> characters remaining
+													    </div>
+													    <!--<div class="help-block"> grams</div>-->  
+													</div>
+												</div>
+											</div>
+										</div><!-- exit panel body -->
+									</div><!-- exit panel primary -->
+								</div>	<!-- exit panel body -->	
+							</div><!-- exit panel body -->			
+    					</div><!-- exit row -->
                 	</div><!-- exit contain -->
                 </div>
             </div>
@@ -236,15 +552,17 @@
   $(document).ready(function() {
   	  $('#FullName').prop('disabled', true);
   	  $('#Email').prop('disabled', true);
+  	  $('#selectSchool').prop('disabled', true);
   	  $('#selectSchool').select2({
   	     //allowClear: true
   	  });
-  	  
-  	  console.log(selectSchool);
       loadDataFromServer();
       $("#Tgl_lahir").datepicker({
 		    dateFormat: 'yy-mm-dd',
 		});
+       $("#Tgl_lahirAyah").datepicker({
+  		    dateFormat: 'yy-mm-dd',
+  	   })
   });
 
   $(document).on('keyup','#Alamat', function () {
@@ -252,6 +570,53 @@
   	var length = $(this).val().length;
   	var length = maxLength-length;
   	$('#chars').text(length);
+  });
+
+  $(document).on('keyup','#AlamatAyahtextarea', function () {
+  	var maxLength = 150;
+  	var length = $(this).val().length;
+  	var length = maxLength-length;
+  	$('#charsAyah').text(length);
+  });
+
+  $(document).on('click','#AlamatAyahSama', function () {
+  	// show data
+  	var ayah = "ayah";
+  	loadDataProvRegionKecamatan(ayah);
+  	var value = $("#Alamat").val();
+  	$("#AlamatAyahtextarea").val(value);
+  	var length = $("#AlamatAyahtextarea").val().length;
+  	var lengthRemainingAyah = 150-length;
+  	$('#charsAyah').text(lengthRemainingAyah);
+  	$("#AlamatAyah").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatIbuSama', function () {
+  	// show data
+  	var ibu = "ibu";
+  	loadDataProvRegionKecamatan(ibu);
+  	var value = $("#Alamat").val();
+  	$("#AlamatIbutextarea").val(value);
+  	var length = $("#AlamatIbutextarea").val().length;
+  	var lengthRemainingAyah = 150-length;
+  	$('#charsIbu').text(lengthRemainingAyah);
+  	$("#AlamatIbu").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatIbuTdkSama', function () {
+  	// show data
+  	//$("#AlamatAyah").addClass("hide");
+  	var ibu = "ibu";
+  	loadDataProvRegionKecamatan(ibu,'not null');
+  	$("#AlamatIbu").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatAyahTdkSama', function () {
+  	// show data
+  	//$("#AlamatAyah").addClass("hide");
+  	var ayah = "ayah";
+  	loadDataProvRegionKecamatan(ayah,'not null');
+  	$("#AlamatAyah").removeClass("hide");
   });
 
   $(document).on('click','.chkProStudy', function () {
@@ -266,6 +631,56 @@
 
   $(document).on('click','.chkAgama', function () {
   	$('input.chkAgama').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.statusAyah', function () {
+  	$('input.statusAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.statusIbu', function () {
+  	$('input.statusIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenerimaKPS', function () {
+  	$('input.chkPenerimaKPS').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkUkuranJacket', function () {
+  	$('input.chkUkuranJacket').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkSchoolMajor', function () {
+  	$('input.chkSchoolMajor').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPekerjaanAyah', function () {
+  	$('input.chkPekerjaanAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPekerjaanIbu', function () {
+  	$('input.chkPekerjaanIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenghasilanAyah', function () {
+  	$('input.chkPenghasilanAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenghasilanIbu', function () {
+  	$('input.chkPenghasilanIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkTipeSekolah', function () {
+  	$('input.chkTipeSekolah').prop('checked', false);
   	$(this).prop('checked',true);
   });
 
@@ -300,6 +715,20 @@
 
   });
 
+  $(document).on('change','#PenerimaKPSYA', function () {
+  	if(this.checked) {
+  	    $("#pageInputNOkPS").removeClass("hide");
+  	}
+
+  });
+
+  $(document).on('change','#PenerimaKPSTDK', function () {
+  	if(this.checked) {
+  	    $("#pageInputNOkPS").addClass("hide");
+  	}
+
+  });
+
     $(document).on('change','#NationalityWNI', function () {
 		$("#pageSelectCountry").empty();
     });
@@ -307,6 +736,11 @@
     $(document).on('change','#selectProvinsi',function () {
         var selectProvinsi = $('#selectProvinsi').find(':selected').val();
         loadRegion(selectProvinsi);
+    });
+
+    $(document).on('change','#selectProvinsiSchool',function () {
+        var selectProvinsi = $('#selectProvinsiSchool').find(':selected').val();
+        loadRegionSchool(selectProvinsi);
     });
 
     $(document).on('change','#selectRegion',function () {
@@ -333,9 +767,272 @@
   	  loadJenisTempatTinggal();
   	  loadDataProvRegionKecamatan();
   	  loadCountry();
+  	  loadTipeSekolah();
+  	  loadMajorSekolah();
+  	  loadAlamatSekolah();
+  	  loadTahunLulus();
+  	  loadPenerimaKPS();
+  	  loadUkuranJacket();
+
+  	  // function untuk data master orang tua
+  	  loadDataPekerjaan();
+  	  loadDataPenghasilan();
+
   	  setTimeout(function () {
   	      $('#NotificationModal').modal('hide');
   	  },1000);  
+  }
+
+  function loadDataPenghasilan()
+  {
+  	  var url = base_url_js+'api/__getDataPenghasilan';
+	  $.get(url,function (data_json) {
+	  	  var splitBagi = 2;
+	      var split = parseInt(data_json.length / splitBagi);
+	      var sisa = data_json.length % splitBagi;
+	      if (sisa > 0) {
+	            split++;
+	      }
+	      var getRow = 0;
+	      $('#pagePenghasilanAyah').append('<table class="table" id ="tablechkPenghasilanAyah">');
+	      $('#pagePenghasilanIbu').append('<table class="table" id ="tablechkPenghasilanIbu">');
+	      for (var i = 0; i < split; i++) {
+	      	if ((sisa > 0) && ((i+1) == split) ) {
+	      	                    splitBagi = sisa;
+	      	}
+	      	$('#tablechkPenghasilanAyah').append('<tr id = "PenghasilanAyah'+i+'">');
+	      	$('#tablechkPenghasilanIbu').append('<tr id = "PenghasilanIbu'+i+'">');
+	      	for (var k = 0; k < splitBagi; k++) {
+	      		$('#PenghasilanAyah'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkPenghasilanAyah" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
+	  	      					 '</td>'
+	      						);
+	      		$('#PenghasilanIbu'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkPenghasilanIbu" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
+	  	      					 '</td>'
+	      						);
+	      		getRow++;
+	      	}
+	      	$('#PenghasilanAyah'+i).append('</tr>');
+	      	$('#PenghasilanIbu'+i).append('</tr>');
+	      }
+	      $('#PenghasilanAyah').append('</table>');
+	      $('#PenghasilanIbu').append('</table>');
+	  })
+  }
+
+  function loadDataPekerjaan()
+  {
+  	  var url = base_url_js+'api/__getDataPekerjaan';
+	  $.get(url,function (data_json) {
+	  	  var splitBagi = 3;
+	      var split = parseInt(data_json.length / splitBagi);
+	      var sisa = data_json.length % splitBagi;
+	      if (sisa > 0) {
+	            split++;
+	      }
+	      var getRow = 0;
+	      $('#pagePekerjaanAyah').append('<table class="table" id ="tablechkPekerjaanAyah">');
+	      $('#pagePekerjaanIbu').append('<table class="table" id ="tablechkPekerjaanIbu">');
+	      for (var i = 0; i < split; i++) {
+	      	if ((sisa > 0) && ((i+1) == split) ) {
+	      	                    splitBagi = sisa;
+	      	}
+	      	$('#tablechkPekerjaanAyah').append('<tr id = "PekerjaanAyah'+i+'">');
+	      	$('#tablechkPekerjaanIbu').append('<tr id = "PekerjaanIbu'+i+'">');
+	      	for (var k = 0; k < splitBagi; k++) {
+	      		$('#PekerjaanAyah'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkPekerjaanAyah" name="radio" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
+	  	      					 '</td>'
+	      						);
+	      		$('#PekerjaanIbu'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkPekerjaanIbu" name="radio" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
+	  	      					 '</td>'
+	      						);
+	      		getRow++;
+	      	}
+	      	$('#PekerjaanAyah'+i).append('</tr>');
+	      	$('#PekerjaanIbu'+i).append('</tr>');
+	      }
+	      $('#PekerjaanAyah').append('</table>');
+	      $('#PekerjaanIbu').append('</table>');
+	  })
+  }
+
+  function loadUkuranJacket()
+  {
+  	  var url = base_url_js+'api/__getUkuranJacket';
+	  $.get(url,function (data_json) {
+	  	  var splitBagi = 5;
+	      var split = parseInt(data_json.length / splitBagi);
+	      var sisa = data_json.length % splitBagi;
+	      if (sisa > 0) {
+	            split++;
+	      }
+	      var getRow = 0;
+	      $('#UkuranJacket').append('<table class="table" id ="tablechkUkuranJacket">');
+	      for (var i = 0; i < split; i++) {
+	      	if ((sisa > 0) && ((i+1) == split) ) {
+	      	                    splitBagi = sisa;
+	      	}
+	      	$('#tablechkUkuranJacket').append('<tr id = "UkuranJacket'+i+'">');
+	      	for (var k = 0; k < splitBagi; k++) {
+	      		$('#UkuranJacket'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkUkuranJacket" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].JacketSize+
+	  	      					 '</td>'
+	      						);
+	      		getRow++;
+	      	}
+	      	$('#UkuranJacket'+i).append('</tr>');
+	      }
+	      $('#UkuranJacket').append('</table>');
+	  })
+  }
+
+  function loadPenerimaKPS()
+  {
+    $('#pagePenerimaKPS').append('<table class="table" id ="tablechkPenerimaKPS">');
+    for (var i = 0; i < 1; i++) {
+    	$('#tablechkPenerimaKPS').append('<tr id = "PenerimaKPS'+i+'">');
+    	for (var k = 0; k < 2; k++) {
+    		if (k == 0) {
+	    		$('#PenerimaKPS'+i).append('<td>'+
+		      						'<input type="checkbox" class = "chkPenerimaKPS" name="radio" value = "Tidak" id = "PenerimaKPSTDK">&nbsp No' +
+		      					 '</td>'
+	    						);
+    		}
+    		else
+    		{
+    			$('#PenerimaKPS'+i).append('<td>'+
+		      						'<input type="checkbox" class = "chkPenerimaKPS" name="radio" value = "Ya" id = "PenerimaKPSYA">&nbsp Yes' +
+		      					 '</td>'
+	    						);
+    		}
+    		
+    	}
+    	$('#PenerimaKPS'+i).append('</tr>');
+    }
+    $('#tablechkPenerimaKPS').append('</table>');
+  }
+
+  function loadTahunLulus()
+  {
+  	var thisYear = (new Date()).getFullYear();
+  	var startTahun = parseInt(thisYear) - parseInt(5);
+  	var selisih = parseInt(thisYear) - parseInt(startTahun);
+  	for (var i = 0; i <= selisih; i++) {
+  	    var selected = (i==0) ? 'selected' : '';
+  	    $('#selectTahunLulus').append('<option value="'+ ( parseInt(startTahun) + parseInt(i) ) +'" '+selected+'>'+( parseInt(startTahun) + parseInt(i) )+'</option>');
+  	}
+  	$('#selectTahunLulus').select2({
+  	  // allowClear: true
+  	});
+  }
+
+  function loadAlamatSekolah()
+  {
+  	var selectSchool = $('#selectSchool').find(':selected').val();
+  	var url = base_url_js+'api/__getAlamatSekolah';
+  	var data = {
+  	            selectSchool : selectSchool
+  	        };
+  	var token = jwt_encode(data,"UAP)(*");
+  	$.post(url,{token:token},function (data_json) {
+  	    $("#selectProvinsiSchool option").filter(function() {
+  	       //may want to use $.trim in here
+  	       return $(this).val() == data_json[0]['ProvinceID']; 
+  	    }).prop("selected", true);
+
+  	    $('#selectProvinsiSchool').prop('disabled', true);
+  	    $('#selectProvinsiSchool').select2({
+  	       //allowClear: true
+  	    });
+
+  	    var selectProvinsiSchool = $('#selectProvinsiSchool').find(':selected').val();
+  	    loadRegionSchool(selectProvinsiSchool,data_json[0]['CityID']);
+
+  	    
+
+  	    $("#AlamatSchool").val(data_json[0]['SchoolAddress']);
+  	    $('#AlamatSchool').prop('disabled', true);
+  	})
+
+  }
+
+  function loadMajorSekolah()
+  {
+  	  var url = base_url_js+'api/__getMajorSekolah';
+	  $.get(url,function (data_json) {
+	  	  var splitBagi = 3;
+	      var split = parseInt(data_json.length / splitBagi);
+	      var sisa = data_json.length % splitBagi;
+	      if (sisa > 0) {
+	            split++;
+	      }
+	      var getRow = 0;
+	      $('#SchoolMajor').append('<table class="table" id ="tablechkSchoolMajor">');
+	      for (var i = 0; i < split; i++) {
+	      	if ((sisa > 0) && ((i+1) == split) ) {
+	      	                    splitBagi = sisa;    
+	      	}
+	      	$('#tablechkSchoolMajor').append('<tr id = "SchoolMajor'+i+'">');
+	      	for (var k = 0; k < splitBagi; k++) {
+	      		$('#SchoolMajor'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkSchoolMajor" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].SchoolMajor+
+	  	      					 '</td>'
+	      						);
+	      		getRow++;
+	      	}
+	      	$('#SchoolMajor'+i).append('</tr>');
+	      }
+	      $('#tablechkSchoolMajor').append('</table>');
+	  })
+  }
+
+  function loadTipeSekolah()
+  {
+  	  var url = base_url_js+'api/__getTipeSekolah';
+	  $.get(url,function (data_json) {
+	  	  var splitBagi = 3;
+	      var split = parseInt(data_json.length / splitBagi);
+	      var sisa = data_json.length % splitBagi;
+	      if (sisa > 0) {
+	            split++;
+	      }
+	      var getRow = 0;
+	      $('#TipeSekolah').append('<table class="table" id ="tablechkTipeSekolah">');
+	      for (var i = 0; i < split; i++) {
+	      	if ((sisa > 0) && ((i+1) == split) ) {
+	      	                    splitBagi = sisa;    
+	      	}
+	      	$('#tablechkTipeSekolah').append('<tr id = "TipeSekolah'+i+'">');
+	      	for (var k = 0; k < splitBagi; k++) {
+	      		$('#TipeSekolah'+i).append('<td>'+
+	  	      						'<input type="checkbox" class = "chkTipeSekolah" name="radio" value = "'+data_json[getRow].sct_code+'">&nbsp'+ data_json[getRow].sct_name_id+
+	  	      					 '</td>'
+	      						);
+	      		getRow++;
+	      	}
+	      	$('#TipeSekolah'+i).append('</tr>');
+	      }
+	      $('#tablechkTipeSekolah').append('</table>');
+
+	      autocheckDariNamaSekolah();
+	  })
+  }
+
+  function autocheckDariNamaSekolah()
+  {
+  	var selectSchool = $('#selectSchool').find(':selected').text();
+  	var getSubstr3 = selectSchool.substring(0, 3);
+  	if (getSubstr3 == "SMA") {
+  		$('.chkTipeSekolah[value=1]').prop('checked', true);
+  	}
+
+  	if (getSubstr3 == "SMK") {
+  		$('.chkTipeSekolah[value=4]').prop('checked', true);
+  	}
+
   }
 
 	function loadCountry()
@@ -346,50 +1043,223 @@
 		      for(var i=0;i<data_json.length;i++){
 		          var selected = (i==0) ? 'selected' : '';
 		          $('#selectNegara').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
+		          $('#selectNegaraSchool').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
+		          $('#selectNegaraAyah').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
 		      }
 		      $('#selectNegara').select2({
 		         //allowClear: true
 		      });
+
+		      $('#selectNegaraSchool').select2({
+		         //allowClear: true
+		      });
+		      $('#selectNegaraAyah').select2({
+		         //allowClear: true
+		      });
 		  })
 		  $('#selectNegara').prop('disabled', true);
+		  $('#selectNegaraSchool').prop('disabled', true);
+		  $('#selectNegaraAyah').prop('disabled', true);
 	}
 
-  function loadDataProvRegionKecamatan()
+  function loadDataProvRegionKecamatan(paramater = null,set_default = null)
   {
   	// provinsi
   	  var url = base_url_js+'api/__getProvinsi';
 	  $.get(url,function (data_json) {
+      	  switch(paramater)
+      	  {
+      	   case  null :
+      	         break;
+      	   case  "ayah" :
+      	   		 $("#selectProvinsiAyah").empty();
+      	         break;
+      	   case  "ibu" :
+      	   		 $("#selectProvinsiIbu").empty();
+      	         break;
+      	  }
+	  	  
 	      for(var i=0;i<data_json.length;i++){
-	          var selected = (i==0) ? 'selected' : '';
-	          $('#selectProvinsi').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
-	      }
-	      $('#selectProvinsi').select2({
-	         //allowClear: true
-	      });
+	      	  switch(paramater)
+	      	  {
+	      	   case  null :
+	      	         var selected = (i==0) ? 'selected' : '';
+	      	         $('#selectProvinsi').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
 
-	      var selectProvinsi = $('#selectProvinsi').find(':selected').val();
-	      loadRegion(selectProvinsi);
+	      	         $('#selectProvinsiSchool').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
+	      	         break;
+	      	   case  "ayah" :
+	      	   		 if (set_default == null) {
+  	   		 	      var value = $('#selectProvinsi').find(':selected').val();
+  	   		 	      var selected = (value==data_json[i].ProvinceID) ? 'selected' : '';
+  	   		 			 $('#selectProvinsiAyah').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
+	      	   		 }
+	      	   		 else
+	      	   		 {
+  	   		 	      var selected = (i==0) ? 'selected' : '';
+  	   		 	      var selected = (value==data_json[i].ProvinceID) ? 'selected' : '';
+  	   		 			 $('#selectProvinsiAyah').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
+	      	   		 }
+	      	         break;
+	      	   case  "ibu" :
+ 	      	   		 if (set_default == null) {
+   	   		 	      var value = $('#selectProvinsi').find(':selected').val();
+   	   		 	      var selected = (value==data_json[i].ProvinceID) ? 'selected' : '';
+   	   		 			 $('#selectProvinsiIbu').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
+ 	      	   		 }
+ 	      	   		 else
+ 	      	   		 {
+   	   		 	      var selected = (i==0) ? 'selected' : '';
+   	   		 	      var selected = (value==data_json[i].ProvinceID) ? 'selected' : '';
+   	   		 			 $('#selectProvinsiIbu').append('<option value="'+data_json[i].ProvinceID+'" '+selected+'>'+data_json[i].ProvinceName+'</option>');
+ 	      	   		 }
+	      	         break;
+	      	  }
+	          
+	      }
+
+	      switch(paramater)
+	      {
+	       case  null :
+	                $('#selectProvinsi').select2({
+	             	         //allowClear: true
+	             	});
+
+         	        $('#selectProvinsiSchool').select2({
+         	         //allowClear: true
+         	        });
+         	        var selectProvinsi = $('#selectProvinsi').find(':selected').val();
+         	        loadRegion(selectProvinsi);
+         	    break;    
+	       case  "ayah" :
+        		 	$('#selectProvinsiAyah').select2({
+       	   				//allowClear: true
+       				});
+	       			if (set_default == null) {
+						var selectProvinsiAyah = $('#selectProvinsiAyah').find(':selected').val();
+						loadRegion(selectProvinsiAyah,'ayah');
+	       			}
+	       			else
+	       			{
+	       				var selectProvinsiAyah = $('#selectProvinsiAyah').find(':selected').val();
+	       				loadRegion(selectProvinsiAyah,'ayah',set_default);
+	       			}
+	             break;
+	       case  "ibu" :
+         		 	$('#selectProvinsiIbu').select2({
+        	   				//allowClear: true
+        				});
+ 	       			if (set_default == null) {
+ 						var selectProvinsiIbu = $('#selectProvinsiIbu').find(':selected').val();
+ 						loadRegion(selectProvinsiIbu,'ibu');
+ 	       			}
+ 	       			else
+ 	       			{
+ 	       				var selectProvinsiIbu = $('#selectProvinsiIbu').find(':selected').val();
+ 	       				loadRegion(selectProvinsiIbu,'ibu',set_default);
+ 	       			}
+	             break;
+	      }
+	      
 	  })
   }
 
-  function loadRegion(selectProvinsi)
+  function loadRegionSchool(selectProvinsi,ID_City = null)
   {
   	  var url = base_url_js+'api/__getRegion';
   	  var data = {
   	            selectProvinsi : selectProvinsi
   	        };
   	  var token = jwt_encode(data,"UAP)(*");
-  	  $('#selectRegion').empty()
+  	  $('#selectRegionSchool').empty();
 	  $.post(url,{token:token},function (data_json) {
 	      for(var i=0;i<data_json.length;i++){
 	          var selected = (i==0) ? 'selected' : '';
-	          $('#selectRegion').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+	          $('#selectRegionSchool').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
 	      }
-	      $('#selectRegion').select2({
+
+	      if (ID_City != null) {
+	      	$("#selectRegionSchool option").filter(function() {
+	      	   //may want to use $.trim in here
+	      	   return $(this).val() == ID_City; 
+	      	}).prop("selected", true);
+
+	      	$('#selectRegionSchool').prop('disabled', true);
+	      	
+	      }
+
+	      $('#selectRegionSchool').select2({
 	         //allowClear: true
 	      });
-	      var selectRegion = $('#selectRegion').find(':selected').val();
-	      loadKecamatan(selectRegion);
+	  })
+  }
+
+  function loadRegion(selectProvinsi,parameter = null, set_default = null)
+  {
+  	  var url = base_url_js+'api/__getRegion';
+  	  var data = {
+  	            selectProvinsi : selectProvinsi
+  	        };
+  	  var token = jwt_encode(data,"UAP)(*");
+  	  if (parameter == null) {
+  	  	$('#selectRegion').empty();
+  	  }
+	  $.post(url,{token:token},function (data_json) {
+	      for(var i=0;i<data_json.length;i++){
+  	  	      switch(parameter)
+  	  	      {
+  	  	       case  null :
+  	  	                var selected = (i==0) ? 'selected' : '';
+  	  	                $('#selectRegion').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+  	           	    break;    
+  	  	       case  "ayah" :
+  	  	       			if (set_default == null) {
+ 	  	       		 	 var value = $('#selectRegion').find(':selected').val();
+		      	         var selected = (value==data_json[i].RegionID) ? 'selected' : '';
+		      	   		 $('#selectRegionAyah').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+  	  	       			}
+  	  	       			else
+  	  	       			{
+  	  	       				var selected = (i==0) ? 'selected' : '';
+  	  	       				$('#selectRegionAyah').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+  	  	       			}
+  	  	             break;
+  	  	       case  "ibu" :
+   	  	       			if (set_default == null) {
+  	  	       		 	 var value = $('#selectRegion').find(':selected').val();
+ 		      	         var selected = (value==data_json[i].RegionID) ? 'selected' : '';
+ 		      	   		 $('#selectRegionIbu').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+   	  	       			}
+   	  	       			else
+   	  	       			{
+   	  	       				var selected = (i==0) ? 'selected' : '';
+   	  	       				$('#selectRegionIbu').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+   	  	       			}
+  	  	             break;
+  	  	      }
+  	          
+	      }
+
+  	      switch(parameter)
+  	      {
+  	       case  null :
+  	                $('#selectRegion').select2({
+  	                   //allowClear: true
+  	                });
+  	                var selectRegion = $('#selectRegion').find(':selected').val();
+  	                loadKecamatan(selectRegion);
+           	    break;    
+  	       case  "ayah" :
+  	       			$('#selectRegionAyah').select2({
+  	       			   //allowClear: true
+  	       			});
+  	             break;
+  	       case  "ibu" :
+  	             	$('#selectRegionIbu').select2({
+  	             	   //allowClear: true
+  	             	});
+  	             break;
+  	      }
 	  })
   }
 

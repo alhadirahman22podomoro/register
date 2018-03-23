@@ -413,7 +413,7 @@ input {
 }
 
 /* all the input except submit and checkbox */
-#wrapper input:not([type="checkbox"]){
+#wrapper input:not([type="radio"]):not([type="checkbox"]){
     width: 92%;
     margin-top: 4px;
     padding: 10px 5px 10px 32px;    

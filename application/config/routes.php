@@ -33,6 +33,12 @@ $route['api/__getJenisTempatTinggal'] = 'api/c_api/getJenisTempatTinggal';
 $route['api/__getProvinsi'] = 'api/c_api/getProvinsi';
 $route['api/__getRegion'] = 'api/c_api/getRegion';
 $route['api/__getKecamatan'] = 'api/c_api/getKecamatan';
+$route['api/__getTipeSekolah'] = 'api/c_api/getTipeSekolah';
+$route['api/__getMajorSekolah'] = 'api/c_api/getMajorSekolah';
+$route['api/__getAlamatSekolah'] = 'api/c_api/getAlamatSekolah';
+$route['api/__getUkuranJacket'] = 'api/c_api/getUkuranJacket';
+$route['api/__getDataPekerjaan'] = 'api/c_api/getDataPekerjaan';
+$route['api/__getDataPenghasilan'] = 'api/c_api/getDataPenghasilan';
 
 
 

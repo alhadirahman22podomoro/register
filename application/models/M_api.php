@@ -260,7 +260,7 @@ class M_api extends CI_Model {
 
     public function getJenisTempatTinggal()
     {
-        $sql = "select * from db_admission.register_jtinggal_m";
+        $sql = "select * from db_admission.register_jtinggal_m where Active = 1";
         $query=$this->db->query($sql, array())->result_array();
         return $query;
     }
@@ -285,6 +285,48 @@ where a.RegionID = b.RegionID and a.ProvinceID = ?";
         $sql = "select a.DistrictID,b.DistrictName from db_admission.region_district as a, db_admission.district as b
 where a.DistrictID = b.DistrictID and a.RegionID = ?";
         $query=$this->db->query($sql, array($selectRegion))->result_array();
+        return $query;
+    }
+
+    public function getTipeSekolah()
+    {
+        $sql = "select * from db_admission.school_type where sct_active = 1";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getMajorSekolah()
+    {
+        $sql = "select * from db_admission.register_major_school where Active = 1";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getAlamatSekolah($IDSchool)
+    {
+        $sql = "select * from db_admission.school where ID = ? ";
+        $query=$this->db->query($sql, array($IDSchool))->result_array();
+        return $query;
+    }
+
+    public function getUkuranJacket()
+    {
+        $sql = "select * from db_admission.register_jacket_size_m where Active = 1 ";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getDataPekerjaan()
+    {
+        $sql = "select * from db_admission.occupation where Active = 1 ";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
+    public function getDataPenghasilan()
+    {
+        $sql = "select * from db_admission.register_income_m where Active = 1 ";
+        $query=$this->db->query($sql, array())->result_array();
         return $query;
     }
 

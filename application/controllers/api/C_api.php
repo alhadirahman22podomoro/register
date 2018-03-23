@@ -95,4 +95,41 @@ class C_api extends CI_Controller {
         echo json_encode($generate);
     }
 
+    public function getTipeSekolah()
+    {
+        $generate = $this->m_api->getTipeSekolah();
+        echo json_encode($generate);
+    }
+
+    public function getMajorSekolah()
+    {
+        $generate = $this->m_api->getMajorSekolah();
+        echo json_encode($generate);
+    }
+
+    public function getAlamatSekolah()
+    {
+        $input = $this->getInputToken();
+        $generate = $this->m_api->getAlamatSekolah($input['selectSchool']);
+        echo json_encode($generate);
+    }
+
+    public function getUkuranJacket()
+    {
+        $generate = $this->m_api->getUkuranJacket();
+        echo json_encode($generate);
+    }
+
+    public function getDataPekerjaan()
+    {
+        $generate = $this->m_api->getDataPekerjaan();
+        echo json_encode($generate);
+    }
+
+    public function getDataPenghasilan()
+    {
+        $generate = $this->m_api->getDataPenghasilan();
+        echo json_encode($generate);
+    }
+
 }
