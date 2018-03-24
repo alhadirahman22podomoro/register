@@ -35,6 +35,10 @@
 	}
 	.required{
 		color: #c3222d;
+	}
+
+	#foto{
+		height: 114px;
 	}		
 </style>
 <div class="container">
@@ -450,7 +454,7 @@
 												<div class="form-group">
 												    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir <span class="required">*</span></label>
 												    <div class="col-md-2">
-												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirAyah" >
+												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirIbu" >
 												    </div>
 												    <div class="col-md-2">
 												      <input type="text" name="regular" id= "Tgl_lahirIbu" data-date-format="yyyy-mm-dd" placeholder="Date...">
@@ -538,7 +542,28 @@
 											</div>
 										</div><!-- exit panel body -->
 									</div><!-- exit panel primary -->
-								</div>	<!-- exit panel body -->	
+									<p style="font-weight: bold;">
+										I declare to register at Agung Podomoro University and declare all the data I provide is true and accountable / <br>
+										Saya menyatakan mendaftar di Universitas Agung Podomoro dan menyatakan seluruh data yang saya berikan adalah benar dan dapat dipertanggung jawabkan.
+									</p>
+									<p style="font-weight: bold;">
+										I submit and follow all the decisions made by Agung Podomoro University / <br>
+										Saya tunduk dan mengikuti seluruh keputusan yang telah ditetapkan oleh Universitas Agung Podomoro
+									</p>
+									<div class="form-horizontal">
+										<div class = "form-group">
+											<label class = "col-lg-3 control-label">Upload Foto 3x4<span class="required">*</span></label>
+											<div class = "col-md-6">
+												<input type="file" id="imgInp" name="uploadfile">
+											</div>
+										</div>
+										<div class = "col-md-3">
+										</div>
+										<div class = "col-md-3">
+											<img id="foto" src="#" alt="your image" />
+										</div>
+									</div>		
+								</div>	<!-- exit panel body -->
 							</div><!-- exit panel body -->			
     					</div><!-- exit row -->
                 	</div><!-- exit contain -->
@@ -549,6 +574,23 @@
 </div>
 
 <script type="text/javascript">
+  toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "0",
+      "hideDuration": "0",
+      "timeOut": "0",
+      "extendedTimeOut": "0",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+  };
   $(document).ready(function() {
   	  $('#FullName').prop('disabled', true);
   	  $('#Email').prop('disabled', true);
@@ -563,6 +605,10 @@
        $("#Tgl_lahirAyah").datepicker({
   		    dateFormat: 'yy-mm-dd',
   	   })
+
+        $("#Tgl_lahirIbu").datepicker({
+   		    dateFormat: 'yy-mm-dd',
+   	   })
   });
 
   $(document).on('keyup','#Alamat', function () {
@@ -1045,6 +1091,7 @@
 		          $('#selectNegara').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
 		          $('#selectNegaraSchool').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
 		          $('#selectNegaraAyah').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
+		          $('#selectNegaraIbu').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
 		      }
 		      $('#selectNegara').select2({
 		         //allowClear: true
@@ -1056,10 +1103,15 @@
 		      $('#selectNegaraAyah').select2({
 		         //allowClear: true
 		      });
+
+		      $('#selectNegaraIbu').select2({
+		         //allowClear: true
+		      });
 		  })
 		  $('#selectNegara').prop('disabled', true);
 		  $('#selectNegaraSchool').prop('disabled', true);
 		  $('#selectNegaraAyah').prop('disabled', true);
+		  $('#selectNegaraIbu').prop('disabled', true);
 	}
 
   function loadDataProvRegionKecamatan(paramater = null,set_default = null)
@@ -1372,6 +1424,52 @@
   	      $('#tablechkProStudy').append('</table>');
   	  })
   }
+
+  function readURL(input) {
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#foto').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $("#imgInp").change(function() {
+    readURL(this);
+  })
+
+  function file_validation()
+  {
+      var name = document.getElementById("imgInp").files[0].name;
+      var ext = name.split('.').pop().toLowerCase();
+      if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) 
+      {
+        toastr.error("Invalid Image File", 'Failed!!');
+        return false;
+      }
+      var oFReader = new FileReader();
+      oFReader.readAsDataURL(document.getElementById("imgInp").files[0]);
+      var f = document.getElementById("imgInp").files[0];
+      var fsize = f.size||f.fileSize;
+      if(fsize > 500000) // 500kb
+      {
+       toastr.error("Image File Size is very big", 'Failed!!');
+       return false;
+      }
+
+      return true;
+  }
+
+  $(document).on('change','#imgInp',function () {
+  	if (file_validation()) {
+  		readURL(this);
+  	}	
+      
+  });
 
 </script>
 
