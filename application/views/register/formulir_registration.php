@@ -1,3 +1,5 @@
+<script type="text/javascript" src="<?php echo base_url();?>assets/datepicker/bootstrap-datepicker.js"></script>
+<link href="<?php echo base_url();?>assets/datepicker/datepicker.css" rel="stylesheet" type="text/css"/>
 <style type="text/css">
 	.pageContain{
 		border-style: solid;
@@ -39,7 +41,31 @@
 
 	#foto{
 		height: 114px;
-	}		
+	}
+
+	.ng-button { background:green; color: white; text-decoration:none; padding:6px;
+				transition:1s; height: 25px; box-shadow: 1px 1px 1px 1px black; border: 1px solid black;
+				border-radius: 20px;
+	}
+	.ng-button:hover { 
+		background:black; color:white; text-decoration:none; border:1px solid;
+		border-radius: 0px;
+	}
+	#toast-container>.toast-error {
+	    width: 500px;
+	}
+
+	.dropdown-menu {
+	    -webkit-border-radius: 0px;
+	    -moz-border-radius: 0px;
+	    border-radius: 0px;
+	    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+	    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+	    box-shadow: 0 2px 11px #04c;
+	    font-size: 13px;
+	    text-align: left;
+	    background-color: #ffffff;
+	}	
 </style>
 <div class="container">
     <header>
@@ -96,10 +122,10 @@
 										    <label class="col-lg-3 control-label">Gender / Jenis Kelamin <span class="required">*</span></label>
 										    <div class="col-md-8">
 										      	<label class="radio-inline">
-								              		<input type="radio" name="radio" value = "L"> Male / Pria
+								              		<input type="radio" name="radioGender" value = "L" class = "gender"> Male / Pria
 								            	</label>
 								            	<label class="radio-inline">
-								              		<input type="radio" name="radio" value = "P"> Female / Wanita
+								              		<input type="radio" name="radioGender" value = "P" class = "gender"> Female / Wanita
 								            	</label>
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
@@ -107,7 +133,7 @@
 										<div class="form-group">
 										    <label class="col-lg-3 control-label">Identity Card / NIK <span class="required">*</span></label>
 										    <div class="col-md-3">
-										      <input type="text" name="weight" placeholder="Input Identiy Card..." id = "FullName" maxlength="16">
+										      <input type="text" name="weight" placeholder="Input Identity Card..." id = "IdentityCard" maxlength="16">
 										    </div>
 										    <!--<div class="help-block"> grams</div>-->  
 										</div>
@@ -115,10 +141,10 @@
 										    <label class="col-lg-3 control-label">Nationality / Kewarganegaraan <span class="required">*</span></label>
 										    <div class="col-md-2">
 										        <label class="checkbox-inline">
-										             <input type="checkbox" class = "Nationality" name="radio" id = "NationalityWNI"> WNI
+										             <input type="checkbox" class = "Nationality" name="radioNationality" id = "NationalityWNI" value = "WNI"> WNI
 										        </label>
 										        <label class="checkbox-inline">
-										             <input type="checkbox" class = "Nationality" name="radio" id = "NationalityWNA"> WNA
+										             <input type="checkbox" class = "Nationality" name="radioNationality" id = "NationalityWNA" value = "WNA"> WNA
 										        </label>
 										    </div>
 										    <div class="help-block" id ="pageSelectCountry"> 
@@ -356,10 +382,10 @@
 													<label class="col-lg-3 control-label">Status <span class="required">*</span></label>
 													<div class="col-md-6">
 												        <label class="checkbox-inline">
-												             <input class="statusAyah" name="radio" id="HidupAyah" class = "hidupayah" type="checkbox">Still Alive / Masih Hidup
+												             <input class="statusAyah" name="statusAyah" id="HidupAyah" type="checkbox" value = "Alive">Still Alive / Masih Hidup
 												        </label>
 												        <label class="checkbox-inline">
-												             <input class="statusAyah" name="radio" id="MeninggalAyah" type="checkbox" class = "meninggalayah"> Died / Meninggal
+												             <input class="statusAyah" name="statusAyah" id="MeninggalAyah" type="checkbox" value = "Died"> Died / Meninggal
 												        </label>
 												    </div>
 												</div>
@@ -386,10 +412,10 @@
 												    <label class="col-lg-3 control-label">Whether the address is the same as your address ? / Apakah alamat ini sama dengan alamat anda ? <span class="required">*</span></label>
 												    <div class="col-md-12">
 												      	<label class="radio-inline">
-										              		<input type="radio" name="radio" value = "Ya" id = "AlamatAyahSama" class = "radioAlamatAyah"> Yes
+										              		<input type="radio" name="radioAlamatAyah" value = "Ya" id = "AlamatAyahSama" class = "radioAlamatAyah"> Yes
 										            	</label>
 										            	<label class="radio-inline">
-    									              		<input type="radio" name="radio" value = "Tidak" id = "AlamatAyahTdkSama" class = "radioAlamatAyah"> No
+    									              		<input type="radio" name="radioAlamatAyah" value = "Tidak" id = "AlamatAyahTdkSama" class = "radioAlamatAyah"> No
     									            	</label>
         										    </div>
 												</div>
@@ -465,10 +491,10 @@
 													<label class="col-lg-3 control-label">Status <span class="required">*</span></label>
 													<div class="col-md-6">
 												        <label class="checkbox-inline">
-												             <input class="statusIbu" name="radio" id="HidupIbu" class = "hidupibu"  type="checkbox">Still Alive / Masih Hidup
+												             <input class="statusIbu" name="statusIbu" id="HidupIbu" type="checkbox" value ="Alive">Still Alive / Masih Hidup
 												        </label>
 												        <label class="checkbox-inline">
-												             <input class="statusIbu" name="radio" id="MeninggalIbu" type="checkbox" class = "meninggalibu"> Died / Meninggal
+												             <input class="statusIbu" name="statusIbu" id="MeninggalIbu" type="checkbox" value = "Died"> Died / Meninggal
 												        </label>
 												    </div>
 												</div>
@@ -495,10 +521,10 @@
 												    <label class="col-lg-3 control-label">Whether the address is the same as your address ? / Apakah alamat ini sama dengan alamat anda ? <span class="required">*</span></label>
 												    <div class="col-md-12">
 												      	<label class="radio-inline">
-										              		<input type="radio" name="radio" value = "Ya" id = "AlamatIbuSama" class = "radioAlamatIbu"> Yes
+										              		<input type="radio" name="radioAlamatIbu" value = "Ya" id = "AlamatIbuSama" class = "radioAlamatIbu"> Yes
 										            	</label>
 										            	<label class="radio-inline">
-    									              		<input type="radio" name="radio" value = "Tidak" id = "AlamatIbuTdkSama" class = "radioAlamatIbu"> No
+    									              		<input type="radio" name="radioAlamatIbu" value = "Tidak" id = "AlamatIbuTdkSama" class = "radioAlamatIbu"> No
     									            	</label>
         										    </div>
 												</div>
@@ -564,7 +590,13 @@
 										</div>
 									</div>		
 								</div>	<!-- exit panel body -->
-							</div><!-- exit panel body -->			
+							</div><!-- exit panel body -->	
+							<div class ="form-group">
+								<div align="right">
+									<button class="btn btn-inverse btn-notification" id="btn-proses">Proses</button>
+									<button class="ng-button hide" id="btn-formulir" data-sbmt = "">Download Formulir</button>
+								</div>
+							</div> 	
     					</div><!-- exit row -->
                 	</div><!-- exit contain -->
                 </div>
@@ -585,12 +617,211 @@
       "showDuration": "0",
       "hideDuration": "0",
       "timeOut": "0",
-      "extendedTimeOut": "0",
+      "extendedTimeOut":"0",
       "showEasing": "swing",
       "hideEasing": "linear",
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
   };
+
+  $(document).on('click','#btn-proses', function () {
+  	var DataArr = getDataInput();
+  	 if (varlidationInput(DataArr)) {
+  	 	console.log("Validation ok");
+  	 	toastr.clear();
+  	 	toastr.options = {
+  	 	    "closeButton": true,
+  	 	    "debug": false,
+  	 	    "newestOnTop": true,
+  	 	    "progressBar": false,
+  	 	    "positionClass": "toast-top-right",
+  	 	    "preventDuplicates": true,
+  	 	    "onclick": null,
+  	 	    "showDuration": "300",
+  	 	    "hideDuration": "1000",
+  	 	    "timeOut": "5000",
+  	 	    "extendedTimeOut": "1000",
+  	 	    "showEasing": "swing",
+  	 	    "hideEasing": "linear",
+  	 	    "showMethod": "fadeIn",
+  	 	    "hideMethod": "fadeOut"
+  	 	};
+  	 	toastr.success("Input ok <br>", 'Success!');
+  	 }
+  });
+
+  function varlidationInput(data)
+  {
+  	var toatString = "";
+  	var result = "";
+  	for(var key in data) {
+  	   switch(key)
+  	   {
+  	    case  "IdentityCard" :
+  	    case  "FatherNIK" :
+  	    case  "MotherNik" :
+  	    	  result = Validation_exactLenght_Character(16,data[key],key);
+  	    	  if (result['status'] == 0) {
+  	    	    toatString += result['messages'] + "<br>";
+  	    	  }	
+  	          break;
+  	    case "Address" :
+  	    case "District":
+  	    case "PlaceBirth": 
+  	    case "FatherPlaceBirth": 
+  	    case "MotherPlaceBirth": 
+  	    case "FatherAddress": 
+  	    case "MotherAddress": 
+    	   	  result = Validation_leastCharacter(3,data[key],key);
+    	   	  if (result['status'] == 0) {
+    	   	    toatString += result['messages'] + "<br>";
+    	   	  }	
+    	      break;
+    	 case "file_validation" :
+    	 	  if (!data[key]) {
+    	 	  	toatString += "File Upload error" + "<br>";
+    	 	  }
+    	      break; 
+    	 case "NoKPS":
+
+    	 	   break;             
+  	    default :
+  	          result = Validation_required(data[key],key);
+  	          if (result['status'] == 0) {
+  	            toatString += result['messages'] + "<br>";
+  	          }       
+  	   }
+  	}
+
+  	if (toatString != "") {
+  	  toastr.error(toatString, 'Failed!!');
+  	  return false;
+  	}
+  	return true;
+  }
+
+  function getDataInput()
+  {
+  	 var data = {};
+  	 var ID_register_verified = "<?php echo $this->session->userdata('ID_register_verified') ?>";
+  	 var ID_program_study = getCheckbox('chkProStudy');
+  	 var Gender = $('input[name=radioGender]:checked').val(); 
+  	 var IdentityCard = $("#IdentityCard").val();
+  	 var NationalityID = (getCheckbox('radioNationality') == "WNI") ? '001' : $('#selectCountry').find(':selected').val();
+  	 var ReligionID = getCheckbox('chkAgama');
+  	 var PlaceBirth = $("#TempatLahir").val();
+  	 var DateBirth = $("#Tgl_lahir").val();
+  	 var ID_register_jtinggal_m = getCheckbox('chkJenisTempatTinggal');
+  	 var ID_country_address = $('#selectNegara').find(':selected').val();
+  	 var ID_province = $('#selectProvinsi').find(':selected').val()
+  	 var ID_region = $('#selectRegion').find(':selected').val()
+  	 var ID_districts = $('#selectKecamatan').find(':selected').val();
+  	 var District = $("#Kelurahan").val();
+  	 var Address = $("#Alamat").val();
+  	 var ZipCode = $('#KodePos').val();
+  	 var PhoneNumber = $("#noHP").val();
+  	 var ID_school_type = getCheckbox('chkTipeSekolah');
+  	 var ID_register_major_school = getCheckbox('chkSchoolMajor');
+  	 var YearGraduate = $('#selectTahunLulus').find(':selected').val();
+  	 var KPSReceiverStatus = getCheckbox('chkPenerimaKPS');
+  	 var NoKPS = (KPSReceiverStatus == "Ya") ? $('#NoKPS').val() : '';
+  	 var ID_register_jacket_size_m = getCheckbox('chkUkuranJacket');
+
+  	 var FatherName = $("#NamaAyah").val();
+  	 var FatherNIK = $("#NikAyah").val();
+  	 var FatherPlaceBirth = $("#TempatLahirAyah").val();
+  	 var FatherDateBirth = $("#Tgl_lahirAyah").val();
+  	 var FatherStatus = getCheckbox('statusAyah');
+  	 var FatherPhoneNumber = $("#noHPAyah").val();
+  	 var Father_ID_occupation = getCheckbox('chkPekerjaanAyah');
+  	 var Father_ID_register_income_m = getCheckbox('chkPenghasilanAyah');
+  	 var FatherAddress_ID_country = $("#selectNegaraAyah").find(':selected').val();
+  	 var FatherAddress_ID_province = $("#selectProvinsiAyah").find(':selected').val();
+  	 var FatherAddress_ID_region = $("#selectRegionAyah").find(':selected').val();
+  	 var FatherAddress = $("#AlamatAyahtextarea").val();
+
+  	 var MotherName = $('#NamaIbu').val();
+  	 var MotherNik = $("#NikIbu").val();
+  	 var MotherPlaceBirth = $("#TempatLahirIbu").val();
+  	 var MotherDateBirth = $("#Tgl_lahirIbu").val();
+  	 var MotherStatus = getCheckbox('statusIbu');
+  	 var MotherPhoneNumber = $("#noHPIbu").val();
+  	 var Mother_ID_occupation = getCheckbox('chkPekerjaanIbu');
+  	 var Mother_ID_register_income_m = getCheckbox('chkPenghasilanIbu');
+  	 var MotherAddress_ID_country = $("#selectNegaraIbu").find(':selected').val();
+  	 var MotherAddress_ID_province = $("#selectProvinsiIbu").find(':selected').val();
+  	 var MotherAddress_ID_region = $("#selectRegionIbu").find(':selected').val();
+  	 var MotherAddress = $("#AlamatAyahtextarea").val();
+
+
+  	 var radioAlamatAyah = $('input[name=radioAlamatAyah]:checked').val(); 
+  	 var radioAlamatIbu = $('input[name=radioAlamatIbu]:checked').val(); 
+
+  	 data = {
+  	 	     ID_register_verified :ID_register_verified,
+  	 	     ID_program_study :ID_program_study,
+  	 	     Gender :Gender,
+  	 	     IdentityCard :IdentityCard,
+  	 	     NationalityID :NationalityID,
+  	 	     ReligionID :ReligionID,
+  	 	     PlaceBirth :PlaceBirth,
+  	 	     DateBirth :DateBirth,
+  	 	     TypeofResidence  :ID_register_jtinggal_m,
+  	 	     YourCountryAddress :ID_country_address,
+  	 	     YourProvince :ID_province,
+  	 	     YourRegion :ID_region,
+  	 	     YourDistricts :ID_districts,
+  	 	     YourDistricts :District,
+  	 	     YourAddress :Address,
+  	 	     YourZipCode :ZipCode,
+  	 	     PhoneNumber : PhoneNumber,
+  	 	     YourSchool_type : ID_school_type,
+  	 	     SchoolMajor : ID_register_major_school,
+  	 	     YearGraduate : YearGraduate,
+  	 	     KPSReceiverStatus : KPSReceiverStatus,
+  	 	     NoKPS : NoKPS,
+  	 	     JacketSize : ID_register_jacket_size_m,
+  	 	     FatherName : FatherName,
+  	 	     FatherNIK : FatherNIK,
+  	 	     FatherPlaceBirth : FatherPlaceBirth,
+  	 	     FatherDateBirth : FatherDateBirth,
+  	 	     FatherStatus : FatherStatus,
+  	 	     FatherPhoneNumber : FatherPhoneNumber,
+  	 	     FatherOccupation : Father_ID_occupation,
+  	 	     FatherIncome : Father_ID_register_income_m,
+  	 	     FatherAddressCountry : FatherAddress_ID_country,
+  	 	     FatherAddressProvince : FatherAddress_ID_province,
+  	 	     FatherAddressRegion : FatherAddress_ID_region,
+  	 	     FatherAddress : FatherAddress,
+  	 	     MotherName : MotherName,
+  	 	     MotherNik : MotherNik,
+  	 	     MotherPlaceBirth : MotherPlaceBirth,
+  	 	     MotherDateBirth : MotherDateBirth,
+  	 	     MotherStatus : MotherStatus,
+  	 	     MotherPhoneNumber : MotherPhoneNumber,
+  	 	     MotherOccupation : Mother_ID_occupation,
+  	 	     MotherIncome_m : Mother_ID_register_income_m,
+  	 	     MotherAddressCountry : MotherAddress_ID_country,
+  	 	     MotherAddressProvince : MotherAddress_ID_province,
+  	 	     MotherAddressRegion : MotherAddress_ID_region ,
+  	 	     MotherAddress : MotherAddress,
+  	 	     ChoicesAlamatAyah : radioAlamatAyah,
+  	 	     ChoicesAlamatIbu : radioAlamatIbu,
+  	 	     file_validation : file_validation()
+  	 };	
+  	 return data;
+  }
+
+  function getCheckbox(name)
+  {
+  	var valuee = "";
+  	$('input[name="'+name+'"]:checked').each(function() {
+  	   valuee = this.value;
+  	});
+
+  	return valuee;
+  }
+
   $(document).ready(function() {
   	  $('#FullName').prop('disabled', true);
   	  $('#Email').prop('disabled', true);
@@ -599,15 +830,20 @@
   	     //allowClear: true
   	  });
       loadDataFromServer();
+      $('#Tgl_lahir').prop('readonly',true);
       $("#Tgl_lahir").datepicker({
-		    dateFormat: 'yy-mm-dd',
-		});
+		    //dateFormat: 'yy-mm-dd',
+
+	  });
+
+	   $('#Tgl_lahirAyah').prop('readonly',true);
        $("#Tgl_lahirAyah").datepicker({
-  		    dateFormat: 'yy-mm-dd',
+  		    //dateFormat: 'yy-mm-dd',
   	   })
 
+       $('#Tgl_lahirIbu').prop('readonly',true);
         $("#Tgl_lahirIbu").datepicker({
-   		    dateFormat: 'yy-mm-dd',
+   		    //dateFormat: 'yy-mm-dd',
    	   })
   });
 
@@ -850,11 +1086,11 @@
 	      	$('#tablechkPenghasilanIbu').append('<tr id = "PenghasilanIbu'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#PenghasilanAyah'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkPenghasilanAyah" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
+	  	      						'<input type="checkbox" class = "chkPenghasilanAyah" name="chkPenghasilanAyah" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
 	  	      					 '</td>'
 	      						);
 	      		$('#PenghasilanIbu'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkPenghasilanIbu" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
+	  	      						'<input type="checkbox" class = "chkPenghasilanIbu" name="chkPenghasilanIbu" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Income+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -888,11 +1124,11 @@
 	      	$('#tablechkPekerjaanIbu').append('<tr id = "PekerjaanIbu'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#PekerjaanAyah'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkPekerjaanAyah" name="radio" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
+	  	      						'<input type="checkbox" class = "chkPekerjaanAyah" name="chkPekerjaanAyah" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
 	  	      					 '</td>'
 	      						);
 	      		$('#PekerjaanIbu'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkPekerjaanIbu" name="radio" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
+	  	      						'<input type="checkbox" class = "chkPekerjaanIbu" name="chkPekerjaanIbu" value = "'+data_json[getRow].ocu_code+'">&nbsp'+ data_json[getRow].ocu_name+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -924,7 +1160,7 @@
 	      	$('#tablechkUkuranJacket').append('<tr id = "UkuranJacket'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#UkuranJacket'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkUkuranJacket" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].JacketSize+
+	  	      						'<input type="checkbox" class = "chkUkuranJacket" name="chkUkuranJacket" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].JacketSize+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -943,14 +1179,14 @@
     	for (var k = 0; k < 2; k++) {
     		if (k == 0) {
 	    		$('#PenerimaKPS'+i).append('<td>'+
-		      						'<input type="checkbox" class = "chkPenerimaKPS" name="radio" value = "Tidak" id = "PenerimaKPSTDK">&nbsp No' +
+		      						'<input type="checkbox" class = "chkPenerimaKPS" name="chkPenerimaKPS" value = "Tidak" id = "PenerimaKPSTDK">&nbsp No' +
 		      					 '</td>'
 	    						);
     		}
     		else
     		{
     			$('#PenerimaKPS'+i).append('<td>'+
-		      						'<input type="checkbox" class = "chkPenerimaKPS" name="radio" value = "Ya" id = "PenerimaKPSYA">&nbsp Yes' +
+		      						'<input type="checkbox" class = "chkPenerimaKPS" name="chkPenerimaKPS" value = "Ya" id = "PenerimaKPSYA">&nbsp Yes' +
 		      					 '</td>'
 	    						);
     		}
@@ -1024,7 +1260,7 @@
 	      	$('#tablechkSchoolMajor').append('<tr id = "SchoolMajor'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#SchoolMajor'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkSchoolMajor" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].SchoolMajor+
+	  	      						'<input type="checkbox" class = "chkSchoolMajor" name="chkSchoolMajor" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].SchoolMajor+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -1054,7 +1290,7 @@
 	      	$('#tablechkTipeSekolah').append('<tr id = "TipeSekolah'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#TipeSekolah'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkTipeSekolah" name="radio" value = "'+data_json[getRow].sct_code+'">&nbsp'+ data_json[getRow].sct_name_id+
+	  	      						'<input type="checkbox" class = "chkTipeSekolah" name="chkTipeSekolah" value = "'+data_json[getRow].sct_code+'">&nbsp'+ data_json[getRow].sct_name_id+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -1354,7 +1590,7 @@
 	      	$('#tablechkJenisTempatTinggal').append('<tr id = "JenisTempatTinggal'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#JenisTempatTinggal'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkJenisTempatTinggal" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].JenisTempatTinggal+
+	  	      						'<input type="checkbox" class = "chkJenisTempatTinggal" name="chkJenisTempatTinggal" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].JenisTempatTinggal+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -1384,7 +1620,7 @@
 	      	$('#tablechkAgama').append('<tr id = "agama'+i+'">');
 	      	for (var k = 0; k < splitBagi; k++) {
 	      		$('#agama'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkAgama" name="radio" value = "'+data_json[getRow].IDReligion+'">&nbsp'+ data_json[getRow].Religion+
+	  	      						'<input type="checkbox" class = "chkAgama" name="chkAgama" value = "'+data_json[getRow].IDReligion+'">&nbsp'+ data_json[getRow].Religion+
 	  	      					 '</td>'
 	      						);
 	      		getRow++;
@@ -1414,7 +1650,7 @@
   	      	$('#tablechkProStudy').append('<tr id = "a'+i+'">');
   	      	for (var k = 0; k < splitBagi; k++) {
   	      		$('#a'+i).append('<td>'+
-	  	      						'<input type="checkbox" class = "chkProStudy" name="radio" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Name+
+	  	      						'<input type="checkbox" class = "chkProStudy" name="chkProStudy" value = "'+data_json[getRow].ID+'">&nbsp'+ data_json[getRow].Name+
 	  	      					 '</td>'
   	      						);
   	      		getRow++;
@@ -1438,29 +1674,32 @@
     }
   }
 
-  $("#imgInp").change(function() {
-    readURL(this);
-  })
 
   function file_validation()
   {
-      var name = document.getElementById("imgInp").files[0].name;
-      var ext = name.split('.').pop().toLowerCase();
-      if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) 
-      {
-        toastr.error("Invalid Image File", 'Failed!!');
-        return false;
-      }
-      var oFReader = new FileReader();
-      oFReader.readAsDataURL(document.getElementById("imgInp").files[0]);
-      var f = document.getElementById("imgInp").files[0];
-      var fsize = f.size||f.fileSize;
-      if(fsize > 500000) // 500kb
-      {
-       toastr.error("Image File Size is very big", 'Failed!!');
-       return false;
-      }
+  	try{
+  		var name = document.getElementById("imgInp").files[0].name;
+  		var ext = name.split('.').pop().toLowerCase();
+  		if(jQuery.inArray(ext, ['png','jpg','jpeg']) == -1) 
+  		{
+  		  toastr.error("Invalid Image File", 'Failed!!');
+  		  return false;
+  		}
+  		var oFReader = new FileReader();
+  		oFReader.readAsDataURL(document.getElementById("imgInp").files[0]);
+  		var f = document.getElementById("imgInp").files[0];
+  		var fsize = f.size||f.fileSize;
+  		if(fsize > 500000) // 500kb
+  		{
+  		 toastr.error("Image File Size is very big", 'Failed!!');
+  		 return false;
+  		}
 
+  	}
+  	catch(err)
+  	{
+  		return false;
+  	}
       return true;
   }
 

@@ -138,7 +138,7 @@ function validation(arr)
       case  "Lastname" :
             break;
       case  "Email" :
-            result = Validation_email(arr[key],key);
+            result = Validation_required(arr[key],key);
             if (result['status'] == 0) {
               toatString += result['messages'] + "<br>";
             }

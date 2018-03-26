@@ -4834,15 +4834,63 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     // BY ADHI
+
+    function capitalize_Words(str)
+    {
+     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+    
     function Validation_leastCharacter(leastNumber,string,theName)
     {
         var result = {status:1, messages:""};
-        var stringLenght =  string.length;
-        if (stringLenght < leastNumber) {
+        try{
+            var stringLenght =  string.length;
+            if (stringLenght < leastNumber) {
+                result = {status : 0,messages: theName + " at least " + leastNumber + " character"};
+            }
+        }
+        catch(err)
+        {
             result = {status : 0,messages: theName + " at least " + leastNumber + " character"};
         }
+        
         return result;
     }
+
+    function Validation_MaxCharacter(Maxlenght,string,theName)
+    {
+        var result = {status:1, messages:""};
+        try{
+            var stringLenght =  string.length;
+            if (stringLenght > Maxlenght) {
+                result = {status : 0,messages: theName + " at Max Characeter " + Maxlenght + " character"};
+            }
+        }
+        catch(err)
+        {
+            result = {status : 0,messages: theName + " at Max Characeter " + Maxlenght + " character"};
+        }
+        
+        return result;
+    }
+
+    function Validation_exactLenght_Character(lenghtChar,string,theName)
+    {
+        var result = {status:1, messages:""};
+        try{
+            var stringLenght =  string.length;
+            if (stringLenght != lenghtChar) {
+                result = {status : 0,messages: theName + " at exact lenght Characeter " + lenghtChar + " character"};
+            }
+        }
+        catch(err)
+        {
+            result = {status : 0,messages: theName + " at exact lenght Characeter " + lenghtChar + " character"};
+        }
+        
+        return result;
+    }
+
 
     function Validation_email(string,theName)
     {
@@ -4857,8 +4905,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     function Validation_required(string,theName)
     {
         var result = {status:1, messages:""};
-        if (string == "" || string == null) {
+        try{
+            if (string == "" || string == null) {
+                result = {status : 0,messages: theName + " is required! "};
+            }
+        }
+        catch(err)
+        {
             result = {status : 0,messages: theName + " is required! "};
+        }
+        
+        return result;
+    }
+
+    function Validation_onlyNumber(string,theName)
+    {
+        var result = {status:1, messages:""};
+        var regexx =  /^\d+$/;
+        if (!string.match(regexx)) {
+            result = {status : 0,messages: theName + " just only numeric! "};
         }
         return result;
     }

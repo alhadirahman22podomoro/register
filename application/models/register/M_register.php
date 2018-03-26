@@ -245,6 +245,7 @@ class M_register extends CI_Model {
             $this->session->set_userdata('SchoolID',$query[0]['SchoolID']);
             $this->session->set_userdata('SchoolName',$query[0]['SchoolName']);
             $this->session->set_userdata('FormulirCode',$query[0]['FormulirCode']);
+            $this->session->set_userdata('ID_register_verified',$query[0]['verified_id']);
             return true;
         }
         else
