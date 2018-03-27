@@ -161,28 +161,12 @@
 										<div class="form-group">
 										    <label class="col-lg-3 control-label">Place and Date of Birth / Tempat dan Tanggal Lahir <span class="required">*</span></label>
 										    <div class="col-md-2">
-										    	
 										      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahir" >
 										    </div>
-										    <div class="col-md-1">
-										    	  Years
-										    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahir">
-										    	    <option></option>
-										    	  </select>
+										    <div class="col-md-2">
+										      <input type="text" name="regular" id= "Tgl_lahir" data-date-format="yyyy-mm-dd" placeholder="Date...">
 										    </div>
-										    <div class="col-md-1">
-										    	  Month
-										    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahir">
-										    	    <option></option>
-										    	  </select>
-										    </div>
-										    <div class="col-md-1">
-										    	  Days
-										    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahir">
-										    	    <option></option>
-										    	  </select>
-										    </div>
-										    
+										    <!--<div class="help-block"> grams</div>-->  
 										</div>
 										<div class="form-group">
 										    <label class="col-lg-3 control-label">Type of Residence / Jenis Tempat Tinggal <span class="required">*</span></label>
@@ -389,24 +373,10 @@
 												    <div class="col-md-2">
 												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirAyah" >
 												    </div>
-												    <div class="col-md-1">
-												    	  Years
-												    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahirAyah">
-												    	    <option></option>
-												    	  </select>
+												    <div class="col-md-2">
+												      <input type="text" name="regular" id= "Tgl_lahirAyah" data-date-format="yyyy-mm-dd" placeholder="Date...">
 												    </div>
-												    <div class="col-md-1">
-												    	  Month
-												    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahirAyah">
-												    	    <option></option>
-												    	  </select>
-												    </div>
-												    <div class="col-md-1">
-												    	  Days
-												    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahirAyah">
-												    	    <option></option>
-												    	  </select>
-												    </div>
+												    <!--<div class="help-block"> grams</div>-->  
 												</div>
 												<div class="form-group">
 													<label class="col-lg-3 control-label">Status <span class="required">*</span></label>
@@ -512,23 +482,8 @@
 												    <div class="col-md-2">
 												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirIbu" >
 												    </div>
-												    <div class="col-md-1">
-												    	  Years
-												    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahirIbu">
-												    	    <option></option>
-												    	  </select>
-												    </div>
-												    <div class="col-md-1">
-												    	  Month
-												    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahirIbu">
-												    	    <option></option>
-												    	  </select>
-												    </div>
-												    <div class="col-md-1">
-												    	  Days
-												    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahirIbu">
-												    	    <option></option>
-												    	  </select>
+												    <div class="col-md-2">
+												      <input type="text" name="regular" id= "Tgl_lahirIbu" data-date-format="yyyy-mm-dd" placeholder="Date...">
 												    </div>
 												    <!--<div class="help-block"> grams</div>-->  
 												</div>
@@ -639,7 +594,7 @@
 							<div class ="form-group">
 								<div align="right">
 									<button class="btn btn-inverse btn-notification" id="btn-proses">Proses</button>
-									<!--<button class="ng-button hide" id="btn-formulir" data-sbmt = "">Download Formulir</button>-->
+									<button class="ng-button hide" id="btn-formulir" data-sbmt = "">Download Formulir</button>
 								</div>
 							</div> 	
     					</div><!-- exit row -->
@@ -651,16 +606,418 @@
 </div>
 
 <script type="text/javascript">
+  toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "0",
+      "hideDuration": "0",
+      "timeOut": "0",
+      "extendedTimeOut":"0",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+  };
 
-	$(document).ready(function() {
-		  $('#FullName').prop('disabled', true);
-		  $('#Email').prop('disabled', true);
-		  $('#selectSchool').prop('disabled', true);
-		  $('#selectSchool').select2({
-		     //allowClear: true
-		  });
-	    loadDataFromServer();
-	});
+  $(document).on('click','#btn-proses', function () {
+  	var DataArr = getDataInput();
+  	 if (varlidationInput(DataArr)) {
+  	 	console.log("Validation ok");
+  	 	toastr.clear(function(){
+  	 		processData(DataArr);
+  	 	});
+  	 }
+  });
+
+  function processData(DataArr)
+  {
+  	console.log(DataArr);
+  }
+
+  function varlidationInput(data)
+  {
+  	var toatString = "";
+  	var result = "";
+  	for(var key in data) {
+  	   switch(key)
+  	   {
+  	    case  "IdentityCard" :
+  	    case  "FatherNIK" :
+  	    case  "MotherNik" :
+  	    	  result = Validation_exactLenght_Character(16,data[key],key);
+  	    	  if (result['status'] == 0) {
+  	    	    toatString += result['messages'] + "<br>";
+  	    	  }	
+  	          break;
+  	    case "Address" :
+  	    case "District":
+  	    case "PlaceBirth": 
+  	    case "FatherPlaceBirth": 
+  	    case "MotherPlaceBirth": 
+  	    case "FatherAddress": 
+  	    case "MotherAddress": 
+    	   	  result = Validation_leastCharacter(3,data[key],key);
+    	   	  if (result['status'] == 0) {
+    	   	    toatString += result['messages'] + "<br>";
+    	   	  }	
+    	      break;
+    	 case "file_validation" :
+    	 	  if (!data[key]) {
+    	 	  	toatString += "File Upload error" + "<br>";
+    	 	  }
+    	      break; 
+    	 case "NoKPS":
+
+    	 	   break;             
+  	    default :
+  	          result = Validation_required(data[key],key);
+  	          if (result['status'] == 0) {
+  	            toatString += result['messages'] + "<br>";
+  	          }       
+  	   }
+  	}
+
+  	if (toatString != "") {
+  	  toastr.error(toatString, 'Failed!!');
+  	  return false;
+  	}
+  	return true;
+  }
+
+  function getDataInput()
+  {
+  	 var data = {};
+  	 var ID_register_verified = "<?php echo $this->session->userdata('ID_register_verified') ?>";
+  	 var ID_program_study = getCheckbox('chkProStudy');
+  	 var Gender = $('input[name=radioGender]:checked').val(); 
+  	 var IdentityCard = $("#IdentityCard").val();
+  	 var NationalityID = (getCheckbox('radioNationality') == "WNI") ? '001' : $('#selectCountry').find(':selected').val();
+  	 var ReligionID = getCheckbox('chkAgama');
+  	 var PlaceBirth = $("#TempatLahir").val().trim();
+  	 //var DateBirth = $("#Tgl_lahir").val();
+  	 var ID_register_jtinggal_m = getCheckbox('chkJenisTempatTinggal');
+  	 var ID_country_address = $('#selectNegara').find(':selected').val();
+  	 var ID_province = $('#selectProvinsi').find(':selected').val()
+  	 var ID_region = $('#selectRegion').find(':selected').val()
+  	 var ID_districts = $('#selectKecamatan').find(':selected').val();
+  	 var District = $("#Kelurahan").val().trim();
+  	 var Address = $("#Alamat").val().trim();
+  	 var ZipCode = $('#KodePos').val();
+  	 var PhoneNumber = $("#noHP").val();
+  	 var ID_school_type = getCheckbox('chkTipeSekolah');
+  	 var ID_register_major_school = getCheckbox('chkSchoolMajor');
+  	 var YearGraduate = $('#selectTahunLulus').find(':selected').val();
+  	 var KPSReceiverStatus = getCheckbox('chkPenerimaKPS');
+  	 var NoKPS = (KPSReceiverStatus == "Ya") ? $('#NoKPS').val() : '';
+  	 var ID_register_jacket_size_m = getCheckbox('chkUkuranJacket');
+
+  	 var FatherName = $("#NamaAyah").val().trim();
+  	 var FatherNIK = $("#NikAyah").val();
+  	 var FatherPlaceBirth = $("#TempatLahirAyah").val().trim();
+  	 var FatherDateBirth = $("#Tgl_lahirAyah").val();
+  	 var FatherStatus = getCheckbox('statusAyah');
+  	 var FatherPhoneNumber = $("#noHPAyah").val();
+  	 var Father_ID_occupation = getCheckbox('chkPekerjaanAyah');
+  	 var Father_ID_register_income_m = getCheckbox('chkPenghasilanAyah');
+  	 var FatherAddress_ID_country = $("#selectNegaraAyah").find(':selected').val();
+  	 var FatherAddress_ID_province = $("#selectProvinsiAyah").find(':selected').val();
+  	 var FatherAddress_ID_region = $("#selectRegionAyah").find(':selected').val();
+  	 var FatherAddress = $("#AlamatAyahtextarea").val();
+
+  	 var MotherName = $('#NamaIbu').val().trim();
+  	 var MotherNik = $("#NikIbu").val();
+  	 var MotherPlaceBirth = $("#TempatLahirIbu").val().trim();
+  	 var MotherDateBirth = $("#Tgl_lahirIbu").val();
+  	 var MotherStatus = getCheckbox('statusIbu');
+  	 var MotherPhoneNumber = $("#noHPIbu").val();
+  	 var Mother_ID_occupation = getCheckbox('chkPekerjaanIbu');
+  	 var Mother_ID_register_income_m = getCheckbox('chkPenghasilanIbu');
+  	 var MotherAddress_ID_country = $("#selectNegaraIbu").find(':selected').val();
+  	 var MotherAddress_ID_province = $("#selectProvinsiIbu").find(':selected').val();
+  	 var MotherAddress_ID_region = $("#selectRegionIbu").find(':selected').val();
+  	 var MotherAddress = $("#AlamatAyahtextarea").val().trim();
+
+
+  	 var radioAlamatAyah = $('input[name=radioAlamatAyah]:checked').val(); 
+  	 var radioAlamatIbu = $('input[name=radioAlamatIbu]:checked').val(); 
+
+  	 data = {
+  	 	     ID_register_verified :ID_register_verified,
+  	 	     ID_program_study :ID_program_study,
+  	 	     Gender :Gender,
+  	 	     IdentityCard :IdentityCard,
+  	 	     NationalityID :NationalityID,
+  	 	     ReligionID :ReligionID,
+  	 	     PlaceBirth :PlaceBirth,
+  	 	     //DateBirth :DateBirth,
+  	 	     TypeofResidence  :ID_register_jtinggal_m,
+  	 	     YourCountryAddress :ID_country_address,
+  	 	     YourProvince :ID_province,
+  	 	     YourRegion :ID_region,
+  	 	     YourDistricts :ID_districts,
+  	 	     YourDistricts :District,
+  	 	     YourAddress :Address,
+  	 	     YourZipCode :ZipCode,
+  	 	     PhoneNumber : PhoneNumber,
+  	 	     YourSchool_type : ID_school_type,
+  	 	     SchoolMajor : ID_register_major_school,
+  	 	     YearGraduate : YearGraduate,
+  	 	     KPSReceiverStatus : KPSReceiverStatus,
+  	 	     NoKPS : NoKPS,
+  	 	     JacketSize : ID_register_jacket_size_m,
+  	 	     FatherName : FatherName,
+  	 	     FatherNIK : FatherNIK,
+  	 	     FatherPlaceBirth : FatherPlaceBirth,
+  	 	     FatherDateBirth : FatherDateBirth,
+  	 	     FatherStatus : FatherStatus,
+  	 	     FatherPhoneNumber : FatherPhoneNumber,
+  	 	     FatherOccupation : Father_ID_occupation,
+  	 	     FatherIncome : Father_ID_register_income_m,
+  	 	     FatherAddressCountry : FatherAddress_ID_country,
+  	 	     FatherAddressProvince : FatherAddress_ID_province,
+  	 	     FatherAddressRegion : FatherAddress_ID_region,
+  	 	     FatherAddress : FatherAddress,
+  	 	     MotherName : MotherName,
+  	 	     MotherNik : MotherNik,
+  	 	     MotherPlaceBirth : MotherPlaceBirth,
+  	 	     MotherDateBirth : MotherDateBirth,
+  	 	     MotherStatus : MotherStatus,
+  	 	     MotherPhoneNumber : MotherPhoneNumber,
+  	 	     MotherOccupation : Mother_ID_occupation,
+  	 	     MotherIncome_m : Mother_ID_register_income_m,
+  	 	     MotherAddressCountry : MotherAddress_ID_country,
+  	 	     MotherAddressProvince : MotherAddress_ID_province,
+  	 	     MotherAddressRegion : MotherAddress_ID_region ,
+  	 	     MotherAddress : MotherAddress,
+  	 	     ChoicesAlamatAyah : radioAlamatAyah,
+  	 	     ChoicesAlamatIbu : radioAlamatIbu,
+  	 	     file_validation : file_validation()
+  	 };	
+  	 return data;
+  }
+
+  function getCheckbox(name)
+  {
+  	var valuee = "";
+  	$('input[name="'+name+'"]:checked').each(function() {
+  	   valuee = this.value;
+  	});
+
+  	return valuee;
+  }
+
+  $(document).ready(function() {
+  	  $('#FullName').prop('disabled', true);
+  	  $('#Email').prop('disabled', true);
+  	  $('#selectSchool').prop('disabled', true);
+  	  $('#selectSchool').select2({
+  	     //allowClear: true
+  	  });
+      loadDataFromServer();
+      $('#Tgl_lahir').prop('readonly',true);
+      $("#Tgl_lahir").datepicker({
+		    //dateFormat: 'yy-mm-dd',
+
+	  });
+
+	   $('#Tgl_lahirAyah').prop('readonly',true);
+       $("#Tgl_lahirAyah").datepicker({
+  		    //dateFormat: 'yy-mm-dd',
+  	   })
+
+       $('#Tgl_lahirIbu').prop('readonly',true);
+        $("#Tgl_lahirIbu").datepicker({
+   		    //dateFormat: 'yy-mm-dd',
+   	   })
+  });
+
+  $(document).on('keyup','#Alamat', function () {
+  	var maxLength = 150;
+  	var length = $(this).val().length;
+  	var length = maxLength-length;
+  	$('#chars').text(length);
+  });
+
+  $(document).on('keyup','#AlamatAyahtextarea', function () {
+  	var maxLength = 150;
+  	var length = $(this).val().length;
+  	var length = maxLength-length;
+  	$('#charsAyah').text(length);
+  });
+
+  $(document).on('click','#AlamatAyahSama', function () {
+  	// show data
+  	var ayah = "ayah";
+  	loadDataProvRegionKecamatan(ayah);
+  	var value = $("#Alamat").val();
+  	$("#AlamatAyahtextarea").val(value);
+  	var length = $("#AlamatAyahtextarea").val().length;
+  	var lengthRemainingAyah = 150-length;
+  	$('#charsAyah').text(lengthRemainingAyah);
+  	$("#AlamatAyah").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatIbuSama', function () {
+  	// show data
+  	var ibu = "ibu";
+  	loadDataProvRegionKecamatan(ibu);
+  	var value = $("#Alamat").val();
+  	$("#AlamatIbutextarea").val(value);
+  	var length = $("#AlamatIbutextarea").val().length;
+  	var lengthRemainingAyah = 150-length;
+  	$('#charsIbu').text(lengthRemainingAyah);
+  	$("#AlamatIbu").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatIbuTdkSama', function () {
+  	// show data
+  	//$("#AlamatAyah").addClass("hide");
+  	var ibu = "ibu";
+  	loadDataProvRegionKecamatan(ibu,'not null');
+  	$("#AlamatIbu").removeClass("hide");
+  });
+
+  $(document).on('click','#AlamatAyahTdkSama', function () {
+  	// show data
+  	//$("#AlamatAyah").addClass("hide");
+  	var ayah = "ayah";
+  	loadDataProvRegionKecamatan(ayah,'not null');
+  	$("#AlamatAyah").removeClass("hide");
+  });
+
+  $(document).on('click','.chkProStudy', function () {
+  	$('input.chkProStudy').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.Nationality', function () {
+  	$('input.Nationality').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkAgama', function () {
+  	$('input.chkAgama').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.statusAyah', function () {
+  	$('input.statusAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.statusIbu', function () {
+  	$('input.statusIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenerimaKPS', function () {
+  	$('input.chkPenerimaKPS').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkUkuranJacket', function () {
+  	$('input.chkUkuranJacket').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkSchoolMajor', function () {
+  	$('input.chkSchoolMajor').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPekerjaanAyah', function () {
+  	$('input.chkPekerjaanAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPekerjaanIbu', function () {
+  	$('input.chkPekerjaanIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenghasilanAyah', function () {
+  	$('input.chkPenghasilanAyah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkPenghasilanIbu', function () {
+  	$('input.chkPenghasilanIbu').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkTipeSekolah', function () {
+  	$('input.chkTipeSekolah').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('click','.chkJenisTempatTinggal', function () {
+  	$('input.chkJenisTempatTinggal').prop('checked', false);
+  	$(this).prop('checked',true);
+  });
+
+  $(document).on('change','#NationalityWNA', function () {
+  	if(this.checked) {
+  	    loading_page("#pageSelectCountry");
+  	  	var url = base_url_js+'api/__getCountry';
+  	  	$.get(url,function (data_json) {
+  	  	  setTimeout(function () {
+    	  	  $("#pageSelectCountry").html('<div class="col-md-3">'+
+  	  	  	  							   '<select class="select2-select-00 full-width-fix " id="selectCountry">'+
+  	  	  	  							   '<option></option>'+
+  	  	  	  							   '</select>'+
+  	  	  	  							'</div>'   
+    	  	  							  );
+    	      for(var i=1;i<data_json.length;i++){
+    	          var selected = (i==3) ? 'selected' : '';
+    	          
+    	          $('#selectCountry').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
+    	      }
+    	      $('#selectCountry').select2({
+    	         //allowClear: true
+    	      });
+  	  	  },1000); 
+  	    })
+  	}
+
+  });
+
+  $(document).on('change','#PenerimaKPSYA', function () {
+  	if(this.checked) {
+  	    $("#pageInputNOkPS").removeClass("hide");
+  	}
+
+  });
+
+  $(document).on('change','#PenerimaKPSTDK', function () {
+  	if(this.checked) {
+  	    $("#pageInputNOkPS").addClass("hide");
+  	}
+
+  });
+
+    $(document).on('change','#NationalityWNI', function () {
+		$("#pageSelectCountry").empty();
+    });
+
+    $(document).on('change','#selectProvinsi',function () {
+        var selectProvinsi = $('#selectProvinsi').find(':selected').val();
+        loadRegion(selectProvinsi);
+    });
+
+    $(document).on('change','#selectProvinsiSchool',function () {
+        var selectProvinsi = $('#selectProvinsiSchool').find(':selected').val();
+        loadRegionSchool(selectProvinsi);
+    });
+
+    $(document).on('change','#selectRegion',function () {
+        var selectRegion = $('#selectRegion').find(':selected').val();
+        loadKecamatan(selectRegion);
+    });
 
   function loadDataFromServer()
   {
@@ -687,8 +1044,7 @@
   	  loadTahunLulus();
   	  loadPenerimaKPS();
   	  loadUkuranJacket();
-  	  loadTahunLahir();
-  	  loadBulanLahir()
+
   	  // function untuk data master orang tua
   	  loadDataPekerjaan();
   	  loadDataPenghasilan();
@@ -731,8 +1087,8 @@
 	      	$('#PenghasilanAyah'+i).append('</tr>');
 	      	$('#PenghasilanIbu'+i).append('</tr>');
 	      }
-	      $('#PenghasilanAyah'+i).append('</table>');
-	      $('#PenghasilanIbu'+i).append('</table>');
+	      $('#PenghasilanAyah').append('</table>');
+	      $('#PenghasilanIbu').append('</table>');
 	  })
   }
 
@@ -842,64 +1198,6 @@
   	$('#selectTahunLulus').select2({
   	  // allowClear: true
   	});
-  }
-
-  function loadTahunLahir()
-  {
-  	var thisYear = (new Date()).getFullYear();
-  	var startTahun = parseInt(thisYear) - parseInt(120);
-  	var selisih = parseInt(thisYear) - parseInt(startTahun);
-  	for (var i = 0; i <= selisih; i++) {
-  	    var selected = (i==0) ? 'selected' : '';
-  	    $('.tahun_lahir').append('<option value="'+ ( parseInt(startTahun) + parseInt(i) ) +'" '+selected+'>'+( parseInt(startTahun) + parseInt(i) )+'</option>');
-  	}
-  	$('.tahun_lahir').select2({
-  	  // allowClear: true
-  	});
-
-  }
-
-  function loadBulanLahir()
-  {
-  	var month = {
-  		01 : 'Jan',
-  		02 : 'Feb',
-  		03 : 'Mar',
-  		04 : 'April',
-  		05 : 'Mei',
-  		06 : 'Jun',
-  		07 : 'Jul',
-  		08 : 'Aug',
-  		09 : 'Sep',
-  		10 : 'Okt',
-  		11 : 'Nov',
-  		12 : 'Des'
-  	}
-
-  	for(var key in month) {
-  		var selected = (key==1) ? 'selected' : '';
-  		var getKey = key.toString();
-  		if (getKey.length == 1) {
-  			var value = '0' + getKey;
-  		}
-  		else
-  		{
-  			var value = key;
-  		}
-  		$('.bulan_lahir').append('<option value="'+ value +'" '+selected+'>'+month[key]+'</option>');
-  	}
-
-  	$('.bulan_lahir').select2({
-  	  // allowClear: true
-  	});
-
-  	var tahun = $("#Tahun_lahir").find(':selected').val();
-  	var bulan = $("#Bulan_lahir").find(':selected').val();
-  	//moment("2012-02", "YYYY-MM").daysInMonth()
-  	loadCountDays(tahun,bulan,'#DD_lahir');
-  	loadCountDays(tahun,bulan,'#DD_lahirAyah');
-  	loadCountDays(tahun,bulan,'#DD_lahirIbu');
-  	
   }
 
   function loadAlamatSekolah()
@@ -1351,497 +1649,6 @@
   	      $('#tablechkProStudy').append('</table>');
   	  })
   }
-
-  function loadCountDays(tahun,bulan,elementTarget)
-  {
-  		$(elementTarget).empty();
-  		var countDays = moment(tahun+"-"+bulan, "YYYY-MM").daysInMonth()
-  		// get dd 
-  	  	for (var i = 1; i <= countDays ; i++) {
-  			var selected = (i==1) ? 'selected' : '';
-  					var getKey = i.toString();
-  					if (getKey.length == 1) {
-  						var value = '0' + getKey;
-  					}
-  					else
-  					{
-  						var value = i;
-  					}
-  			  		$(elementTarget).append('<option value="'+ value +'" '+selected+'>'+value+'</option>');
-  		}
-  		$(elementTarget).select2({
-  		  	  // allowClear: true
-  		});
-  }
-
-  $(document).on('change','#Bulan_lahir', function () {
-  	var tahun = $("#Tahun_lahir").find(':selected').val();
-  	var bulan = $(this).find(':selected').val();
-  	//moment("2012-02", "YYYY-MM").daysInMonth()
-  	loadCountDays(tahun,bulan,'#DD_lahir');
-  	
-  });
-
-  $(document).on('change','#Bulan_lahirAyah', function () {
-  	var tahun = $("#Tahun_lahirAyah").find(':selected').val();
-  	var bulan = $(this).find(':selected').val();
-  	//moment("2012-02", "YYYY-MM").daysInMonth()
-  	loadCountDays(tahun,bulan,'#DD_lahirAyah');
-  	
-  });
-
-  $(document).on('change','#Bulan_lahirIbu', function () {
-  	var tahun = $("#Tahun_lahirIbu").find(':selected').val();
-  	var bulan = $(this).find(':selected').val();
-  	//moment("2012-02", "YYYY-MM").daysInMonth()
-  	loadCountDays(tahun,bulan,'#DD_lahirIbu');
-  	
-  });
-
-    function getCheckbox(name)
-    {
-    	var valuee = "";
-    	$('input[name="'+name+'"]:checked').each(function() {
-    	   valuee = this.value;
-    	});
-
-    	return valuee;
-    }
-
-    $(document).on('keyup','#Alamat', function () {
-    	var maxLength = 150;
-    	var length = $(this).val().length;
-    	var length = maxLength-length;
-    	$('#chars').text(length);
-    });
-
-    $(document).on('keyup','#AlamatAyahtextarea', function () {
-    	var maxLength = 150;
-    	var length = $(this).val().length;
-    	var length = maxLength-length;
-    	$('#charsAyah').text(length);
-    });
-
-    $(document).on('click','#AlamatAyahSama', function () {
-    	// show data
-    	var ayah = "ayah";
-    	loadDataProvRegionKecamatan(ayah);
-    	var value = $("#Alamat").val();
-    	$("#AlamatAyahtextarea").val(value);
-    	var length = $("#AlamatAyahtextarea").val().length;
-    	var lengthRemainingAyah = 150-length;
-    	$('#charsAyah').text(lengthRemainingAyah);
-    	$("#AlamatAyah").removeClass("hide");
-    });
-
-    $(document).on('click','#AlamatIbuSama', function () {
-    	// show data
-    	var ibu = "ibu";
-    	loadDataProvRegionKecamatan(ibu);
-    	var value = $("#Alamat").val();
-    	$("#AlamatIbutextarea").val(value);
-    	var length = $("#AlamatIbutextarea").val().length;
-    	var lengthRemainingAyah = 150-length;
-    	$('#charsIbu').text(lengthRemainingAyah);
-    	$("#AlamatIbu").removeClass("hide");
-    });
-
-    $(document).on('click','#AlamatIbuTdkSama', function () {
-    	// show data
-    	//$("#AlamatAyah").addClass("hide");
-    	var ibu = "ibu";
-    	loadDataProvRegionKecamatan(ibu,'not null');
-    	$("#AlamatIbu").removeClass("hide");
-    });
-
-    $(document).on('click','#AlamatAyahTdkSama', function () {
-    	// show data
-    	//$("#AlamatAyah").addClass("hide");
-    	var ayah = "ayah";
-    	loadDataProvRegionKecamatan(ayah,'not null');
-    	$("#AlamatAyah").removeClass("hide");
-    });
-
-    $(document).on('click','.chkProStudy', function () {
-    	$('input.chkProStudy').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.Nationality', function () {
-    	$('input.Nationality').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkAgama', function () {
-    	$('input.chkAgama').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.statusAyah', function () {
-    	$('input.statusAyah').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.statusIbu', function () {
-    	$('input.statusIbu').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkPenerimaKPS', function () {
-    	$('input.chkPenerimaKPS').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkUkuranJacket', function () {
-    	$('input.chkUkuranJacket').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkSchoolMajor', function () {
-    	$('input.chkSchoolMajor').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkPekerjaanAyah', function () {
-    	$('input.chkPekerjaanAyah').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkPekerjaanIbu', function () {
-    	$('input.chkPekerjaanIbu').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkPenghasilanAyah', function () {
-    	$('input.chkPenghasilanAyah').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkPenghasilanIbu', function () {
-    	$('input.chkPenghasilanIbu').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkTipeSekolah', function () {
-    	$('input.chkTipeSekolah').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('click','.chkJenisTempatTinggal', function () {
-    	$('input.chkJenisTempatTinggal').prop('checked', false);
-    	$(this).prop('checked',true);
-    });
-
-    $(document).on('change','#NationalityWNA', function () {
-    	if(this.checked) {
-    	    loading_page("#pageSelectCountry");
-    	  	var url = base_url_js+'api/__getCountry';
-    	  	$.get(url,function (data_json) {
-    	  	  setTimeout(function () {
-      	  	  $("#pageSelectCountry").html('<div class="col-md-3">'+
-    	  	  	  							   '<select class="select2-select-00 full-width-fix " id="selectCountry">'+
-    	  	  	  							   '<option></option>'+
-    	  	  	  							   '</select>'+
-    	  	  	  							'</div>'   
-      	  	  							  );
-      	      for(var i=1;i<data_json.length;i++){
-      	          var selected = (i==3) ? 'selected' : '';
-      	          
-      	          $('#selectCountry').append('<option value="'+data_json[i].ctr_code+'" '+selected+'>'+data_json[i].ctr_name+'</option>');
-      	      }
-      	      $('#selectCountry').select2({
-      	         //allowClear: true
-      	      });
-    	  	  },1000); 
-    	    })
-    	}
-
-    });
-
-    $(document).on('change','#PenerimaKPSYA', function () {
-    	if(this.checked) {
-    	    $("#pageInputNOkPS").removeClass("hide");
-    	}
-
-    });
-
-    $(document).on('change','#PenerimaKPSTDK', function () {
-    	if(this.checked) {
-    	    $("#pageInputNOkPS").addClass("hide");
-    	}
-
-    });
-
-      $(document).on('change','#NationalityWNI', function () {
-  		$("#pageSelectCountry").empty();
-      });
-
-      $(document).on('change','#selectProvinsi',function () {
-          var selectProvinsi = $('#selectProvinsi').find(':selected').val();
-          loadRegion(selectProvinsi);
-      });
-
-      $(document).on('change','#selectProvinsiSchool',function () {
-          var selectProvinsi = $('#selectProvinsiSchool').find(':selected').val();
-          loadRegionSchool(selectProvinsi);
-      });
-
-      $(document).on('change','#selectRegion',function () {
-          var selectRegion = $('#selectRegion').find(':selected').val();
-          loadKecamatan(selectRegion);
-      });
-
-  // settting toastr	
-  toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "newestOnTop": true,
-      "progressBar": false,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": true,
-      "onclick": null,
-      "showDuration": "0",
-      "hideDuration": "0",
-      "timeOut": "0",
-      "extendedTimeOut":"0",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-  };
-
-  $(document).on('click','#btn-proses', function () {
-  	loading_button('#btn-proses');
-  	var DataArr = getDataInput();
-  	 if (varlidationInput(DataArr)) {
- 		console.log("Validation ok");
- 		toastr.clear();
- 		setTimeout(function () {
- 	     processData(DataArr);
- 	 	},1000);
-  	 }
-  	 else
-  	 {
-  	 	$('#btn-proses').prop('disabled',false).html('Proses'); 
-  	 }
-
-  	 /*if (true) {
-  	 	console.log("Validation ok");
-  	 	toastr.clear();
-  	 	setTimeout(function () {
-  	      processData(DataArr);
-  	  	},1000); 
-  	 	
-  	 }*/
-  });
-
-  function varlidationInput(data)
-  {
-  	var toatString = "";
-  	var result = "";
-  	for(var key in data) {
-  	   switch(key)
-  	   {
-  	    case  "IdentityCard" :
-  	    case  "FatherNIK" :
-  	    case  "MotherNik" :
-  	    	  result = Validation_exactLenght_Character(16,data[key],key);
-  	    	  if (result['status'] == 0) {
-  	    	    toatString += result['messages'] + "<br>";
-  	    	  }	
-  	          break;
-  	    case "Address" :
-  	    case "District":
-  	    case "PlaceBirth": 
-  	    case "FatherPlaceBirth": 
-  	    case "MotherPlaceBirth": 
-  	    case "FatherAddress": 
-  	    case "MotherAddress": 
-    	   	  result = Validation_leastCharacter(3,data[key],key);
-    	   	  if (result['status'] == 0) {
-    	   	    toatString += result['messages'] + "<br>";
-    	   	  }	
-    	      break;
-    	 case "file_validation" :
-    	 	  if (!data[key]) {
-    	 	  	toatString += "File Upload error" + "<br>";
-    	 	  }
-    	      break; 
-    	 case "NoKPS":
-    	 case "YourZipCode":
-
-    	 	   break;
-  	    default :
-  	          result = Validation_required(data[key],key);
-  	          if (result['status'] == 0) {
-  	            toatString += result['messages'] + "<br>";
-  	          }       
-  	   }
-  	}
-
-  	if (toatString != "") {
-  	  toastr.error(toatString, 'Failed!!');
-  	  return false;
-  	}
-  	return true;
-  }
-
-  function processData(DataArr)
-  {
-  	var form_data = new FormData();
-  	var fileData = document.getElementById("imgInp").files[0];
-  	var url = base_url_js + "register/formulir_submit";
-  	var token = jwt_encode(DataArr,"UAP)(*");
-  	form_data.append('token',token);
-  	form_data.append('fileData',fileData);
-  	$.ajax({
-  	  type:"POST",
-  	  url:url,
-  	  data: form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-  	  contentType: false,       // The content type used when sending data to the server.
-  	  cache: false,             // To unable request pages to be cached
-  	  processData:false,
-  	  dataType: "json",
-  	  success:function(data)
-  	  {
-  	    if(data.status == 1) {
-  	    	toastr.options.fadeOut = 100000;
-  	    	toastr.success(data.msg, 'Success!');
-  	    }
-  	    else
-  	    {
-  	    	toastr.options.fadeOut = 100000;
-  	    	toastr.error(data.msg, 'Failed!!');
-  	    }
-    	setTimeout(function () {
-         toastr.clear();
-     	},1000);
-
- 		setTimeout(function () {
- 	     $('#btn-proses').prop('disabled',false).html('Proses');
- 	     window.location.reload();  
- 	 	},1000);
-  	  },
-  	  error: function (data) {
-  	    toastr.error("Connection Error, Please try again", 'Error!!');
-  	    $('#btn-proses').prop('disabled',false).html('Proses');  
-  	  }
-  	})
-  }
-
-  function getDataInput()
-  {
-  	 var data = {};
-  	 var ID_register_verified = "<?php echo $this->session->userdata('ID_register_verified') ?>";
-  	 var ID_program_study = getCheckbox('chkProStudy');
-  	 var Gender = $('input[name=radioGender]:checked').val(); 
-  	 var IdentityCard = $("#IdentityCard").val().trim();
-  	 var NationalityID = (getCheckbox('radioNationality') == "WNI") ? '001' : $('#selectCountry').find(':selected').val();
-  	 var ReligionID = getCheckbox('chkAgama');
-  	 var PlaceBirth = $("#TempatLahir").val().trim();
-  	 var DateBirth = $("#Tahun_lahir").val()+"-"+$("#Bulan_lahir").val()+"-"+$("#DD_lahir").val();
-  	 var ID_register_jtinggal_m = getCheckbox('chkJenisTempatTinggal');
-  	 var ID_country_address = $('#selectNegara').find(':selected').val();
-  	 var ID_province = $('#selectProvinsi').find(':selected').val()
-  	 var ID_region = $('#selectRegion').find(':selected').val()
-  	 var ID_districts = $('#selectKecamatan').find(':selected').val();
-  	 var District = $("#Kelurahan").val().trim();
-  	 var Address = $("#Alamat").val().trim();
-  	 var ZipCode = $('#KodePos').val();
-  	 var PhoneNumber = $("#noHP").val();
-  	 var ID_school_type = getCheckbox('chkTipeSekolah');
-  	 var ID_register_major_school = getCheckbox('chkSchoolMajor');
-  	 var YearGraduate = $('#selectTahunLulus').find(':selected').val();
-  	 var KPSReceiverStatus = getCheckbox('chkPenerimaKPS');
-  	 var NoKPS = (KPSReceiverStatus == "Ya") ? $('#NoKPS').val().trim() : '';
-  	 var ID_register_jacket_size_m = getCheckbox('chkUkuranJacket');
-
-  	 var FatherName = $("#NamaAyah").val().trim();
-  	 var FatherNIK = $("#NikAyah").val().trim();
-  	 var FatherPlaceBirth = $("#TempatLahirAyah").val().trim();
-  	 var FatherDateBirth = $("#Tahun_lahirAyah").val()+"-"+$("#Bulan_lahirAyah").val()+"-"+$("#DD_lahirAyah").val();
-  	 var FatherStatus = getCheckbox('statusAyah');
-  	 var FatherPhoneNumber = $("#noHPAyah").val();
-  	 var Father_ID_occupation = getCheckbox('chkPekerjaanAyah');
-  	 var Father_ID_register_income_m = getCheckbox('chkPenghasilanAyah');
-  	 var FatherAddress_ID_country = $("#selectNegaraAyah").find(':selected').val();
-  	 var FatherAddress_ID_province = $("#selectProvinsiAyah").find(':selected').val();
-  	 var FatherAddress_ID_region = $("#selectRegionAyah").find(':selected').val();
-  	 var FatherAddress = $("#AlamatAyahtextarea").val();
-
-  	 var MotherName = $('#NamaIbu').val().trim();
-  	 var MotherNik = $("#NikIbu").val().trim();
-  	 var MotherPlaceBirth = $("#TempatLahirIbu").val().trim();
-  	 var MotherDateBirth = $("#Tahun_lahirIbu").val()+"-"+$("#Bulan_lahirIbu").val()+"-"+$("#DD_lahirIbu").val();
-  	 var MotherStatus = getCheckbox('statusIbu');
-  	 var MotherPhoneNumber = $("#noHPIbu").val();
-  	 var Mother_ID_occupation = getCheckbox('chkPekerjaanIbu');
-  	 var Mother_ID_register_income_m = getCheckbox('chkPenghasilanIbu');
-  	 var MotherAddress_ID_country = $("#selectNegaraIbu").find(':selected').val();
-  	 var MotherAddress_ID_province = $("#selectProvinsiIbu").find(':selected').val();
-  	 var MotherAddress_ID_region = $("#selectRegionIbu").find(':selected').val();
-  	 var MotherAddress = $("#AlamatAyahtextarea").val().trim();
-
-
-  	 var radioAlamatAyah = $('input[name=radioAlamatAyah]:checked').val(); 
-  	 var radioAlamatIbu = $('input[name=radioAlamatIbu]:checked').val(); 
-
-  	 data = {
-  	 	     ID_register_verified :ID_register_verified,
-  	 	     ID_program_study :ID_program_study,
-  	 	     Gender :Gender,
-  	 	     IdentityCard :IdentityCard,
-  	 	     NationalityID :NationalityID,
-  	 	     ReligionID :ReligionID,
-  	 	     PlaceBirth :PlaceBirth,
-  	 	     DateBirth :DateBirth,
-  	 	     TypeofResidence  :ID_register_jtinggal_m,
-  	 	     YourCountryAddress :ID_country_address,
-  	 	     YourProvince :ID_province,
-  	 	     YourRegion :ID_region,
-  	 	     YourDistricts :ID_districts,
-  	 	     YourDistrict :District,
-  	 	     YourAddress :Address,
-  	 	     YourZipCode :ZipCode,
-  	 	     PhoneNumber : PhoneNumber,
-  	 	     YourSchool_type : ID_school_type,
-  	 	     SchoolMajor : ID_register_major_school,
-  	 	     YearGraduate : YearGraduate,
-  	 	     KPSReceiverStatus : KPSReceiverStatus,
-  	 	     NoKPS : NoKPS,
-  	 	     JacketSize : ID_register_jacket_size_m,
-  	 	     FatherName : FatherName,
-  	 	     FatherNIK : FatherNIK,
-  	 	     FatherPlaceBirth : FatherPlaceBirth,
-  	 	     FatherDateBirth : FatherDateBirth,
-  	 	     FatherStatus : FatherStatus,
-  	 	     FatherPhoneNumber : FatherPhoneNumber,
-  	 	     FatherOccupation : Father_ID_occupation,
-  	 	     FatherIncome : Father_ID_register_income_m,
-  	 	     FatherAddressCountry : FatherAddress_ID_country,
-  	 	     FatherAddressProvince : FatherAddress_ID_province,
-  	 	     FatherAddressRegion : FatherAddress_ID_region,
-  	 	     FatherAddress : FatherAddress,
-  	 	     MotherName : MotherName,
-  	 	     MotherNik : MotherNik,
-  	 	     MotherPlaceBirth : MotherPlaceBirth,
-  	 	     MotherDateBirth : MotherDateBirth,
-  	 	     MotherStatus : MotherStatus,
-  	 	     MotherPhoneNumber : MotherPhoneNumber,
-  	 	     MotherOccupation : Mother_ID_occupation,
-  	 	     MotherIncome_m : Mother_ID_register_income_m,
-  	 	     MotherAddressCountry : MotherAddress_ID_country,
-  	 	     MotherAddressProvince : MotherAddress_ID_province,
-  	 	     MotherAddressRegion : MotherAddress_ID_region ,
-  	 	     MotherAddress : MotherAddress,
-  	 	     ChoicesAlamatAyah : radioAlamatAyah,
-  	 	     ChoicesAlamatIbu : radioAlamatIbu,
-  	 	     file_validation : file_validation()
-  	 };	
-  	 return data;
-  }
-
-
 
   function readURL(input) {
 

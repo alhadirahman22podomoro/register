@@ -33,8 +33,6 @@ class C_register extends CI_Controller {
     }
 
     private function menu_header(){
-        //$exp_name = explode(" ",$this->session->userdata('Name'));
-        //$data['name']= (count($exp_name)>0) ? $exp_name[0] : $this->session->userdata('Name');
         $page = $this->load->view('template/header','',true);
         return $page;
     }
@@ -216,10 +214,40 @@ class C_register extends CI_Controller {
     {
         error_reporting(0);
         try{
+            $case = "base_url";
             $key = "UAP)(*";
             $data = $this->jwt->decode($url,$key);
             $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
-            $content = $this->load->view('register/formulir_registration','',true);
+            // check apakah sudah pernah isi formulir
+            # jika sudah pernah arahkan ke url print formulir sekaligus download pdfnya.
+            # Buat dua tab, satu tab untuk view formulir, satu tab lagi untuk upload attachment
+            # jika belum pernah arahkan ke url isi formulir
+            if ($checkURL) {
+                $case = "url_formulir_registration";
+                $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
+                if ($checkURL2) {
+                    // jika upload dokumen berhasil maka send email to user dan matikan link ini redirect ke url telah berhasil registrasi
+                    $case = "url_upload_dokument";
+                }
+                else
+                {
+                    $case = "url_formulir_registration";
+                }
+            }
+            switch ($case) {
+                case 'base_url':
+                    redirect(base_url());
+                    break;
+                case 'url_formulir_registration':
+                    $content = $this->load->view('register/formulir_registration','',true);
+                    break;
+                case 'url_upload_dokument':
+                    $content = $this->load->view('register/formulir_upload','',true);
+                    break;
+                default:
+                    redirect(base_url());
+                    break;
+            }
             $this->temp($content); 
         }
         catch(Exception $e)
@@ -227,6 +255,46 @@ class C_register extends CI_Controller {
             redirect(base_url());
         }
         
+    }
+
+    public function formulir_submit()
+    {
+        $token = $this->input->post('token');
+        $key = "UAP)(*";
+        $data_arr = (array) $this->jwt->decode($token,$key);
+        $uploadFile = $this->uploadFoto($this->session->userdata('Email'));
+        if (is_array($uploadFile)) {
+            $this->m_reg->saveDataFormulir($data_arr,$uploadFile['file_name']);
+            echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1));
+        }
+        else
+        {
+            echo json_encode(array('msg' => 'The file did not upload successfully','status' => 0));
+        }
+    }
+
+    public function uploadFoto($email)
+    {
+         // upload file
+         $filename = md5($email);
+         $config['upload_path']   = './foto_formulir/';
+         $config['overwrite'] = TRUE; 
+         $config['allowed_types'] = 'png|PNG|jpg|JPG|jpeg|jpeg'; 
+         $config['file_name'] = $filename;
+         //$config['max_size']      = 100; 
+         //$config['max_width']     = 300; 
+         //$config['max_height']    = 300;  
+         $this->load->library('upload', $config);
+            
+         if ( ! $this->upload->do_upload('fileData')) {
+            return $error = $this->upload->display_errors(); 
+            //$this->load->view('upload_form', $error); 
+         }
+            
+         else { 
+           return $data =  $this->upload->data(); 
+            //$this->load->view('upload_success', $data); 
+         }
     }
 
     public function authGoogle(){

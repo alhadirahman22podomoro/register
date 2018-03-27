@@ -330,5 +330,12 @@ where a.DistrictID = b.DistrictID and a.RegionID = ?";
         return $query;
     }
 
+    public function getDataDokument()
+    {
+            $sql = "select * from db_admission.reg_doc_checklist where Active = 1 ";
+            $query=$this->db->query($sql, array())->result_array();
+            return $query;
+    }
+
 
 }

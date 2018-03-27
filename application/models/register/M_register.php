@@ -252,5 +252,71 @@ class M_register extends CI_Model {
         {
             return false;
         }    
-    }  
+    }
+
+    public function saveDataFormulir($arr,$namaFile)
+    {
+        $arrValue = $this->getValueArr($arr,$namaFile);
+        $GetCol = $this->getCol();
+        $arr_save = array();
+        $j = 0;
+        for ($i=1; $i < count($GetCol); $i++) { 
+            $arr_save[$GetCol[$i]] = $arrValue[$j];
+            $j++;
+        }
+
+        $this->db->insert('db_admission.register_formulir', $arr_save);
+        
+    }
+
+    private function getValueArr($data,$namaFile)
+    {
+        $arr_temp = array();
+        $result  = array();
+        foreach ($data as $key => $value) {
+            $arr_temp[] = $value;
+        }
+
+        for ($i=0; $i < count($arr_temp) - 3; $i++) { 
+            $result[] = $arr_temp[$i];
+        }
+
+        array_push($result, $namaFile);
+        return $result;
+    }
+
+    private function getCol()
+    {
+        $arr_temp = array();
+        $COLUMNS = $this->getColumnTable("db_admission.register_formulir");
+        $arr_temp = $COLUMNS['field'];
+        return $arr_temp;
+    } 
+
+    public function getColumnTable($table)
+    {
+        $arr = array();
+        $sql = "SHOW COLUMNS FROM ".$table; 
+        $query=$this->db->query($sql, array())->result();
+        $temp = array();
+        foreach ($query as $key) {
+            $temp[] = $key->Field;
+        }
+        $arr = array('query' => $query,'field' => $temp); 
+        return $arr;
+    }
+
+    public function checkURLFormulirTelahdiisi()
+    {
+        $sql = "select count(*) as total from db_admission.register_formulir where ID_register_verified = ?
+            ";
+        $query=$this->db->query($sql, array($this->session->userdata('ID_register_verified')))->result_array();
+        if ($query[0]['total'] > 0) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } 
 }
