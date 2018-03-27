@@ -174,9 +174,9 @@ function loadDataSelectOption()
 
     loadData();
     //loadDataSchool();
-    setTimeout(function () {
+    /*setTimeout(function () {
         $('#NotificationModal').modal('hide');
-    },1000);
+    },1000);*/
 
 }
 
@@ -196,7 +196,9 @@ function loadData()
         var selectWilayah = $('#selectWilayah').find(':selected').val();
         loadDataSchool(selectWilayah);
     }).done(function () {
-
+      /*setTimeout(function () {
+          $('#NotificationModal').modal('hide');
+      },1000);*/
     });
 }
 
@@ -219,7 +221,11 @@ function loadDataSchool(selectWilayah)
         $('#schoolName').select2({
            //allowClear: true
         });
-  })
+  }).done(function () {
+    setTimeout(function () {
+        $('#NotificationModal').modal('hide');
+    },1000);
+  });
 
 }
 </script>

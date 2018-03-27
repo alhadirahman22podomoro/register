@@ -297,101 +297,17 @@ class C_register extends CI_Controller {
          }
     }
 
-    public function authGoogle(){
-        if(isset($_GET['code'])){
-
-            try{
-                //authenticate user
-                $this->google->getAuthenticate();
-
-                //get user info from google
-                $gpInfo = $this->google->getUserInfo();
-
-                //preparing data for database insertion
-                $userData['oauth_provider'] = 'google';
-                $userData['oauth_uid'] 		= $gpInfo['id'];
-                $userData['first_name'] 	= $gpInfo['given_name'];
-                $userData['last_name'] 		= $gpInfo['family_name'];
-                $userData['email'] 			= $gpInfo['email'];
-                $userData['gender'] 		= !empty($gpInfo['gender'])?$gpInfo['gender']:'';
-                $userData['locale'] 		= !empty($gpInfo['locale'])?$gpInfo['locale']:'';
-                $userData['profile_url'] 	= !empty($gpInfo['link'])?$gpInfo['link']:'';
-                $userData['picture_url'] 	= !empty($gpInfo['picture'])?$gpInfo['picture']:'';
-
-
-                // Cek Userdata
-                $dataUser = $this->m_auth->__getUserByEmailPU($userData['email'] );
-
-                if(count($dataUser)>0) {
-                    $this->setSession($dataUser[0]['ID'],$dataUser[0]['NIP']);
-                    redirect(base_url('dashboard'));
-                } else {
-                    redirect(base_url());
-                }
-
-            } catch (Exception $err){
-                redirect(base_url());
-            }
-
-
-        }
+    public function checkDocument()
+    {
+        $chkTableregister_formulir = $this->m_reg->chkTableregister_formulir();
+        echo json_encode($chkTableregister_formulir);
     }
 
-    public function authUserPassword(){
-        $token = $this->input->post('token');
-        $key = "L06M31N";
-        $data_arr = (array) $this->jwt->decode($token,$key);
+    public function getDataDokument()
+    {
+        $generate = $this->m_reg->getDataDokumentRegister($this->session->userdata('ID_register_formulir'));
 
-        if(count($data_arr)>0){
-
-            $NIP = $data_arr['nip'];
-            $Password = $this->genratePassword($NIP,$data_arr['password']);
-
-            $dataUser = $this->m_auth->__getauthUserPassword($NIP,$Password);
-
-            if(count($dataUser)>0){
-                $this->setSession($dataUser[0]['ID'],$dataUser[0]['NIP']);
-                return print_r(1);
-            } else {
-                return print_r(0);
-            }
-        } else {
-            return print_r(0);
-        }
-    }
-
-    private function genratePassword($NIP,$Password){
-
-        $plan_password = $NIP.''.$Password;
-        $pas = md5($plan_password);
-        $pass = sha1('jksdhf832746aiH{}{()&(*&(*'.$pas.'HdfevgyDDw{}{}{;;*766&*&*');
-
-        return $pass;
-    }
-
-
-
-    public function logMeOut(){
-        $this->session->sess_destroy();
-        return 1;
-    }
-
-    public function gen($NIP,$Password){
-        $plan_password = $NIP.''.$Password;
-        $pas = md5($plan_password);
-        $pass = sha1('jksdhf832746aiH{}{()&(*&(*'.$pas.'HdfevgyDDw{}{}{;;*766&*&*');
-
-        print_r($pass);
-    }
-
-
-    public function genratePassword2($NIP,$Password){
-
-        $plan_password = $NIP.''.$Password;
-        $pas = md5($plan_password);
-        $pass = sha1('jksdhf832746aiH{}{()&(*&(*'.$pas.'HdfevgyDDw{}{}{;;*766&*&*');
-
-        print_r($pass);
+        echo json_encode($generate);
     }
 
 }

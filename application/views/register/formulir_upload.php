@@ -138,24 +138,42 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-      loadDataDokument();
+      CheckDataInjected();
+      //loadDataDokument();
   });
+
+  function CheckDataInjected()
+  {
+    $('#NotificationModal .modal-header').addClass('hide');
+    $('#NotificationModal .modal-body').html('<center>' +
+        '                    <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>' +
+        '                    <br/>' +
+        '                    Loading Data . . .' +
+        '                </center>');
+    $('#NotificationModal .modal-footer').addClass('hide');
+    $('#NotificationModal').modal({
+        'backdrop' : 'static',
+        'show' : true
+    });
+
+    var url = base_url_js+'checkDocument';
+    $.get(url,function (data_json) {
+
+    }).done(function() {
+            /*setTimeout(function () {
+                $('#NotificationModal').modal('hide');
+            },500);*/
+            loadDataDokument();
+    });
+  }
 
   function loadDataDokument()
   {
-      $('#NotificationModal .modal-header').addClass('hide');
-      $('#NotificationModal .modal-body').html('<center>' +
-          '                    <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>' +
-          '                    <br/>' +
-          '                    Loading Data . . .' +
-          '                </center>');
-      $('#NotificationModal .modal-footer').addClass('hide');
-      $('#NotificationModal').modal({
-          'backdrop' : 'static',
-          'show' : true
-      });
-    var url = base_url_js+'api/__getDataDokument';
-    $.get(url,function (data_json) {
+    var url = base_url_js+'getDataDokument';
+    $("#pageUploadDokument").empty();
+    $.post(url,function (data_json) {
+        var response = jQuery.parseJSON(data_json);
+        //console.log(response.length);
         $('#pageUploadDokument').append('<table class="points_table" id ="tablechkDokument">'+
                                          '<thead>'+
                                            '<tr>'+
@@ -171,24 +189,34 @@
                                        );
           var Nomor = 1;
 
-          for (var k = 0; k < data_json.length; k++) {
+          for (var k = 0; k < response.length; k++) {
             var setODDEven = Nomor % 2;
             var setRow = 'odd';
             var setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
             if (setODDEven == 0) {
               setRow = 'even';
-              setIcon = '<i class="fa fa-check-circle" style="color: green;"></i>';
             }
 
-            if (Nomor == 5) {
-              setIcon = '<i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>';
+            switch(response[k].Status)
+            {
+             case  "Belum Upload" :
+                    setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
+                    break;
+             case  "Progress Checking" :
+                    setIcon = '<i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>';
+                   break;
+             case  "Done" :
+                   setIcon = '<i class="fa fa-check-circle" style="color: green;"></i>';
+                   break;
+             default :
+                   setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';      
             }
 
             $('#isiData').append('<tr class = "'+setRow+'">'+
                                     '<td class="col-xs-1">'+Nomor+'</td>'+
-                                    '<td class="col-xs-5">'+data_json[k].DocumentChecklist+'</td>'+
-                                    '<td class="col-xs-1">'+data_json[k].Required+'</td>'+
-                                    '<td class="col-xs-2">'+'<label for="file-upload" class="custom-file-upload"><span class="glyphicon glyphicon-upload"></span> Upload </label><input class = "file-upload'+data_json[k].ID+'" id="file-upload" type="file" data-sbmt = "'+data_json[k].ID+'"/>'+'</td>'+
+                                    '<td class="col-xs-5">'+response[k].DocumentChecklist+'</td>'+
+                                    '<td class="col-xs-1">'+response[k].Required+'</td>'+
+                                    '<td class="col-xs-2">'+'<label for="file-upload" class="custom-file-upload"><span class="glyphicon glyphicon-upload"></span> Upload </label><input class = "file-upload'+response[k].ID+'" id="file-upload" type="file" data-sbmt = "'+response[k].ID+'"/>'+'</td>'+
                                     '<td class="col-xs-1">'+setIcon+'</td>'+
                                  '</tr>'
                                 );
@@ -196,7 +224,7 @@
           }
           $('#isiData').append('</tbody>');
           $('#isiData').append('</table>');
-    }).always(function() {
+    }).done(function() {
           setTimeout(function () {
               $('#NotificationModal').modal('hide');
           },500);

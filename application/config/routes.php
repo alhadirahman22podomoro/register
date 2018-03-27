@@ -9,7 +9,9 @@ $route['translate_uri_dashes'] = FALSE;
 // === register ===
 $route['register/proses-register'] = 'c_register/proses_register';
 $route['register/formulir_submit'] = 'c_register/formulir_submit';
-
+$route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
+$route['checkDocument'] = 'c_register/checkDocument';
+$route['getDataDokument'] = 'c_register/getDataDokument';
 
 // === AUTH ===
 $route['uath/authUserPassword'] = 'c_login/authUserPassword';
@@ -47,5 +49,5 @@ $route['api/__getDataDokument'] = 'api/c_api/getDataDokument';
 //url upload data
 $route['register/formupload/(:any)'] = 'c_register/formupload/$1';
 $route['register/formupload_submit'] = 'c_register/formupload_submit';
-$route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
+
 

@@ -318,5 +318,86 @@ class M_register extends CI_Model {
         {
             return false;
         }
+    }
+
+    public function chkTableregister_formulir()
+    {
+        $arr = array('result' => null,'count' => 0);
+        $DataDocument = $this->getDocument();
+        $getIDRegisterFormulir = $this->getIDRegisterFormulir($this->session->userdata('ID_register_verified'));
+        $this->session->set_userdata('ID_register_formulir',$getIDRegisterFormulir);
+        $getDataRegisterDokument_IDDoc = $this->getDataRegisterDokument_IDDoc($getIDRegisterFormulir);
+        $arr_temp = array();
+        for ($i=0; $i < count($DataDocument['ID_reg_doc_checklist']); $i++) { 
+            $ID_reg_doc_checklist = $DataDocument['ID_reg_doc_checklist'][$i];
+            if (!in_array($ID_reg_doc_checklist, $getDataRegisterDokument_IDDoc)) {
+                $arr_temp[] = $ID_reg_doc_checklist;
+            }
+        }
+
+        if (count($arr_temp) > 0) {
+            $this->saveDataFormulirDokument($getIDRegisterFormulir,$arr_temp);
+            $arr['result'] = 'Add';
+            $arr['count'] = count($arr_temp);
+        }
+
+        return $arr;
+
+    }
+
+    private function saveDataFormulirDokument($ID_register_formulir,$arrID_reg_doc_checklist)
+    {
+        for ($i=0; $i < count($arrID_reg_doc_checklist); $i++) { 
+            $dataSave = array(
+                    'ID_register_formulir' => $ID_register_formulir,
+                    'ID_reg_doc_checklist' => $arrID_reg_doc_checklist[$i],
+                            );
+
+            $this->db->insert('db_admission.register_document', $dataSave);
+        }
+    }
+
+    private function getDataRegisterDokument_IDDoc($ID_register_formulir)
+    {
+        $sql = "select ID_reg_doc_checklist from db_admission.register_document where ID_register_formulir = ?
+            ";
+        $query=$this->db->query($sql, array($ID_register_formulir))->result();
+        $arr_temp = array();
+        foreach ($query as $key) {
+            $arr_temp[] = $key->ID_reg_doc_checklist;
+        }
+        return $arr_temp;
+    }
+
+    private function getIDRegisterFormulir($ID_register_verified)
+    {
+        $sql = "select ID from db_admission.register_formulir where ID_register_verified = ?
+            ";
+        $query=$this->db->query($sql, array($ID_register_verified))->result_array();
+        return $query[0]['ID'];
+    }
+
+    private function getDocument()
+    {
+        $this->load->model('m_api');
+        $DataDocument = $this->m_api->getDataDokument();
+        $arr_temp = array('ID_reg_doc_checklist' => array(),'DataDocument' => array());
+        for ($i=0; $i < count($DataDocument); $i++) { 
+            $arr_temp['ID_reg_doc_checklist'][$i] = $DataDocument[$i]['ID'];
+        }
+        $arr_temp['DataDocument'] = $DataDocument;
+        return $arr_temp;
+    }
+
+    public function getDataDokumentRegister($ID_register_formulir)
+    {
+        $sql = "select a.ID,a.ID_register_formulir,a.ID_reg_doc_checklist,a.Status,a.Attachment,b.DocumentChecklist,
+                b.Required from db_admission.register_document as a
+                join db_admission.reg_doc_checklist as b
+                on b.ID = a.ID_reg_doc_checklist
+                where b.Active = 1 and a.ID_register_formulir = ?
+            ";
+        $query=$this->db->query($sql, array($ID_register_formulir))->result_array();
+        return $query;
     } 
 }
