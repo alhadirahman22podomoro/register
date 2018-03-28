@@ -328,7 +328,7 @@ class C_register extends CI_Controller {
         $setX = 15;
         $setY = 29;
         $setJarak = 1; // jarak antar line
-        $setJarakX = 25;
+        $setJarakX = 40;
         $setJarakY = 6;
         $arrLabel1 = array(
                           'Study Program',
@@ -412,8 +412,8 @@ class C_register extends CI_Controller {
                     $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox1,$setYCheckbox,3);
                     $this->mypdf->SetXY($SetX1,$setY);
                     $this->mypdf->SetTextColor(0,0,0);
-                    $this->mypdf->SetFont('Arial','',8);
-                    $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+                    $this->mypdf->SetFont('Arial','',6);
+                    $this->mypdf->Cell(0, 0, $program_study[$getRow]['Name'], 0, 1, 'L', 0);
                     $getRow++;
                     $setXCheckbox1 = $setXCheckbox1 + $setJarakX;
                     $SetX1 = $SetX1 + $setJarakX;
