@@ -12,6 +12,8 @@ $route['register/formulir_submit'] = 'c_register/formulir_submit';
 $route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
 $route['checkDocument'] = 'c_register/checkDocument';
 $route['getDataDokument'] = 'c_register/getDataDokument';
+$route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';
+$route['fileGet/(:any)'] = 'c_register/fileGet/$1';
 
 // === AUTH ===
 $route['uath/authUserPassword'] = 'c_login/authUserPassword';

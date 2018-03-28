@@ -399,5 +399,6 @@ class M_register extends CI_Model {
             ";
         $query=$this->db->query($sql, array($ID_register_formulir))->result_array();
         return $query;
-    } 
+    }
+
 }

@@ -310,4 +310,194 @@ class C_register extends CI_Controller {
         echo json_encode($generate);
     }
 
+    public function downloadPDFFormulir()
+    {
+        $path = $this->BuatFolderSetiapCandidate();
+        $generatePDF = $this->generatePDF($path);
+        echo json_encode($generatePDF);
+    }
+
+    private function generatePDF($path)
+    {
+        //error_reporting(0);
+        $program_study = $this->m_api->getProgramStudy();
+        $arr_temp = array('filename' => '');
+        $filename = "formulir-pdf.pdf";
+        $setXCheckbox = 12;
+        $setYCheckbox = 27;
+        $setX = 15;
+        $setY = 29;
+        $setJarak = 1; // jarak antar line
+        $setJarakX = 25;
+        $setJarakY = 6;
+        $arrLabel1 = array(
+                          'Study Program',
+                          'Full Name',
+                          'Gender',
+                          'Identity Card',
+                          'Nationality',
+                          'Religion',
+                          'Place and Date of Birth',
+                          'Type Of Residence',
+                          'Phone Number',
+                          'Email'
+                         );
+        $arrLabel2 = array(
+                          'Country',
+                          'Province',
+                          'Region',
+                          'Districts',
+                          'District',
+                          'Address',
+                          'Pos Code',
+                         );
+        $arrLabel3 = array(
+                          'School',
+                          'School Type',
+                          'School Major',
+                          'Country',
+                          'Province',
+                          'Region',
+                          'Address',
+                          'Graduation Year',
+                         );
+
+        try
+        {
+            $config=array('orientation'=>'P','size'=>'A4');
+            $this->load->library('mypdf',$config);
+            $this->mypdf->SetMargins(0,0,0,0);
+            $this->mypdf->AddPage();
+            // Logo
+            $this->mypdf->Image('./images/logo_tr.png',1,1,30);
+            $this->mypdf->SetFont('Arial','B',10);
+            $this->mypdf->Text(150, 5, 'Formulir Number : '.$this->session->userdata('FormulirCode'));
+            // Line break
+            $this->mypdf->Ln(8);
+
+            $this->mypdf->SetFont('Arial','B',14);
+            $this->mypdf->Cell(210, 10, 'New Student Registration Form', 0, 1, 'C', 0);
+            $this->mypdf->Line(10,16,200,16); // setX,set H atau Y,panjang,set H atau Y penghubung
+            // Rect(float x, float y, float w, float h [, string style])
+            //$this->mypdf->Rect(10,18,190,120);
+            //$this->mypdf->Rect(105,18,0,120);// garis tengah
+
+            // Judul di box
+            $this->mypdf->Ln($setJarak);
+            $this->mypdf->SetFont('Arial','b',12);
+            $this->mypdf->SetX(10);
+            $this->mypdf->SetTextColor(255,255,255);
+            $this->mypdf->Cell(190, 5, 'Study Program', 1, 1, 'L', true);
+            $this->mypdf->SetFillColor(976,245,458);
+
+            // Rect(float x, float y, float w, float h [, string style])
+            $this->mypdf->Rect(10,24,190,15);
+
+
+            $splitBagi = 5;
+            $split = (int)(count($program_study) / $splitBagi);
+            $sisa = count($program_study) % $splitBagi;
+            if ($sisa > 0) {
+                  $split++;
+            }
+
+            $getRow = 0;
+            for ($i=0; $i < $split ; $i++) { 
+                if (($sisa > 0) && ((i + 1) == $split) ) {
+                                    $splitBagi = $sisa;    
+                }
+                $SetX1 = $setX;
+                $setXCheckbox1 = $setXCheckbox;
+                for ($k = 0; $k < $splitBagi; $k++) {
+                    $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox1,$setYCheckbox,3);
+                    $this->mypdf->SetXY($SetX1,$setY);
+                    $this->mypdf->SetTextColor(0,0,0);
+                    $this->mypdf->SetFont('Arial','',8);
+                    $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+                    $getRow++;
+                    $setXCheckbox1 = $setXCheckbox1 + $setJarakX;
+                    $SetX1 = $SetX1 + $setJarakX;
+                }
+                $setYCheckbox = $setYCheckbox + $setJarakY;
+                $setY = $setY + $setJarakY;
+            }
+
+            // Image(string file [, float x [, float y [, float w [, float h [, string type [, mixed link]]]]]])
+            /*$this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox,$setYCheckbox,3);
+            $this->mypdf->SetXY(15,29);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',8);
+            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+            
+            $setXCheckbox = $setXCheckbox + 25;
+            $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox,$setYCheckbox,3);
+            $this->mypdf->SetXY(40,29);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',8);
+            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+
+            $setYCheckbox = $setYCheckbox + 6;
+            $this->mypdf->Image('./images/checkbox.jpg',12,$setYCheckbox,3);
+            $this->mypdf->SetXY(15,35);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',8);
+            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);*/
+
+           
+
+
+            $path = $path.'/'.$filename;
+            $this->mypdf->Output($path,'F');
+
+            return $arr_temp['filename'] = $filename;   
+        }
+        catch(Exception $e)
+        {
+            return $arr_temp['filename'] = $filename;   
+        }
+       
+        return $arr_temp['filename'] = $filename;   
+    }
+
+    public function fileGet($file)
+    {
+        //check session ID_register_formulir ada atau tidak
+        // check session token untuk download
+
+        // Check File exist atau tidak
+        $namaFolder = $this->session->userdata('Email');
+        if (file_exists('./document/'.$namaFolder.'/'.$file)) {
+            //$this->load->helper('download');
+            // $data   = file_get_contents('./document/'.$namaFolder.'/'.$file);
+            // $name   = $file;
+            // force_download($name, $data); // script download file
+            $this->showFile($file);
+        }
+        else
+        {
+            show_404($log_error = TRUE);
+        }
+    }
+
+    private function showFile($file)
+    {
+        $namaFolder = $this->session->userdata('Email');
+        header("Content-type: application/pdf"); 
+        header("Content-disposition: inline;     
+        filename=".basename('document/'.$namaFolder.'/'.$file));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        $filePath = readfile('document/'.$namaFolder.'/'.$file);
+    }
+
+
+    private function BuatFolderSetiapCandidate()
+    {
+        $namaFolder = $this->session->userdata('Email');
+        if (!file_exists('./document/'.$namaFolder)) {
+            mkdir('./document/'.$namaFolder, 0777, true);
+        }
+        return $path = './document/'.$namaFolder;
+    }
+
 }

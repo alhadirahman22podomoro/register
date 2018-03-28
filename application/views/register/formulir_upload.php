@@ -108,7 +108,7 @@
                     <!-- content -->
                       <label class="col-md-3 control-label">Formulir </label>
                       <div class="col-md-6">
-                       <button class="ng-button" id="btn-formulir" data-sbmt = "">Download Formulir</button>
+                       <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Download Formulir</button>
                       </div>
                   </div>
                 </div>
@@ -230,4 +230,28 @@
           },500);
     });
   }
+
+  $(document).on('click','#btn-dwnformulir', function () {
+    loading_button('#btn-dwnformulir');
+    var ID_register_formulir = $(this).attr('data-sbmt');
+    var url = base_url_js+'downloadPDFFormulir';
+    var data = {
+      ID_register_formulir : ID_register_formulir,
+    };
+    var token = jwt_encode(data,"UAP)(*");
+    $.post(url,{token:token},function (data_json) {
+      var response = jQuery.parseJSON(data_json);
+      //console.log(response);
+      //window.location.href = base_url_js+'fileGet/'+response;
+      window.open(base_url_js+'fileGet/'+response,'_blank');
+    }).done(function() {
+      toastr.success('The Download processing success', 'Success!');
+    }).fail(function() {
+      toastr.error('The Download Processing error, please try again', 'Failed!!');;
+    }).always(function() {
+      $('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+    });
+    //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+
+  });
 </script>
