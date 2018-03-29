@@ -401,4 +401,74 @@ class M_register extends CI_Model {
         return $query;
     }
 
+    public function getDataFormulirPDf()
+    {
+        $sql = "select a.ID_program_study,d.Name,a.Gender,a.IdentityCard,e.ctr_name as Nationality,f.Religion,concat(a.PlaceBirth,',',a.DateBirth) as PlaceDateBirth,g.JenisTempatTinggal,
+            h.ctr_name as CountryAddress,i.ProvinceName as ProvinceAddress,j.RegionName as RegionAddress,k.DistrictName as DistrictsAddress,
+            a.District as DistrictAddress,a.Address,a.ZipCode,a.PhoneNumber,d.Email,n.SchoolName,l.sct_name_id as SchoolType,m.SchoolMajor,e.ctr_name as SchoolCountry,
+            n.ProvinceName as SchoolProvince,n.CityName as SchoolRegion,n.SchoolAddress,a.YearGraduate,IF(a.KPSReceiverStatus = 'YA',CONCAT('No KPS : ',a.NoKPS),'Tidak') as KPSReceiver,
+            o.JacketSize,a.FatherName,a.FatherNIK,CONCAT(a.FatherPlaceBirth,',',a.FatherDateBirth) as FatherPlaceDateBirth,a.FatherStatus,a.FatherPhoneNumber,p.ocu_name as FatherOccupation,q.Income as FatherIncome,
+            r.ctr_name as FatherCountry,s.ProvinceName as FatherProvince,t.RegionName as FatherRegion,a.FatherAddress,
+            a.MotherName,a.MotherNik,CONCAT(a.MotherPlaceBirth,',',a.MotherDateBirth) as MotherPlaceDateBirth,a.MotherStatus,a.MotherPhoneNumber,u.ocu_name  as MotherOccupation,v.Income as MotherIncome,
+            w.ctr_name as MotherCountry,x.ProvinceName as MotherProvince,y.RegionName as MotherRegion,a.MotherAddress,a.UploadFoto
+                    from db_admission.register_formulir as a
+                    JOIN db_admission.register_verified as b 
+                    ON a.ID_register_verified = b.ID
+                    JOIN db_admission.register_verification as c
+                    ON b.RegVerificationID = c.ID
+                    JOIN db_admission.register as d
+                    ON c.RegisterID = d.ID
+                    JOIN db_admission.country as e
+                    ON a.NationalityID = e.ctr_code
+                    JOIN db_employees.religion as f
+                    ON a.ReligionID = f.IDReligion
+                    JOIN db_admission.register_jtinggal_m as g
+                    ON a.ID_register_jtinggal_m = g.ID
+                    JOIN db_admission.country as h
+                    ON a.ID_country_address = h.ctr_code
+                    JOIN db_admission.province as i
+                    ON a.ID_province = i.ProvinceID
+                    JOIN db_admission.region as j
+                    ON a.ID_region = j.RegionID
+                    JOIN db_admission.district as k
+                    ON a.ID_districts = k.DistrictID
+                    JOIN db_admission.school_type as l
+                    ON l.sct_code = a.ID_school_type
+                    JOIN db_admission.register_major_school as m
+                    ON m.ID = a.ID_register_major_school
+                    JOIN db_admission.school as n
+                    ON n.ID = d.SchoolID
+                    JOIN db_admission.register_jacket_size_m as o
+                    ON o.ID = a.ID_register_jacket_size_m
+                    JOIN db_admission.occupation as p
+                    ON p.ocu_code = a.Father_ID_occupation
+                    JOIN db_admission.register_income_m as q
+                    ON q.ID = a.Father_ID_register_income_m
+                    JOIN db_admission.country as r
+                    ON r.ctr_code = a.FatherAddress_ID_country
+                    JOIN db_admission.province as s
+                    ON s.ProvinceID = a.FatherAddress_ID_province
+                    JOIN db_admission.region as t
+                    ON t.RegionID = a.FatherAddress_ID_region
+                    JOIN db_admission.occupation as u
+                    ON u.ocu_code = a.Mother_ID_occupation
+                    JOIN db_admission.register_income_m as v
+                    ON v.ID = a.Mother_ID_register_income_m
+                    JOIN db_admission.country as w
+                    ON w.ctr_code = a.MotherAddress_ID_country
+                    JOIN db_admission.province as x
+                    ON x.ProvinceID = a.MotherAddress_ID_province
+                    JOIN db_admission.region as y
+                    ON y.RegionID = a.MotherAddress_ID_region
+                    where a.ID = ?";
+        $query=$this->db->query($sql, array($this->session->userdata('ID_register_formulir')))->result_array();
+        $arr_temp = array();
+        foreach ($query as $key => $value) {
+            $arr_temp[] = $value;
+        }
+        //$arr_temp = $arr_temp[0];
+        $values = array_values($arr_temp[0]);
+        return $values;
+    }
+
 }

@@ -321,17 +321,20 @@ class C_register extends CI_Controller {
     {
         //error_reporting(0);
         $program_study = $this->m_api->getProgramStudy();
+        $arr_value = $this->m_reg->getDataFormulirPDf();
         $arr_temp = array('filename' => '');
         $filename = "formulir-pdf.pdf";
-        $setXCheckbox = 12;
-        $setYCheckbox = 27;
         $setX = 15;
-        $setY = 29;
+        $setY = 28;
         $setJarak = 1; // jarak antar line
         $setJarakX = 40;
         $setJarakY = 6;
+        $setJarakYPerRectangle = 9;
+        $setjarakCellHeader = 5;
+        $setJarakYrectangle = 22.2;
+
+        $setFontIsian = 6;
         $arrLabel1 = array(
-                          'Study Program',
                           'Full Name',
                           'Gender',
                           'Identity Card',
@@ -339,10 +342,6 @@ class C_register extends CI_Controller {
                           'Religion',
                           'Place and Date of Birth',
                           'Type Of Residence',
-                          'Phone Number',
-                          'Email'
-                         );
-        $arrLabel2 = array(
                           'Country',
                           'Province',
                           'Region',
@@ -350,6 +349,31 @@ class C_register extends CI_Controller {
                           'District',
                           'Address',
                           'Pos Code',
+                          'Phone Number',
+                          'Email',
+                          'School',
+                          'School Type',
+                          'School Major',
+                          'Country',
+                          'Province',
+                          'Region',
+                          'Address',
+                          'Graduation Year',
+                          'Receiver KPS',
+                          'Jacket Size'
+                         );
+        $arrLabel2 = array(
+                          'Name',
+                          'Identity Card',
+                          'Place and Date of Birth',
+                          'Status',
+                          'Phone Number',
+                          'Occupation',
+                          'Income',
+                          'Country',
+                          'Province',
+                          'Region',
+                          'Address',
                          );
         $arrLabel3 = array(
                           'School',
@@ -367,6 +391,7 @@ class C_register extends CI_Controller {
             $config=array('orientation'=>'P','size'=>'A4');
             $this->load->library('mypdf',$config);
             $this->mypdf->SetMargins(0,0,0,0);
+            $this->mypdf->SetAutoPageBreak(true, 0);
             $this->mypdf->AddPage();
             // Logo
             $this->mypdf->Image('./images/logo_tr.png',1,1,30);
@@ -383,36 +408,50 @@ class C_register extends CI_Controller {
             //$this->mypdf->Rect(105,18,0,120);// garis tengah
 
             // Judul di box
-            $this->mypdf->Ln($setJarak);
+            //$this->mypdf->Ln($setJarak);
             $this->mypdf->SetFont('Arial','b',12);
             $this->mypdf->SetX(10);
             $this->mypdf->SetTextColor(255,255,255);
+            //$this->mypdf->SetFillColor(976,245,458);
             $this->mypdf->Cell(190, 5, 'Study Program', 1, 1, 'L', true);
-            $this->mypdf->SetFillColor(976,245,458);
-
-            // Rect(float x, float y, float w, float h [, string style])
-            $this->mypdf->Rect(10,24,190,15);
-
-
+            // set height rectangle
+            $heightRectanglePrody = 7;
+            $setXCheckbox = 12;
+            $setYCheckbox = 26;
             $splitBagi = 5;
             $split = (int)(count($program_study) / $splitBagi);
             $sisa = count($program_study) % $splitBagi;
             if ($sisa > 0) {
                   $split++;
+                  $setJarakYrectangle = $setJarakYrectangle + 1;
             }
+
+            // set height rectangle sesuai dengan jumlah split
+            // Rect(float x, float y, float w, float h [, string style])
+            // $this->mypdf->Rect(10,24,190,15);
+            $heightRectanglePrody = $heightRectanglePrody * $split;
+            $setYrectangle = 23;
+            $this->mypdf->Rect(10,$setYrectangle,190,$heightRectanglePrody);
+
 
             $getRow = 0;
             for ($i=0; $i < $split ; $i++) { 
-                if (($sisa > 0) && ((i + 1) == $split) ) {
+                if (($sisa > 0) && (($i + 1) == $split) ) {
                                     $splitBagi = $sisa;    
                 }
                 $SetX1 = $setX;
                 $setXCheckbox1 = $setXCheckbox;
                 for ($k = 0; $k < $splitBagi; $k++) {
-                    $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox1,$setYCheckbox,3);
+                    if ($arr_value[0] == $program_study[$getRow]['ID']) {
+                        $this->mypdf->Image('./images/checkboxcheck.jpg',$setXCheckbox1,$setYCheckbox,3);
+                    }
+                    else
+                    {
+                        $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox1,$setYCheckbox,3);
+                    }
                     $this->mypdf->SetXY($SetX1,$setY);
                     $this->mypdf->SetTextColor(0,0,0);
-                    $this->mypdf->SetFont('Arial','',6);
+                    $this->mypdf->SetFont('Arial','',$setFontIsian);
                     $this->mypdf->Cell(0, 0, $program_study[$getRow]['Name'], 0, 1, 'L', 0);
                     $getRow++;
                     $setXCheckbox1 = $setXCheckbox1 + $setJarakX;
@@ -422,28 +461,251 @@ class C_register extends CI_Controller {
                 $setY = $setY + $setJarakY;
             }
 
-            // Image(string file [, float x [, float y [, float w [, float h [, string type [, mixed link]]]]]])
-            /*$this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox,$setYCheckbox,3);
-            $this->mypdf->SetXY(15,29);
-            $this->mypdf->SetTextColor(0,0,0);
-            $this->mypdf->SetFont('Arial','',8);
-            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+            // Judul di box
+            $setJarak = $setJarak + $setjarakCellHeader;
+            $this->mypdf->Ln($setJarak);
+            $this->mypdf->SetFont('Arial','b',12);
+            $this->mypdf->SetX(10);
+            $this->mypdf->SetTextColor(255,255,255);
+            $this->mypdf->SetFillColor(0,0,0);
+            $this->mypdf->Cell(190, 5, 'Part 1 Data of Prospective Students', 1, 1, 'L', true);
+
+            // set rectangle
+            $setYrectangle = $setYrectangle + $setJarakYrectangle;
+            $heightRectanglePrody = 110;
+            $this->mypdf->Rect(10,$setYrectangle,190,$heightRectanglePrody);
+            // isian
+            $setY = $setY + $setJarakYPerRectangle;
+            // number
+            $setXNumber = 12;
+            $setJarakY = 4;
+            $numberIncrement = 1;
+            $getRowDB = 1;
+            for ($i=0; $i < count($arrLabel1); $i++) { 
+                $this->mypdf->SetXY($setXNumber,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $numberIncrement, 0, 1, 'L', 0);
+
+                // label
+                $this->mypdf->SetXY($setX,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $arrLabel1[$i], 0, 1, 'L', 0);
+
+                // titik dua
+                $setXtitik2 = $setX+$setJarakX;
+                $this->mypdf->SetXY($setXtitik2,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, ":", 0, 1, 'L', 0);
+
+                // value
+                $setXvalue = $setXtitik2 + 2;
+                $this->mypdf->SetXY($setXvalue,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                // $this->mypdf->Cell(0, 0, "Value", 1, 1, 'L', 0);
+                
+                //MultiCell(float w, float h, string txt [, mixed border [, string align [, boolean fill]]])
+                /*$a = "a";
+                for ($k=0; $k < 353; $k++) { 
+                   $a .= 'b';
+                }*/
+                $SetYMultiCell = $setY - 1;
+                $this->mypdf->SetXY($setXvalue,$SetYMultiCell);
+                $this->mypdf->MultiCell( 140, 2, $arr_value[$getRowDB], 0,'L');
+
+                $setY = $setY + $setJarakY;
+                $numberIncrement++;
+                $getRowDB++;
+            }
+
+            // Judul di box3
+            $setjarakCellHeader =1;
+            //$setJarak = $setJarak + $setjarakCellHeader;
             
-            $setXCheckbox = $setXCheckbox + 25;
-            $this->mypdf->Image('./images/checkbox.jpg',$setXCheckbox,$setYCheckbox,3);
-            $this->mypdf->SetXY(40,29);
-            $this->mypdf->SetTextColor(0,0,0);
-            $this->mypdf->SetFont('Arial','',8);
-            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);
+            if ($split > 2) {
+                $setJarak = $setJarak - 3;
+                $setYrectangle = $setYrectangle + 2;
+                $setJarakYPerRectangle = $setJarakYPerRectangle + 4;
+            }
+            else
+            {
+                $setJarak = $setJarak;
+                $setJarakYPerRectangle = $setJarakYPerRectangle + 6;
+            }
+            
+            $this->mypdf->Ln($setJarak);
+            $this->mypdf->SetFont('Arial','b',12);
+            $this->mypdf->SetX(10);
+            $this->mypdf->SetTextColor(255,255,255);
+            $this->mypdf->SetFillColor(0,0,0);
+            $this->mypdf->Cell(190, 5, 'Part 2 Data of Your Parent', 1, 1, 'L', true);
 
-            $setYCheckbox = $setYCheckbox + 6;
-            $this->mypdf->Image('./images/checkbox.jpg',12,$setYCheckbox,3);
-            $this->mypdf->SetXY(15,35);
-            $this->mypdf->SetTextColor(0,0,0);
-            $this->mypdf->SetFont('Arial','',8);
-            $this->mypdf->Cell(0, 0, 'Study Program', 0, 1, 'L', 0);*/
+            // set rectangle
+            $setYrectangle = $setYrectangle + $heightRectanglePrody +1;
+            $heightRectanglePrody = 102;
+            $this->mypdf->Rect(10,$setYrectangle,190,$heightRectanglePrody);
 
-           
+            // isian
+            $setY = $setY + $setJarakYPerRectangle;
+            // number
+            $numberIncrement = 1;
+            $setXNumber = 12;
+            $setJarakY = 4;
+            $numberIncrement = 1;
+            $setXHeaderRec = $setXNumber;
+            $setYHeaderRec = $setY - 4;
+
+            // header
+            $this->mypdf->SetXY($setXHeaderRec,$setYHeaderRec);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','b',8);
+            $this->mypdf->Cell(0, 0, 'Father Data', 0, 1, 'L', 0);
+
+            for ($i=0; $i < count($arrLabel2); $i++) { 
+                $this->mypdf->SetXY($setXNumber,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $numberIncrement, 0, 1, 'L', 0);
+
+                // label
+                $this->mypdf->SetXY($setX,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $arrLabel2[$i], 0, 1, 'L', 0);
+
+                // titik dua
+                $setXtitik2 = $setX+$setJarakX;
+                $this->mypdf->SetXY($setXtitik2,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, ":", 0, 1, 'L', 0);
+
+                // value
+                $setXvalue = $setXtitik2 + 2;
+                $this->mypdf->SetXY($setXvalue,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                // $this->mypdf->Cell(0, 0, "Value", 1, 1, 'L', 0);
+                
+                //MultiCell(float w, float h, string txt [, mixed border [, string align [, boolean fill]]])
+                /*$a = "a";
+                for ($k=0; $k < 353; $k++) { 
+                   $a .= 'b';
+                }*/
+                $SetYMultiCell = $setY - 1;
+                $this->mypdf->SetXY($setXvalue,$SetYMultiCell);
+                $this->mypdf->MultiCell( 140, 2, $arr_value[$getRowDB], 0,'L');
+
+                $setY = $setY + $setJarakY;
+                $numberIncrement++;
+                $getRowDB++;
+            }
+
+            $setY = $setY + $setJarakY;
+            // header
+            $setYHeaderRec = $setY - 4;
+            $this->mypdf->SetXY($setXHeaderRec,$setYHeaderRec);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','b',8);
+            $this->mypdf->Cell(0, 0, 'Mother Data', 0, 1, 'L', 0);
+
+            $numberIncrement = 1;
+            for ($i=0; $i < count($arrLabel2); $i++) { 
+                $this->mypdf->SetXY($setXNumber,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $numberIncrement, 0, 1, 'L', 0);
+
+                // label
+                $this->mypdf->SetXY($setX,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, $arrLabel2[$i], 0, 1, 'L', 0);
+
+                // titik dua
+                $setXtitik2 = $setX+$setJarakX;
+                $this->mypdf->SetXY($setXtitik2,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                $this->mypdf->Cell(0, 0, ":", 0, 1, 'L', 0);
+
+                // value
+                $setXvalue = $setXtitik2 + 2;
+                $this->mypdf->SetXY($setXvalue,$setY);
+                $this->mypdf->SetTextColor(0,0,0);
+                $this->mypdf->SetFont('Arial','',$setFontIsian);
+                // $this->mypdf->Cell(0, 0, "Value", 1, 1, 'L', 0);
+                
+                //MultiCell(float w, float h, string txt [, mixed border [, string align [, boolean fill]]])
+                /*$a = "a";
+                for ($k=0; $k < 353; $k++) { 
+                   $a .= 'b';
+                }*/
+                $SetYMultiCell = $setY - 1;
+                $this->mypdf->SetXY($setXvalue,$SetYMultiCell);
+                $this->mypdf->MultiCell( 140, 2, $arr_value[$getRowDB], 0,'L');
+
+                $setY = $setY + $setJarakY;
+                $numberIncrement++;
+                $getRowDB++;
+            }
+
+            // pernyataan
+            $SetYMultiCell = $setY - 1;
+            $this->mypdf->SetXY(10,$SetYMultiCell);
+            $this->mypdf->SetFont('Arial','b',7);
+            $pernyataan1 = "I declare to register at Agung Podomoro University and declare all the data I provide is true and accountable.";
+            $pernyataan2 = "I submit and follow all the decisions made by Agung Podomoro University.";
+            $this->mypdf->MultiCell( 180, 2,$pernyataan1, 0,'L');
+            $SetYMultiCell = $SetYMultiCell + 3;
+            $this->mypdf->SetXY(10,$SetYMultiCell);
+            $this->mypdf->MultiCell( 180, 2,$pernyataan2, 0,'L');
+
+            // Footer
+            $setY = $setY + 7;
+            $this->mypdf->SetXY(10,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, "Jakarta,".date('d-M-Y'), 0, 1, 'L', 0);
+
+            // signature
+            $setYsignature = $setY + 18;
+            //Rect(float x, float y, float w, float h [, string style])
+            $this->mypdf->Rect(10,$setYsignature,20,0);
+            $setYsignature = $setYsignature + 1.5;
+            $this->mypdf->SetXY(10,$setYsignature);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $this->session->userdata('Name'), 0, 1, 'L', 0);
+
+            // foto
+            //Rect(float x, float y, float w, float h [, string style])
+            $setY = $setY - 2;
+            $this->mypdf->Rect(65,$setY,30,30);
+            $this->mypdf->Image('./foto_formulir/'.$arr_value[$getRowDB],65,$setY,30);
+            //$this->mypdf->Image('./foto_formulir/'.$arr_value[$getRowDB],65,$setY,30,30);
+
+            //signature Petugas
+            $setY = $setY + 2;
+            $this->mypdf->SetXY(150,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','b',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Officers', 0, 1, 'L', 0);
+
+            $setYsignatureOfficers = $setY +3;
+            $this->mypdf->SetXY(150,$setYsignatureOfficers);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Jakarta,_________________', 0, 1, 'L', 0);
+
+            //Rect(float x, float y, float w, float h [, string style])
+            $setYsignature = $setYsignature - 1.5;
+            $this->mypdf->Rect(152,$setYsignature,20,0);
+
+            
 
 
             $path = $path.'/'.$filename;
