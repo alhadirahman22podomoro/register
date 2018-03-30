@@ -76,7 +76,12 @@
       cursor: pointer;
   } 
 
-</style>
+  .table thead {
+      background: #d91f2d;
+      color: #fff;
+  }
+
+ </style>
 <link rel="stylesheet" href="<?php  echo base_url('assets/custom/style/fixed_header_tables.css'); ?>">
 <div class="container">
   <section>  
@@ -102,14 +107,46 @@
               <div class = row>
                 <div class="panel panel-primary">
                   <div class="panel-heading" style="border-radius: 0px;">
-                    <h3 class="panel-title">Download Your Formulir<span class="required">*</span></h3>
+                    <h3 class="panel-title">Download Your Data<span class="required">*</span></h3>
                   </div>
                   <div class="panel-body">
                     <!-- content -->
-                      <label class="col-md-3 control-label">Formulir </label>
-                      <div class="col-md-6">
-                       <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Download Formulir</button>
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <div class = "col-md-3">
+                          <!-- <label class="control-label">Formulir </label> -->
+                            <!-- <div class="col-md-3"> -->
+                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Formulir</button> 
+                            <!-- </div> -->
+                        </div>
+                        <div class = "col-md-3">
+                          <!-- <label class="control-label">Admission Statement </label> -->
+                            <!-- <div class="col-md-3"> -->
+                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Admission Statement</button> 
+                            <!-- </div> -->
+                        </div>
+                        <div class = "col-md-4">
+                          <!-- <label class="control-label">Admission Statement </label> -->
+                            <!-- <div class="col-md-3"> -->
+                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Bebas Narkoba</button> 
+                            <!-- </div> -->
+                        </div>
                       </div>
+                      <div class="form-group">   
+                        <div class = "col-md-5">
+                          <!-- <label class="control-label">Admission Statement </label> -->
+                            <!-- <div class="col-md-3"> -->
+                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Kesanggupan Kelengkapan STTB</button> 
+                            <!-- </div> -->
+                        </div>
+                        <div class = "col-md-5">
+                          <!-- <label class="control-label">Admission Statement </label> -->
+                            <!-- <div class="col-md-3"> -->
+                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Kesanggupan Kelengkapan Dokument</button> 
+                            <!-- </div> -->
+                        </div>
+                      </div>  
+                    </div>    
                   </div>
                 </div>
               </div>
@@ -174,14 +211,17 @@
     $.post(url,function (data_json) {
         var response = jQuery.parseJSON(data_json);
         //console.log(response.length);
-        $('#pageUploadDokument').append('<table class="points_table" id ="tablechkDokument">'+
+        //table class="points_table
+        $('#pageUploadDokument').append('<div class="table-responsive"><table class="table" id ="tablechkDokument">'+
                                          '<thead>'+
                                            '<tr>'+
                                               '<th class="col-xs-1">No</th>'+
-                                              '<th class="col-xs-5">Document</th>'+
+                                              '<th class="col-xs-3">Document</th>'+
                                               '<th class="col-xs-1">Required</th>'+
                                               '<th class="col-xs-2">&nbsp&nbsp Action</th>'+
                                               '<th class="col-xs-1">Status</th>'+
+                                              '<th class="col-xs-1">Attachment</th>'+
+                                              '<th class="col-xs-3">Description</th>'+
                                            '</tr>'+
                                           '</thead>'+
                                           '<tbody id = "isiData" class="points_table_scrollbar">' 
@@ -211,19 +251,39 @@
              default :
                    setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';      
             }
+            var Attachment = "";
+            var Description = "";
+            // console.log(response[k].Attachment);
+            if (response[k].Attachment == null) {
+              Attachment = "";
+            }
+            else
+            {
+              Attachment = response[k].Attachment;
+            }
+
+            if (response[k].Description == null) {
+              Description = "";
+            }
+            else
+            {
+              Description = response[k].Description;
+            }
 
             $('#isiData').append('<tr class = "'+setRow+'">'+
                                     '<td class="col-xs-1">'+Nomor+'</td>'+
-                                    '<td class="col-xs-5">'+response[k].DocumentChecklist+'</td>'+
+                                    '<td class="col-xs-3">'+response[k].DocumentChecklist+'</td>'+
                                     '<td class="col-xs-1">'+response[k].Required+'</td>'+
                                     '<td class="col-xs-2">'+'<label for="file-upload" class="custom-file-upload"><span class="glyphicon glyphicon-upload"></span> Upload </label><input class = "file-upload'+response[k].ID+'" id="file-upload" type="file" data-sbmt = "'+response[k].ID+'"/>'+'</td>'+
                                     '<td class="col-xs-1">'+setIcon+'</td>'+
+                                    '<td class="col-xs-1">'+Attachment+'</td>'+
+                                    '<td class="col-xs-3">'+Description+'</td>'+
                                  '</tr>'
                                 );
             Nomor++;
           }
           $('#isiData').append('</tbody>');
-          $('#isiData').append('</table>');
+          $('#isiData').append('</table></div>');
     }).done(function() {
           setTimeout(function () {
               $('#NotificationModal').modal('hide');

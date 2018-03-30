@@ -731,11 +731,11 @@ class C_register extends CI_Controller {
         // Check File exist atau tidak
         $namaFolder = $this->session->userdata('Email');
         if (file_exists('./document/'.$namaFolder.'/'.$file)) {
-            //$this->load->helper('download');
-            // $data   = file_get_contents('./document/'.$namaFolder.'/'.$file);
-            // $name   = $file;
-            // force_download($name, $data); // script download file
-            $this->showFile($file);
+            $this->load->helper('download');
+            $data   = file_get_contents('./document/'.$namaFolder.'/'.$file);
+            $name   = $file;
+             force_download($name, $data); // script download file
+            // $this->showFile($file);
         }
         else
         {
