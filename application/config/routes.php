@@ -53,3 +53,5 @@ $route['register/formupload/(:any)'] = 'c_register/formupload/$1';
 $route['register/formupload_submit'] = 'c_register/formupload_submit';
 
 
+// test url
+$route['testing'] = 'c_register/testing';

@@ -684,8 +684,10 @@ class C_register extends CI_Controller {
             // foto
             //Rect(float x, float y, float w, float h [, string style])
             $setY = $setY - 2;
-            $this->mypdf->Rect(65,$setY,30,30);
-            $this->mypdf->Image('./foto_formulir/'.$arr_value[$getRowDB],65,$setY,30);
+            $this->mypdf->Rect(65,$setY,20,26.5);
+            // $this->mypdf->Image('./foto_formulir/'.$arr_value[$getRowDB],65,$setY,40,30);
+            $PathFileFoto = $this->generateImage('./foto_formulir/'.$arr_value[$getRowDB]);
+            $this->mypdf->Image($PathFileFoto,65,$setY);
             //$this->mypdf->Image('./foto_formulir/'.$arr_value[$getRowDB],65,$setY,30,30);
 
             //signature Petugas
@@ -760,6 +762,35 @@ class C_register extends CI_Controller {
             mkdir('./document/'.$namaFolder, 0777, true);
         }
         return $path = './document/'.$namaFolder;
+    }
+
+    private function generateImage($pathFile)
+    {
+        include_once APPPATH.'vendor/autoload.php';
+        $image = new \Gumlet\ImageResize($pathFile);
+        $image->resize(75.2, 100);
+        $path = $this->BuatFolderSetiapCandidate();
+        $newPathFile = $path.'/'.'FotoResize.jpg';
+        $image->save($newPathFile);
+        return $newPathFile;
+    }
+
+    public function testing()
+    {
+        //error_reporting(0);
+        //include autoload composer
+        include_once APPPATH.'vendor/autoload.php';
+        //include APPPATH.'/vendor/gumlet/php-image-resize/lib/ImageResize.php';
+        // $image = new \Gumlet\ImageResize('./foto_formulir/2d5b30f708b3c6ad7cd70a43b939a53e.jpg');
+        // $image->scale(50);
+        // $image->save('image2.jpg');
+
+        $image = new \Gumlet\ImageResize('./foto_formulir/2d5b30f708b3c6ad7cd70a43b939a53e.jpg');
+        //$image->resizeToHeight(75);
+        //$image->resizeToWidth(113.38582677);
+        //$image->resizeToBestFit(75, 113);
+        $image->resize(75, 113);
+        $image->save('image2.jpg');
     }
 
 }
