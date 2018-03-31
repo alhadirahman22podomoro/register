@@ -13,6 +13,10 @@ $route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
 $route['checkDocument'] = 'c_register/checkDocument';
 $route['getDataDokument'] = 'c_register/getDataDokument';
 $route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';
+$route['downloadPDFAdmissionStatement'] = 'c_register/downloadPDFAdmissionStatement';
+$route['downloadPDFBebasNarkoba'] = 'c_register/downloadPDFBebasNarkoba';
+
+
 $route['fileGet/(:any)'] = 'c_register/fileGet/$1';
 
 // === AUTH ===

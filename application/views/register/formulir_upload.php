@@ -122,13 +122,13 @@
                         <div class = "col-md-3">
                           <!-- <label class="control-label">Admission Statement </label> -->
                             <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Admission Statement</button> 
+                              <button class="ng-button" id="btn-dwnadmss" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Admission Statement</button> 
                             <!-- </div> -->
                         </div>
                         <div class = "col-md-4">
                           <!-- <label class="control-label">Admission Statement </label> -->
                             <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Bebas Narkoba</button> 
+                              <button class="ng-button" id="btn-dwnBebasNarkoab" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Bebas Narkoba</button> 
                             <!-- </div> -->
                         </div>
                       </div>
@@ -309,7 +309,55 @@
     }).fail(function() {
       toastr.error('The Download Processing error, please try again', 'Failed!!');;
     }).always(function() {
-      $('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+      $('#btn-dwnformulir').prop('disabled',false).html('Formulir');
+    });
+    //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+
+  });
+
+  $(document).on('click','#btn-dwnadmss', function () {
+    loading_button('#btn-dwnadmss');
+    var ID_register_formulir = $(this).attr('data-sbmt');
+    var url = base_url_js+'downloadPDFAdmissionStatement';
+    var data = {
+      ID_register_formulir : ID_register_formulir,
+    };
+    var token = jwt_encode(data,"UAP)(*");
+    $.post(url,{token:token},function (data_json) {
+      var response = jQuery.parseJSON(data_json);
+      //console.log(response);
+      //window.location.href = base_url_js+'fileGet/'+response;
+      window.open(base_url_js+'fileGet/'+response,'_blank');
+    }).done(function() {
+      toastr.success('The Download processing success', 'Success!');
+    }).fail(function() {
+      toastr.error('The Download Processing error, please try again', 'Failed!!');;
+    }).always(function() {
+      $('#btn-dwnadmss').prop('disabled',false).html('Admission Statement');
+    });
+    //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+
+  });
+
+  $(document).on('click','#btn-dwnBebasNarkoab', function () {
+    loading_button('#btn-dwnBebasNarkoab');
+    var ID_register_formulir = $(this).attr('data-sbmt');
+    var url = base_url_js+'downloadPDFBebasNarkoba';
+    var data = {
+      ID_register_formulir : ID_register_formulir,
+    };
+    var token = jwt_encode(data,"UAP)(*");
+    $.post(url,{token:token},function (data_json) {
+      var response = jQuery.parseJSON(data_json);
+      //console.log(response);
+      //window.location.href = base_url_js+'fileGet/'+response;
+      window.open(base_url_js+'fileGet/'+response,'_blank');
+    }).done(function() {
+      toastr.success('The Download processing success', 'Success!');
+    }).fail(function() {
+      toastr.error('The Download Processing error, please try again', 'Failed!!');;
+    }).always(function() {
+      $('#btn-dwnBebasNarkoab').prop('disabled',false).html('Surat Pernyataan Bebas Narkoba');
     });
     //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
 

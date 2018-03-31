@@ -313,11 +313,11 @@ class C_register extends CI_Controller {
     public function downloadPDFFormulir()
     {
         $path = $this->BuatFolderSetiapCandidate();
-        $generatePDF = $this->generatePDF($path);
+        $generatePDF = $this->generatePDFFormulir($path);
         echo json_encode($generatePDF);
     }
 
-    private function generatePDF($path)
+    private function generatePDFFormulir($path)
     {
         //error_reporting(0);
         $program_study = $this->m_api->getProgramStudy();
@@ -731,11 +731,11 @@ class C_register extends CI_Controller {
         // Check File exist atau tidak
         $namaFolder = $this->session->userdata('Email');
         if (file_exists('./document/'.$namaFolder.'/'.$file)) {
-            $this->load->helper('download');
-            $data   = file_get_contents('./document/'.$namaFolder.'/'.$file);
-            $name   = $file;
-             force_download($name, $data); // script download file
-            // $this->showFile($file);
+            // $this->load->helper('download');
+            // $data   = file_get_contents('./document/'.$namaFolder.'/'.$file);
+            // $name   = $file;
+             // force_download($name, $data); // script download file
+            $this->showFile($file);
         }
         else
         {
@@ -773,6 +773,585 @@ class C_register extends CI_Controller {
         $newPathFile = $path.'/'.'FotoResize.jpg';
         $image->save($newPathFile);
         return $newPathFile;
+    }
+
+    public function downloadPDFAdmissionStatement()
+    {
+        $path = $this->BuatFolderSetiapCandidate();
+        $generatePDF = $this->generatePDFAdmissionStatement($path);
+        echo json_encode($generatePDF);
+    }
+
+    public function generatePDFAdmissionStatement($path)
+    {
+        //error_reporting(0);
+        $arr_value = $this->m_reg->getDataFormulirPDf();
+        $arr_temp = array('filename' => '');
+        $filename = "Admission-Statement.pdf";
+        $setXAwal = 10;
+        $setYAwal = 18;
+        $setJarakY = 5;
+        $setFontIsian = 8;
+        try
+        {
+            $config=array('orientation'=>'P','size'=>'A4');
+            $this->load->library('mypdf',$config);
+            $this->mypdf->SetMargins(0,0,0,0);
+            $this->mypdf->SetAutoPageBreak(true, 0);
+            $this->mypdf->AddPage();
+            // Logo
+            $this->mypdf->Image('./images/logo_tr.png',10,1,30);
+            $this->mypdf->SetFont('Arial','B',10);
+            $this->mypdf->Text(167, 5,'FM-UAP/MKT-01-04');
+            // Line break
+            $this->mypdf->Ln(8);
+
+            $this->mypdf->SetFont('Arial','B',14);
+            $this->mypdf->Cell(210, 10, 'Admission Statement', 0, 1, 'C', 0);
+            //$this->mypdf->Line(10,16,200,16);
+
+            $this->mypdf->SetFont('Arial','b',8);
+            $this->mypdf->SetXY(10,18);
+            $this->mypdf->SetTextColor(255,255,255);
+            $this->mypdf->SetFillColor(0,0,0);
+            $this->mypdf->Cell(190, 5, 'Bacalah dengan seksama sebelum Anda menandatangani', 1, 1, 'L', true);
+
+            // isian
+            $setY = $setYAwal + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'No.Formulir', 0, 1, 'L', 0);
+
+            // $setY = $setYAwal + $setJarakY;
+            $setX = $setXAwal + 25; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+            // $setY = $setYAwal + $setJarakY;
+            $setX = $setXAwal + 30; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $this->session->userdata('FormulirCode'), 0, 1, 'L', 0);
+
+            $setY = $setY + $setJarakY;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Nama', 0, 1, 'L', 0);
+
+            // $setY = $setYAwal + $setJarakY;
+            $setX = $setXAwal + 25; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+            // $setY = $setYAwal + $setJarakY;
+            $setX = $setXAwal + 30; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $this->session->userdata('Name'), 0, 1, 'L', 0);
+
+            $setY = $setY + ($setJarakY * 2);
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Saya yang bertanda tangan dibawah ini :', 0, 1, 'L', 0);
+
+            // set x dan y number dan isian
+            $setXnumber = $setXAwal;
+            $setXisian = $setXnumber + 5;
+            $setY = $setY + ($setJarakY * 1);
+
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '1', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya tidak akan melakukan setiap dan seluruh perbuatan yang melanggar hukum, membawa,menggunakan serta mengedarkan obat terlarang(Narkoba)/minuman keras. Hak sebagai mahasiswa Universitas Agung Podomoro akan gugur bila tidak lulus dalam test kesehatan/test narkoba.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 3);
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '2', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya bersedia melakukan tes darah/urine yang sewaktu waktu akan dilakukan oleh pihak Universitas Agung Podomoro.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+
+            $setY = $setY + $setJarakY;
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '3', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya bersedia mengundurkan diri dari Universitas Agung Podomoro jika saya belum dapat menyerahkan dokumen :";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            // sub isian
+            $setXsubIsianMark = $setXisian;
+            $setXsubIsian = $setXisian + 3;
+            $setY = $setY + 4;
+            $this->mypdf->SetXY($setXsubIsianMark,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '*', 0, 1, 'L', 0);
+
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Selambat-lambatnya 1(satu) minggu sebelum semester-1 berakhir untuk fotokopi ijasah SMA Nasional(STTB/NEM/DNUN/SKHUN) yang dilegalisir.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXsubIsian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 185, 3,$isian, 0,'L');
+
+            $setY = $setY + 8;
+            $this->mypdf->SetXY($setXsubIsianMark,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '*', 0, 1, 'L', 0); 
+
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Selambat-lambatnya 1(satu) minggu sebelum perkuliahan tahun ajaran 2018-2019 dimulai untuk ijasah Paket C dan surat penyetaraan bagi lulusan luar negri yang dilegalisir.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXsubIsian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 185, 3,$isian, 0,'L');
+
+            $setY = $setY + $setJarakY + 2;
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '4', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Jika terdapat dokumen yang tidak sesuai saya bersedia menerima segala konsekuensi yang diberikan oleh Univeristas Agung Podomoro.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + $setJarakY;
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '5', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya bersedia untuk memberikan seluruh kelengkapan dokumen yang dibutuhkan sebagai persyaratan pendaftaran mahasiswa Universitas Agung Podomoro. Apabila dalam kurun waktu yang ditentukan, saya tidak memenuhi persyaratan maka saya bersedia menerima konsekuensi dari Universitas Agung Podomoro.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 3);
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '6', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya tidak buta warna (khusus program study Arsitektur dan Desain Produk) dibuktikan dengan Surat Keterangan Tidak Buta Warna dari Dokter Spesialis Mata.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 2);
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '7', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya bersedia dikeluarkan (Drop Out/DO) jika pada akhir semester 4 belum mengumpulkan minimal 40 sks dan IPK besar sama dengan 2,00.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + $setJarakY;
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '8', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Biaya studi yang berlaku hanya diterpakan untuk periode 4 tahun pertama (S1 dan/atau D4) jika ada pertambahan semester setelah itu, biaya studi yang digunakan adalah biaya studi pada tahun ajaran terbaru.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 2);
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '9', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Pengembalian dana dilakukan apabila :";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            // sub isian
+            $setXsubIsianMark = $setXisian;
+            $setXsubIsian = $setXisian + 3;
+            $setY = $setY + 4;
+            $this->mypdf->SetXY($setXsubIsianMark,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '1.', 0, 1, 'L', 0);
+
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya tidak lulus Ujian Nasional(UN), dan saya setuju dipotong biaya administrasi sebesar Rp. 500.000,-";
+            $SetYMultiCell = $setY - 1.5;
+            $this->mypdf->SetXY($setXsubIsian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 185, 3,$isian, 0,'L');
+
+            $setY = $setY + 4;
+            $this->mypdf->SetXY($setXsubIsianMark,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '2', 0, 1, 'L', 0); 
+
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya diterima di Perguruan Tinggi Negri (PTN) : UI, ITB, UNPAD, UNDIP, IPB, UGM, UNAIR, ITS Surabaya melalui jalur SNMPTN dan SBMPTN (tidak termasuk Ujian Mandiri,Program Diploma & Politeknik Negri) dan saya setuju dipotong biaya administrasi Rp. 1.500.000,-";
+            $SetYMultiCell = $setY - 1.5;
+            $this->mypdf->SetXY($setXsubIsian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 185, 3,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 2);
+            $this->mypdf->SetXY($setXnumber,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, '10', 0, 1, 'L', 0);
+
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya bersedia mentaati Statuta Universitas Agung Podomoro, Peraturan Tata Tertib Kampus dan atau peraturan lain yang telah atau akan diberlakukan dilingkungan Universitas Agung Podomoro. Saya bersedia dikenakan sanksi apapun apabila informasi yang saya berikan TIDAK BENAR";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Saya menerima,mengerti dan menyetujui semua peraturan yang berlaku di Universitas Agung Podomoro";
+            $SetYMultiCell = $setY + 10;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 4,$isian, 0,'L');
+
+            $setY = $setY + 25;
+            $this->mypdf->SetFont('Arial','b',8);
+            $this->mypdf->SetXY(10,$setY);
+            $this->mypdf->SetTextColor(255,255,255);
+            $this->mypdf->SetFillColor(0,0,0);
+            $this->mypdf->Cell(190, 5, 'Pernyataan pendaftaran adalah perjanjian antara Calon Mahasiswa dan Universitas Agung Podomoro sebagai sebuah institusi.', 1, 1, 'L', true);
+
+            $setYLine = $setY + 15;
+            $this->mypdf->Line(10,$setYLine,40,$setYLine);
+            $setYNameLine = $setYLine + 2;
+            $this->mypdf->SetXY(10,$setYNameLine);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tempat', 0, 1, 'L', 0);
+
+            $this->mypdf->Line(50,$setYLine,80,$setYLine);
+            // $setYNameLine = $setYLine + 2;
+            $this->mypdf->SetXY(50,$setYNameLine);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tanggal', 0, 1, 'L', 0);
+
+            $setY = $setYNameLine + 15;
+            $this->mypdf->SetXY(20,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','','6');
+            $this->mypdf->Cell(0, 0, 'Materai', 0, 1, 'L', 0);
+            $setY = $setY + 2;
+            $this->mypdf->SetXY(20,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','','6');
+            $this->mypdf->Cell(0, 0, 'Rp. 6000,-', 0, 1, 'L', 0);
+
+            $setYLineSignature = $setY + 15;
+            $this->mypdf->Line(10,$setYLineSignature,80,$setYLineSignature);
+            $setYLineNameSignature = $setYLineSignature + 2;
+            $this->mypdf->SetXY(10,$setYLineNameSignature);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $this->session->userdata('Name'), 0, 1, 'L', 0);
+
+            $this->mypdf->Line(190,$setYLineSignature,120,$setYLineSignature);
+            $setYLineNameSignature = $setYLineSignature + 2;
+            $this->mypdf->SetXY(120,$setYLineNameSignature);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tanda Tangan dan Nama Lengkap Orang Tua / Wali', 0, 1, 'L', 0);
+
+            $path = $path.'/'.$filename;
+            $this->mypdf->Output($path,'F');
+
+        }
+        catch(Exception $e)
+        {
+            return $arr_temp['filename'] = $filename;   
+        }
+       
+        return $arr_temp['filename'] = $filename;
+    }
+
+    public function downloadPDFBebasNarkoba()
+    {
+        $path = $this->BuatFolderSetiapCandidate();
+        $generatePDF = $this->generatePDFSRTBebasNarkoba($path);
+        echo json_encode($generatePDF);
+    }
+
+    public function generatePDFSRTBebasNarkoba($path)
+    {
+        //error_reporting(0);
+        $arr_value = $this->m_reg->getDataFormulirPDf();
+        $arr_temp = array('filename' => '');
+        $filename = "Surat-Pernyataan-Bebas-Narkoba.pdf";
+        $setXAwal = 10;
+        $setYAwal = 18;
+        $setJarakY = 5;
+        $setFontIsian = 8;
+
+        try{
+            $config=array('orientation'=>'P','size'=>'A4');
+            $this->load->library('mypdf',$config);
+            $this->mypdf->SetMargins(0,0,0,0);
+            $this->mypdf->SetAutoPageBreak(true, 0);
+            $this->mypdf->AddPage();
+            // Logo
+            $this->mypdf->Image('./images/logo_tr.png',10,1,30);
+            // Line break
+            $this->mypdf->Ln(8);
+
+            $this->mypdf->SetFont('Arial','B',14);
+            $this->mypdf->Cell(210, 10, 'Surat Pernyataan Bebas Diri Narkoba', 0, 1, 'C', 0);
+
+            // isian
+            $setY = $setYAwal + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Saya yang bertanda tangan dibawah ini : ', 0, 1, 'L', 0);
+
+            $setY = $setY + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Nama', 0, 1, 'L', 0);
+
+            $setX = $setXAwal + 45; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+            // value 
+            $setX = $setXAwal + 50; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $arr_value[1], 0, 1, 'L', 0);
+
+            $setY = $setY + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tempat, Tanggal Lahir', 0, 1, 'L', 0);
+
+            $setX = $setXAwal + 45; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+             // value 
+            $setX = $setXAwal + 50; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $arr_value[6], 0, 1, 'L', 0);
+
+            $setY = $setY + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'No.KTP / Passport / Kartu Pelajar', 0, 1, 'L', 0);
+
+            $setX = $setXAwal + 45; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+             // value 
+            $setX = $setXAwal + 50; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $arr_value[3], 0, 1, 'L', 0);
+
+            $setY = $setY + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Jenis Kelamin', 0, 1, 'L', 0);
+
+            $setX = $setXAwal + 45; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+            // value 
+            $setX = $setXAwal + 50; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $arr_value[2], 0, 1, 'L', 0);
+
+            $setY = $setY + 10;
+            $setX = $setXAwal; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Agama', 0, 1, 'L', 0);
+
+            $setX = $setXAwal + 45; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, ':', 0, 1, 'L', 0);
+
+             // value 
+            $setX = $setXAwal + 50; 
+            $this->mypdf->SetXY($setX,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $arr_value[5], 0, 1, 'L', 0);
+
+            $setY = $setY + ($setJarakY * 2);
+            $setXisian = 10;
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Dengan ini menyatakan dengan sesungguhnya bahwa saya tidak pernah menggunakan narkoba dan terlibat dengan narkoba dalam bentuk apapun, baik sebagai pengguna atau pengedar.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 6,$isian, 0,'L');
+
+            $setY = $setY + ($setJarakY * 3);
+            $setXisian = 10;
+            // $this->mypdf->SetXY($setXisian,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $isian = "Demikian surat pernyataan ini saya buat dengan sesungguhnya dan saya bersedia diproses berdsarkan hukum yang berlaku di Republik Indonesia serta bersedia menerima segala tindakan yang diambil oleh Podomoro University dan pemerintah apabila dikemudian hari pernyataan saya terbukti tidak benar.";
+            $SetYMultiCell = $setY - 2;
+            $this->mypdf->SetXY($setXisian,$SetYMultiCell);
+            $this->mypdf->MultiCell( 190, 6,$isian, 0,'L');
+
+
+            $setYLine = $setY + 30;
+            $this->mypdf->Line(10,$setYLine,40,$setYLine);
+            $setYNameLine = $setYLine + 2;
+            $this->mypdf->SetXY(10,$setYNameLine);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tempat', 0, 1, 'L', 0);
+
+            $this->mypdf->Line(50,$setYLine,80,$setYLine);
+            // $setYNameLine = $setYLine + 2;
+            $this->mypdf->SetXY(50,$setYNameLine);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tanggal', 0, 1, 'L', 0);
+
+            $this->mypdf->SetXY(140,$setYNameLine);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Mengetahui', 0, 1, 'L', 0);
+
+            $setY = $setYNameLine + 15;
+            $this->mypdf->SetXY(20,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','','6');
+            $this->mypdf->Cell(0, 0, 'Materai', 0, 1, 'L', 0);
+            $setY = $setY + 2;
+            $this->mypdf->SetXY(20,$setY);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','','6');
+            $this->mypdf->Cell(0, 0, 'Rp. 6000,-', 0, 1, 'L', 0);
+
+            $setYLineSignature = $setY + 15;
+            $this->mypdf->Line(10,$setYLineSignature,80,$setYLineSignature);
+            $setYLineNameSignature = $setYLineSignature + 2;
+            $this->mypdf->SetXY(10,$setYLineNameSignature);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, $this->session->userdata('Name'), 0, 1, 'L', 0);
+
+            $this->mypdf->Line(190,$setYLineSignature,120,$setYLineSignature);
+            $setYLineNameSignature = $setYLineSignature + 2;
+            $this->mypdf->SetXY(120,$setYLineNameSignature);
+            $this->mypdf->SetTextColor(0,0,0);
+            $this->mypdf->SetFont('Arial','',$setFontIsian);
+            $this->mypdf->Cell(0, 0, 'Tanda Tangan dan Nama Lengkap Orang Tua / Wali', 0, 1, 'L', 0);
+            
+            $path = $path.'/'.$filename;
+            $this->mypdf->Output($path,'F');
+
+        }
+        catch (Exception $e){
+            return $arr_temp['filename'] = $filename;
+        }
+
+        return $arr_temp['filename'] = $filename;
     }
 
     public function testing()
