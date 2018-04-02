@@ -15,22 +15,10 @@ $route['getDataDokument'] = 'c_register/getDataDokument';
 $route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';
 $route['downloadPDFAdmissionStatement'] = 'c_register/downloadPDFAdmissionStatement';
 $route['downloadPDFBebasNarkoba'] = 'c_register/downloadPDFBebasNarkoba';
+$route['upload_dokument'] = 'c_register/upload_dokument';
 
 
 $route['fileGet/(:any)'] = 'c_register/fileGet/$1';
-
-// === AUTH ===
-$route['uath/authUserPassword'] = 'c_login/authUserPassword';
-$route['auth/authGoogle'] = 'c_login/authGoogle';
-// $route['auth/gen_pass'] = 'c_login/gen_pass';
-$route['auth/logMeOut'] = 'c_login/logMeOut';
-
-$route['authEmp/(:any)/(:any)'] = 'c_login/genratePassword2/$1/$2';
-
-$route['gen/(:any)/(:any)'] = 'c_login/gen/$1/$2';
-
-
-$route['db/(:any)'] = 'auth/c_auth/db/$1';
 
 // === api ==
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';

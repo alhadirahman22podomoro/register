@@ -164,19 +164,19 @@
 										    	
 										      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahir" >
 										    </div>
-										    <div class="col-md-1">
+										    <div class="col-md-2">
 										    	  Years
 										    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahir">
 										    	    <option></option>
 										    	  </select>
 										    </div>
-										    <div class="col-md-1">
+										    <div class="col-md-2">
 										    	  Month
 										    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahir">
 										    	    <option></option>
 										    	  </select>
 										    </div>
-										    <div class="col-md-1">
+										    <div class="col-md-2">
 										    	  Days
 										    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahir">
 										    	    <option></option>
@@ -389,19 +389,19 @@
 												    <div class="col-md-2">
 												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirAyah" >
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Years
 												    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahirAyah">
 												    	    <option></option>
 												    	  </select>
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Month
 												    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahirAyah">
 												    	    <option></option>
 												    	  </select>
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Days
 												    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahirAyah">
 												    	    <option></option>
@@ -512,19 +512,19 @@
 												    <div class="col-md-2">
 												      <input type="text" name="weight" placeholder="Input Place of Birth..." id = "TempatLahirIbu" >
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Years
 												    	  <select class="select2-select-00 col-md-12 full-width-fix tahun_lahir" id="Tahun_lahirIbu">
 												    	    <option></option>
 												    	  </select>
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Month
 												    	  <select class="select2-select-00 col-md-12 full-width-fix bulan_lahir" id="Bulan_lahirIbu">
 												    	    <option></option>
 												    	  </select>
 												    </div>
-												    <div class="col-md-1">
+												    <div class="col-md-2">
 												    	  Days
 												    	  <select class="select2-select-00 col-md-12 full-width-fix dd_lahir" id="DD_lahirIbu">
 												    	    <option></option>

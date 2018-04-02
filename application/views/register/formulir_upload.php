@@ -82,7 +82,7 @@
   }
 
  </style>
-<link rel="stylesheet" href="<?php  echo base_url('assets/custom/style/fixed_header_tables.css'); ?>">
+<!-- <link rel="stylesheet" href="<?php  echo base_url('assets/custom/style/fixed_header_tables.css'); ?>"> -->
 <div class="container">
   <section>  
     <div id="container_demo" >
@@ -159,7 +159,7 @@
                     <div class = "col-md-3">Description Status : </div>
                     <div class = "col-md-3"><i class="fa fa-check-circle" style="color: green;"></i> Done</div>
                     <div class = "col-md-3"><i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i> Progress</div>
-                    <div class = "col-md-3"><i class="fa fa-minus-circle" style="color: red;"></i> Not Yet Uploaded</div>
+                    <div class = "col-md-3"><i class="fa fa-minus-circle" style="color: red;"></i> Not Yet Uploaded / Reject</div>
                     <!-- content -->
                     <br><br>
                     <div id = "pageUploadDokument"></div>
@@ -240,6 +240,7 @@
             switch(response[k].Status)
             {
              case  "Belum Upload" :
+             case  "Reject" :
                     setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
                     break;
              case  "Progress Checking" :
@@ -274,7 +275,7 @@
                                     '<td class="col-xs-1">'+Nomor+'</td>'+
                                     '<td class="col-xs-3">'+response[k].DocumentChecklist+'</td>'+
                                     '<td class="col-xs-1">'+response[k].Required+'</td>'+
-                                    '<td class="col-xs-2">'+'<label for="file-upload" class="custom-file-upload"><span class="glyphicon glyphicon-upload"></span> Upload </label><input class = "file-upload'+response[k].ID+'" id="file-upload" type="file" data-sbmt = "'+response[k].ID+'"/>'+'</td>'+
+                                    '<td class="col-xs-2">'+'<label class="btn btn-primary" style="color: #ffff;">Browse&hellip; <input class = "file-upload" type="file" style="display: none;" data-sbmt = "'+response[k].ID+'" id = "file-upload'+response[k].ID+'"></label>'+'</td>'+
                                     '<td class="col-xs-1">'+setIcon+'</td>'+
                                     '<td class="col-xs-1">'+Attachment+'</td>'+
                                     '<td class="col-xs-3">'+Description+'</td>'+
@@ -362,4 +363,89 @@
     //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
 
   });
+
+  function file_validation(ID_element)
+  {
+    try{
+      var name = document.getElementById(ID_element).files[0].name;
+      var ext = name.split('.').pop().toLowerCase();
+      if(jQuery.inArray(ext, ['png','jpg','jpeg','pdf']) == -1) 
+      {
+        toastr.error("Invalid Image File", 'Failed!!');
+        return false;
+      }
+      var oFReader = new FileReader();
+      oFReader.readAsDataURL(document.getElementById(ID_element).files[0]);
+      var f = document.getElementById(ID_element).files[0];
+      var fsize = f.size||f.fileSize;
+      if(fsize > 500000) // 500kb
+      {
+       toastr.error("Image File Size is very big", 'Failed!!');
+       return false;
+      }
+
+    }
+    catch(err)
+    {
+      return false;
+    }
+      return true;
+  }
+
+
+  $(document).on('change','.file-upload',function () {
+      var ID_document = $(this).attr('data-sbmt');
+      var ID_element = $(this).attr('id');
+      // console.log(ID_element);
+      if (file_validation(ID_element)) {
+        SaveFile(ID_element);
+      }
+      
+        
+  });
+
+  function SaveFile(ID_element)
+  {
+      var form_data = new FormData();
+      var fileData = document.getElementById(ID_element).files[0];
+      var url = base_url_js + "upload_dokument";
+      var token = jwt_encode(DataArr,"UAP)(*");
+      form_data.append('token',token);
+      form_data.append('fileData',fileData);
+      $.ajax({
+        type:"POST",
+        url:url,
+        data: form_data, // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData:false,
+        dataType: "json",
+        success:function(data)
+        {
+          if(data.status == 1) {
+            toastr.options.fadeOut = 100000;
+            toastr.success(data.msg, 'Success!');
+          }
+          else
+          {
+            toastr.options.fadeOut = 100000;
+            toastr.error(data.msg, 'Failed!!');
+          }
+        setTimeout(function () {
+            toastr.clear();
+          },1000);
+
+        setTimeout(function () {
+           $('#btn-proses').prop('disabled',false).html('Proses');
+           window.location.reload();  
+        },1000);
+        },
+        error: function (data) {
+          toastr.error("Connection Error, Please try again", 'Error!!');
+          $('#btn-proses').prop('disabled',false).html('Proses');  
+        }
+      })
+  }
+
+  
 </script>

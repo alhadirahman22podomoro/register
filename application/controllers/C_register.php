@@ -18,6 +18,15 @@ class C_register extends CI_Controller {
         $this->MoveTableRegister();
     }
 
+    private function setAjaxRequest()
+    {
+        if (!$this->input->is_ajax_request()) 
+        {
+            return exit('No direct script access allowed');
+        }
+        
+    }
+
     public function MoveTableRegister()
     {
         $longtime = $this->m_reg->Longtime();
@@ -1370,6 +1379,12 @@ class C_register extends CI_Controller {
         //$image->resizeToBestFit(75, 113);
         $image->resize(75, 113);
         $image->save('image2.jpg');
+    }
+
+    public function upload_dokument()
+    {
+        $this->setAjaxRequest();
+        
     }
 
 }
