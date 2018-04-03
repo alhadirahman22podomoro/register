@@ -221,7 +221,7 @@
                                               '<th class="col-xs-2">&nbsp&nbsp Action</th>'+
                                               '<th class="col-xs-1">Status</th>'+
                                               '<th class="col-xs-1">Attachment</th>'+
-                                              '<th class="col-xs-3">Description</th>'+
+                                              '<th class="col-xs-1">Description</th>'+
                                            '</tr>'+
                                           '</thead>'+
                                           '<tbody id = "isiData" class="points_table_scrollbar">' 
@@ -236,49 +236,54 @@
             if (setODDEven == 0) {
               setRow = 'even';
             }
-
+            var buttonUpload = '<label class="btn btn-primary" style="color: #ffff;">Browse&hellip; <input class = "file-upload" type="file" style="display: none;" data-sbmt = "'+response[k].ID+'" id = "file-upload'+response[k].ID+'" attachName = "'+response[k].DocumentChecklist+'"></label>';
+            var Description = "";
             switch(response[k].Status)
             {
              case  "Belum Upload" :
+                    setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
+                    break;
              case  "Reject" :
                     setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
+                    Description = 'Reject';
                     break;
              case  "Progress Checking" :
                     setIcon = '<i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>';
+                   buttonUpload =' ';
                    break;
              case  "Done" :
                    setIcon = '<i class="fa fa-check-circle" style="color: green;"></i>';
+                   buttonUpload =' ';
                    break;
              default :
                    setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';      
             }
             var Attachment = "";
-            var Description = "";
-            // console.log(response[k].Attachment);
             if (response[k].Attachment == null) {
               Attachment = "";
             }
             else
             {
-              Attachment = response[k].Attachment;
+              Attachment = '<a href="'+base_url_js+'fileShow/'+response[k].Attachment+'" target="_blank">'+response[k].Attachment+'</a>';
+              // Attachment = response[k].Attachment;
             }
 
-            if (response[k].Description == null) {
+            /*if (response[k].Description == null) {
               Description = "";
             }
             else
             {
               Description = response[k].Description;
-            }
+            }*/
 
             $('#isiData').append('<tr class = "'+setRow+'">'+
                                     '<td class="col-xs-1">'+Nomor+'</td>'+
                                     '<td class="col-xs-3">'+response[k].DocumentChecklist+'</td>'+
                                     '<td class="col-xs-1">'+response[k].Required+'</td>'+
-                                    '<td class="col-xs-2">'+'<label class="btn btn-primary" style="color: #ffff;">Browse&hellip; <input class = "file-upload" type="file" style="display: none;" data-sbmt = "'+response[k].ID+'" id = "file-upload'+response[k].ID+'"></label>'+'</td>'+
-                                    '<td class="col-xs-1">'+setIcon+'</td>'+
-                                    '<td class="col-xs-1">'+Attachment+'</td>'+
-                                    '<td class="col-xs-3">'+Description+'</td>'+
+                                    '<td class="col-xs-2" id = "buttonUpload'+response[k].ID+'">'+buttonUpload+'</td>'+
+                                    '<td class="col-xs-1" id ="setIcon'+response[k].ID+'">'+setIcon+'</td>'+
+                                    '<td class="col-xs-1" id = "Attachment'+response[k].ID+'">'+Attachment+'</td>'+
+                                     '<td class="col-xs-3">'+Description+'</td>'+
                                  '</tr>'
                                 );
             Nomor++;
@@ -396,19 +401,24 @@
   $(document).on('change','.file-upload',function () {
       var ID_document = $(this).attr('data-sbmt');
       var ID_element = $(this).attr('id');
+      var attachName = $(this).attr('attachName');
       // console.log(ID_element);
       if (file_validation(ID_element)) {
-        SaveFile(ID_element);
+        SaveFile(ID_element,ID_document,attachName);
       }
       
         
   });
 
-  function SaveFile(ID_element)
+  function SaveFile(ID_element,ID_document,attachName)
   {
       var form_data = new FormData();
       var fileData = document.getElementById(ID_element).files[0];
       var url = base_url_js + "upload_dokument";
+      var DataArr = {
+                      ID_document : ID_document,
+                      attachName : attachName,
+                    };
       var token = jwt_encode(DataArr,"UAP)(*");
       form_data.append('token',token);
       form_data.append('fileData',fileData);
@@ -423,6 +433,9 @@
         success:function(data)
         {
           if(data.status == 1) {
+            $("#setIcon"+ID_document).html('<i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>');
+            $("#buttonUpload"+ID_document).html('');
+            $("#Attachment"+ID_document).html('<a href="'+base_url_js+'fileShow/'+data.filename+'" target="_blank">'+data.filename+'</a>');
             toastr.options.fadeOut = 100000;
             toastr.success(data.msg, 'Success!');
           }
@@ -435,14 +448,9 @@
             toastr.clear();
           },1000);
 
-        setTimeout(function () {
-           $('#btn-proses').prop('disabled',false).html('Proses');
-           window.location.reload();  
-        },1000);
         },
         error: function (data) {
-          toastr.error("Connection Error, Please try again", 'Error!!');
-          $('#btn-proses').prop('disabled',false).html('Proses');  
+          toastr.error(data.msg, 'Connection error, please try again!!');
         }
       })
   }

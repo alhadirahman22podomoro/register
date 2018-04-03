@@ -19,6 +19,7 @@ $route['upload_dokument'] = 'c_register/upload_dokument';
 
 
 $route['fileGet/(:any)'] = 'c_register/fileGet/$1';
+$route['fileShow/(:any)'] = 'c_register/fileShow/$1';
 
 // === api ==
 $route['api/__getWilayahURLJson'] = 'api/c_api/getWilayahURLJson';

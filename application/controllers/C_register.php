@@ -10,8 +10,8 @@ class C_register extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('JWT');
-        $this->load->library('google');
-        $this->load->model('m_auth');
+        // $this->load->library('google');
+        // $this->load->model('m_auth');
         $this->load->model('register/M_register','m_reg',TRUE);
         $this->load->model('m_api');
         $this->load->model('m_sendemail');
@@ -769,6 +769,8 @@ class C_register extends CI_Controller {
         $namaFolder = $this->session->userdata('Email');
         if (!file_exists('./document/'.$namaFolder)) {
             mkdir('./document/'.$namaFolder, 0777, true);
+            copy("./document/index.html",'./document/'.$namaFolder.'/index.html');
+            copy("./document/index.php",'./document/'.$namaFolder.'/index.php');
         }
         return $path = './document/'.$namaFolder;
     }
@@ -1384,7 +1386,80 @@ class C_register extends CI_Controller {
     public function upload_dokument()
     {
         $this->setAjaxRequest();
+        $input = $this->getInputToken();
+        $ID_document = $input['ID_document'];
+        $filename = $input['attachName'].'_Uploaded';
+        $filename = str_replace(' ', '_', $filename);
+        $uploadFile = $this->uploadDokumen($filename);
+        if (is_array($uploadFile)) {
+            $this->m_reg->saveDataUploadDokumen($ID_document,$uploadFile['file_name']);
+            echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1,'filename' => $uploadFile['file_name']));
+        }
+        else
+        {
+            echo json_encode(array('msg' => $uploadFile,'status' => 0));
+        }
         
+    }
+
+    public function uploadDokumen($filename)
+    {
+        $path = $this->BuatFolderSetiapCandidate();
+        // upload file
+         $config['upload_path']   = $path.'/';
+         $config['overwrite'] = TRUE; 
+         // $config['allowed_types'] = 'png|jpg|pdf';
+         $config['allowed_types'] = '*';  
+         $config['file_name'] = $filename;
+         //$config['max_size']      = 100; 
+         //$config['max_width']     = 300; 
+         //$config['max_height']    = 300;  
+         $this->load->library('upload', $config);
+            
+         if ( ! $this->upload->do_upload('fileData')) {
+            return $error = $this->upload->display_errors(); 
+            //$this->load->view('upload_form', $error); 
+         }
+            
+         else { 
+           return $data =  $this->upload->data(); 
+            //$this->load->view('upload_success', $data); 
+         }
+    }
+
+    public function fileShow($filename)
+    {   
+        $path = $this->BuatFolderSetiapCandidate().'/'.$filename;
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if ($ext == 'pdf') {
+            if (file_exists($path)) {
+                    // $file = "path_to_file";
+                    $fp = fopen($path, "r") ;
+                    header("Cache-Control: maxage=1");
+                    header("Pragma: public");
+                    header("Content-type: application/pdf");
+                    header("Content-Disposition: inline; filename=".$filename."");
+                    header("Content-Description: PHP Generated Data");
+                    header("Content-Transfer-Encoding: binary");
+                    header('Content-Length:' . filesize($path));
+                    ob_clean();
+                    flush();
+                    while (!feof($fp)) {
+                       $buff = fread($fp, 1024);
+                       print $buff;
+                    }
+                    exit;
+            }
+            else
+            {
+                show_404($log_error = TRUE);
+            }
+        }
+        else
+        {
+            $imageData = base64_encode(file_get_contents($path));
+            echo '<img src="data:image/jpeg;base64,'.$imageData.'">';
+        }
     }
 
 }

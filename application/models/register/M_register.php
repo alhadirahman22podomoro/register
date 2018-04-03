@@ -471,4 +471,11 @@ class M_register extends CI_Model {
         return $values;
     }
 
+    public function saveDataUploadDokumen($ID,$filename)
+    {
+        $status = 'Progress Checking';
+        $sql = "update db_admission.register_document set Status = ?,Attachment = ? where ID = ?";
+        $query=$this->db->query($sql, array($status,$filename,$ID));
+    }
+
 }
