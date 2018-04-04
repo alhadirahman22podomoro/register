@@ -16,6 +16,8 @@ $route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';
 $route['downloadPDFAdmissionStatement'] = 'c_register/downloadPDFAdmissionStatement';
 $route['downloadPDFBebasNarkoba'] = 'c_register/downloadPDFBebasNarkoba';
 $route['upload_dokument'] = 'c_register/upload_dokument';
+$route['downloadPDFPernyataanKesanggupanSTTB'] = 'c_register/PernyataanKesanggupanSTTB';
+$route['downloadPDFPernyataanKelengkapanDokumen'] = 'c_register/downloadPDFPernyataanKelengkapanDokumen';
 
 
 $route['fileGet/(:any)'] = 'c_register/fileGet/$1';

@@ -111,46 +111,52 @@
                   </div>
                   <div class="panel-body">
                     <!-- content -->
-                    <div class="form-horizontal">
-                      <div class="form-group">
-                        <div class = "col-md-3">
-                          <!-- <label class="control-label">Formulir </label> -->
-                            <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Formulir</button> 
-                            <!-- </div> -->
-                        </div>
-                        <div class = "col-md-3">
-                          <!-- <label class="control-label">Admission Statement </label> -->
-                            <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnadmss" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Admission Statement</button> 
-                            <!-- </div> -->
-                        </div>
-                        <div class = "col-md-4">
-                          <!-- <label class="control-label">Admission Statement </label> -->
-                            <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnBebasNarkoab" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Bebas Narkoba</button> 
-                            <!-- </div> -->
-                        </div>
+                      <div class="form-horizontal">
+                        <div class="form-group">
+                          <div class = "row">
+                            <div class="col-xs-2">
+                              <!-- <label class="control-label">Formulir </label> -->
+                                <!-- <div class="col-md-3"> -->
+                                  <button class="btn btn-primary" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Formulir</button> 
+                                <!-- </div> -->
+                            </div>
+                            <div class="col-xs-2">
+                              <!-- <label class="control-label">Formulir </label> -->
+                                <!-- <div class="col-md-3"> -->
+                                  <button class="btn btn-primary" id="btn-dwnadmss" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Admission Statement</button> 
+                                <!-- </div> -->
+                            </div>
+                            <div class="col-xs-3">
+                              <!-- <label class="control-label">Formulir </label> -->
+                                <!-- <div class="col-md-3"> -->
+                                  <button class="btn btn-primary" id="btn-dwnBebasNarkoab" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Pernyataan Bebas Narkoba</button> 
+                                <!-- </div> -->
+                            </div>
+                            <div class="col-xs-3">
+                              <!-- <label class="control-label">Formulir </label> -->
+                                <!-- <div class="col-md-3"> -->
+                                  <button class="btn btn-primary" id="btn-dwnpernyattanSTTB" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Pernyataan Kesanggupan Kelengkapan STTB</button> 
+                                <!-- </div> -->
+                            </div>
+                          </div>
+                          <br>
+                          <div class = "row">
+                            <div class="col-xs-4">
+                              <!-- <label class="control-label">Formulir </label> -->
+                                <!-- <div class="col-md-3"> -->
+                                  <button class="btn btn-primary" id="btn-dwnpernyattanKelengkapanDok" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Pernyataan Kesanggupan Kelengkapan Dokumen</button>
+                                <!-- </div> -->
+                            </div>
+                          </div>
+                        </div>  
                       </div>
-                      <div class="form-group">   
-                        <div class = "col-md-5">
-                          <!-- <label class="control-label">Admission Statement </label> -->
-                            <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Kesanggupan Kelengkapan STTB</button> 
-                            <!-- </div> -->
-                        </div>
-                        <div class = "col-md-5">
-                          <!-- <label class="control-label">Admission Statement </label> -->
-                            <!-- <div class="col-md-3"> -->
-                              <button class="ng-button" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>">Surat Pernyataan Kesanggupan Kelengkapan Dokument</button> 
-                            <!-- </div> -->
-                        </div>
-                      </div>  
-                    </div>    
                   </div>
                 </div>
               </div>
               <div class = row>
+                <p id="msgALLDone" class = 'hide' align="center" style="color: #d91f2d;">
+                  You have finished your all required document
+                </p>
                 <div class="panel panel-primary">
                   <div class="panel-heading" style="border-radius: 0px;">
                     <h3 class="panel-title">Upload Your Dokument <span class="required">*</span></h3>
@@ -174,6 +180,7 @@
 </div>  
 
 <script type="text/javascript">
+  window.getAllStatus = [];
   $(document).ready(function() {
       CheckDataInjected();
       //loadDataDokument();
@@ -242,18 +249,22 @@
             {
              case  "Belum Upload" :
                     setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
+                    getAllStatus.push(0);
                     break;
              case  "Reject" :
                     setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';
                     Description = 'Reject';
+                    getAllStatus.push(0);
                     break;
              case  "Progress Checking" :
                     setIcon = '<i class="fa fa-circle-o-notch fa-spin" style="color: green;"></i>';
                    buttonUpload =' ';
+                   getAllStatus.push(0);
                    break;
              case  "Done" :
                    setIcon = '<i class="fa fa-check-circle" style="color: green;"></i>';
                    buttonUpload =' ';
+                   getAllStatus.push(1);
                    break;
              default :
                    setIcon = '<i class="fa fa-minus-circle" style="color: red;"></i>';      
@@ -288,6 +299,20 @@
                                 );
             Nomor++;
           }
+
+          var processs = true;
+          // console.log(getAllStatus);
+          for (var i = 0; i < getAllStatus.length; i++) {
+            if (getAllStatus[i] != 1 ) {
+              processs = false;
+              break;
+            }
+          }
+
+          if (processs) {
+            $("#msgALLDone").removeClass('hide');
+          }
+
           $('#isiData').append('</tbody>');
           $('#isiData').append('</table></div>');
     }).done(function() {
@@ -364,6 +389,56 @@
       toastr.error('The Download Processing error, please try again', 'Failed!!');;
     }).always(function() {
       $('#btn-dwnBebasNarkoab').prop('disabled',false).html('Surat Pernyataan Bebas Narkoba');
+    });
+    //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+
+  });
+
+  $(document).on('click','#btn-dwnpernyattanSTTB', function () {
+    loading_button('#btn-dwnpernyattanSTTB');
+    var ID_register_formulir = $(this).attr('data-sbmt');
+    var url = base_url_js+'downloadPDFPernyataanKesanggupanSTTB';
+    var data = {
+      ID_register_formulir : ID_register_formulir,
+    };
+    var token = jwt_encode(data,"UAP)(*");
+    $.post(url,{token:token},function (data_json) {
+      var response = jQuery.parseJSON(data_json);
+      //console.log(response);
+      //window.location.href = base_url_js+'fileGet/'+response;
+      window.open(base_url_js+'fileGet/'+response,'_blank');
+    }).done(function() {
+      toastr.success('The Download processing success', 'Success!');
+    }).fail(function() {
+      toastr.error('The Download Processing error, please try again', 'Failed!!');;
+    }).always(function() {
+      $('#btn-dwnpernyattanSTTB').prop('disabled',false).html('Pernyataan Kesanggupan Kelengkapan STTB');
+    });
+    //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
+
+  });
+
+  
+
+  $(document).on('click','#btn-dwnpernyattanKelengkapanDok', function () {
+    loading_button('#btn-dwnpernyattanKelengkapanDok');
+    var ID_register_formulir = $(this).attr('data-sbmt');
+    var url = base_url_js+'downloadPDFPernyataanKelengkapanDokumen';
+    var data = {
+      ID_register_formulir : ID_register_formulir,
+    };
+    var token = jwt_encode(data,"UAP)(*");
+    $.post(url,{token:token},function (data_json) {
+      var response = jQuery.parseJSON(data_json);
+      //console.log(response);
+      //window.location.href = base_url_js+'fileGet/'+response;
+      window.open(base_url_js+'fileGet/'+response,'_blank');
+    }).done(function() {
+      toastr.success('The Download processing success', 'Success!');
+    }).fail(function() {
+      toastr.error('The Download Processing error, please try again', 'Failed!!');;
+    }).always(function() {
+      $('#btn-dwnpernyattanKelengkapanDok').prop('disabled',false).html('Pernyataan Kesanggupan Kelengkapan Dokumen');
     });
     //$('#btn-dwnformulir').prop('disabled',false).html('Download Formulir');
 

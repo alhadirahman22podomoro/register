@@ -1,3 +1,7 @@
 /.idea
 /application/logs
 /application/config/database.php
+/scheduler
+/document
+/foto_formulir
+/upload

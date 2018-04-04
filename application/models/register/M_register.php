@@ -478,4 +478,11 @@ class M_register extends CI_Model {
         $query=$this->db->query($sql, array($status,$filename,$ID));
     }
 
+    public function getNamaProgramStudy($ID_program_study)
+    {
+        $sql = "select * from db_academic.program_study where ID = ?";
+        $query=$this->db->query($sql, array($ID_program_study))->result_array();
+        return $query[0]['Name'];
+    }
+
 }
