@@ -47,7 +47,7 @@ class M_register extends CI_Model {
     public function getAllPriceFormulir()
     {
         $arr_temp = array();
-        $sql = "select a.PriceFormulir from db_admission.register as a";
+        $sql = "select a.PriceFormulir from db_admission.register as a where a.StatusReg = 0";
         $query=$this->db->query($sql, array())->result();
         foreach ($query as $key) {
             $arr_temp[] = $key->PriceFormulir;
@@ -55,7 +55,7 @@ class M_register extends CI_Model {
         return $arr_temp;
     }
 
-    public function saveToDBRegister($name,$Email,$SchoolName,$priceFormulir,$momenUnix)
+    public function saveToDBRegister($name,$Email,$SchoolName,$priceFormulir,$momenUnix,$StatusReg = 0)
     {
         $dataSave = array(
                 'Name' => $name,
@@ -64,6 +64,7 @@ class M_register extends CI_Model {
                 'SchoolID' => $SchoolName,
                 'PriceFormulir' => $priceFormulir,
                 'RegisterAT' => date("Y-m-d"),
+                'StatusReg' => $StatusReg
                         );
 
         $this->db->insert('db_admission.register', $dataSave);
@@ -221,6 +222,66 @@ class M_register extends CI_Model {
             return false;
         }
 
+    }
+
+    public function caribasedprimary($tabel,$fieldPrimary,$valuePrimary)
+    {
+        $sql = "select * from ".$tabel." where ".$fieldPrimary." = ?"; 
+        $query=$this->db->query($sql, array($valuePrimary));
+        return $query->result_array();
+    }
+
+    public function checkURLFormulirRegistration_offline($data)
+    {
+        $arr_temp = explode(";", $data);
+        $FormulirCode = $arr_temp[0];
+        $Years = $arr_temp[1];
+        $checkQuery = $this->checkDatatoDB_offline($FormulirCode,$Years);
+
+        $RegisterID= '';
+        $RegVerificationID = '';
+        $ID_register_verified = '';
+        if ($checkQuery) {
+            //check apakah formulir code sudah pernah digunakan atau tidak
+            $check = $this->caribasedprimary('db_admission.register_verified','FormulirCode',$FormulirCode);
+            if (count($check) > 0) {
+                $ID_register_verified = $check[0]['ID'];
+                $RegVerificationID = $check[0]['RegVerificationID'];
+                $check2 = $this->caribasedprimary('db_admission.register_verification','ID',$RegVerificationID);
+                $RegisterID = $check2[0]['RegisterID'];
+                $check3 = $this->caribasedprimary('db_admission.register','ID',$RegisterID);
+                $email = $check3[0]['Email'];
+                $this->checkDatatoDB($RegisterID,$email);
+            }
+            $this->session->set_userdata('FormulirCode',$FormulirCode);
+            $this->updateStatusFormulir($FormulirCode);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public function updateStatusFormulir($FormulirCode)
+    {
+        $sql = "update db_admission.formulir_number_offline_m set Status = 1 where FormulirCode = ?";
+        $query=$this->db->query($sql, array($FormulirCode));
+    }
+
+    public function checkDatatoDB_offline($FormulirCode,$Years)
+    {
+        $sql = "select count(*) as total from db_admission.formulir_number_offline_m where FormulirCode = ? and Years = ?";
+        $query=$this->db->query($sql, array($FormulirCode,$Years))->result_array();
+        $total = $query[0]['total'];
+        if ($total > 0) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     } 
 
     public function checkDatatoDB($ID_register,$email)
@@ -268,6 +329,153 @@ class M_register extends CI_Model {
         $this->db->insert('db_admission.register_formulir', $arr_save);
         
     }
+
+    public function saveDataFormulir_offline($arr,$namaFile)
+    {
+        // save data to register
+        $arr_return = array();
+        $Name = $arr['FullName'];
+        $Email = $arr['Email'];
+        $SchoolID = $arr['SchoolID'];
+        $getPriceFormulir = $this->getPriceFormulir_offline();
+        $this->saveToDBRegister($Name,$Email,$SchoolID,$getPriceFormulir,'',1);
+        $getData = $this->caribasedprimary('db_admission.register','PriceFormulir',$getPriceFormulir);
+        $RegisterID = $getData[0]['ID'];
+        // save data to register_verification
+        $this->saveDataToVerification_offline($RegisterID);
+        $getData = $this->caribasedprimary('db_admission.register_verification','RegisterID',$RegisterID);
+        $RegVerificationID = $getData[0]['ID'];
+        $FormulirCode = $arr['FormulirCode'];
+        // save data to register_verified
+        $this->saveDataRegisterVerified($RegVerificationID,$FormulirCode);
+        $getData = $this->caribasedprimary('db_admission.register_verified','RegVerificationID',$RegVerificationID);
+        $ID_register_verified = $getData[0]['ID'];
+        // save data to register_formulir
+        $arr_return = $arr_return + array('ID_register_verified' => $ID_register_verified);
+        $arr_return = $arr_return + $arr;
+        $this->saveDataFormulir2($arr_return,$namaFile);
+        $this->session->set_userdata('register_id',$RegisterID);
+        $this->session->set_userdata('Name',$Name);
+        $this->session->set_userdata('Email',$Email);
+        $this->session->set_userdata('SchoolID',$SchoolID);
+        $getData = $this->caribasedprimary('db_admission.school','ID',$SchoolID);
+        $SchoolName = $getData[0]['SchoolName'];
+        $this->session->set_userdata('SchoolName',$SchoolName);
+        $this->session->set_userdata('FormulirCode',$FormulirCode);
+        $this->session->set_userdata('ID_register_verified',$ID_register_verified);
+
+    }
+
+    public function getValueArr2($data,$namaFile)
+    {
+        $arr_temp = array();
+        $result  = array();
+        foreach ($data as $key => $value) {
+            $arr_temp[] = $value;
+        }
+
+        for ($i=0; $i < count($arr_temp) - 7; $i++) { 
+            $result[] = $arr_temp[$i];
+        }
+
+        array_push($result, $namaFile);
+        return $result;
+    }
+
+    public function saveDataFormulir2($arr,$namaFile)
+    {
+        $arrValue = $this->getValueArr2($arr,$namaFile);
+        $GetCol = $this->getCol();
+        $arr_save = array();
+        $j = 0;
+        for ($i=1; $i < count($GetCol); $i++) { 
+            $arr_save[$GetCol[$i]] = $arrValue[$j];
+            $j++;
+        }
+
+        $this->db->insert('db_admission.register_formulir', $arr_save);
+        
+    }
+
+    public function saveDataRegisterVerified($RegVerificationID,$FormulirCode)
+    {
+     // $getFormulirCode = $this->getFormulirCode('online');
+     $dataSave = array(
+             'RegVerificationID' => $RegVerificationID,
+             'FormulirCode' => $FormulirCode,
+             // 'VerificationBY' => $this->session->userdata('NIP'),
+             // 'VerificationAT' => date('Y-m-d H:i:s'),
+                     );
+     $this->db->insert('db_admission.register_verified', $dataSave);
+    }
+
+    public function saveDataToVerification_offline($RegisterID)
+    {
+        // check data sudah di insert atau belum pada table register_verification
+        $check = $this->checkDataregister_id_register_verification_offline($RegisterID);
+        if ($check) {
+            $dataSave = array(
+                    'RegisterID' => $RegisterID,
+                    'FileUpload' => '',
+                    'CreateAT' => date("Y-m-d"),
+                            );
+
+            $this->db->insert('db_admission.register_verification', $dataSave);
+        }
+    }
+
+    public function checkDataregister_id_register_verification_offline($RegisterID)
+    {
+        $sql = "select count(*) as total from db_admission.register_verification where RegisterID = ?";
+        $query=$this->db->query($sql, array($RegisterID))->result_array();
+        if ($query[0]['total'] ==0) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function getPriceFormulir_offline()
+    {
+        $price_formulir = $this->price_formulir_offline();
+        $count_account = $this->count_account();
+        $getAllPriceFormulir = $this->getAllPriceFormulir_offline();
+        // get account by loop
+        if (count($getAllPriceFormulir) == 0) {
+            $price_formulir = $price_formulir + 1;
+        }
+        else
+        {
+            for ($i=1; $i <= $count_account; $i++) { 
+                $price_formulir = $price_formulir + 1;
+                if (!in_array((string)$price_formulir, $getAllPriceFormulir)) {
+                    break;
+                }
+            }
+        }
+        
+        return $price_formulir;
+    }
+
+    public function getAllPriceFormulir_offline()
+    {
+        $arr_temp = array();
+        $sql = "select a.PriceFormulir from db_admission.register as a where a.StatusReg = 0";
+        $query=$this->db->query($sql, array())->result();
+        foreach ($query as $key) {
+            $arr_temp[] = $key->PriceFormulir;
+        }
+        return $arr_temp;
+    }
+
+    public function price_formulir_offline()
+    {
+        $sql = "select PriceFormulir from db_admission.price_formulir_offline as a where a.active = 1 order by a.CreateAT desc limit 1";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query[0]['PriceFormulir'];
+    }    
 
     private function getValueArr($data,$namaFile)
     {

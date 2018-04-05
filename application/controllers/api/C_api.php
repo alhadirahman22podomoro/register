@@ -138,4 +138,10 @@ class C_api extends CI_Controller {
         echo json_encode($generate);
     }
 
+    public function getDataSekolah()
+    {
+        $generate = $this->m_api->getDataSekolah();
+        echo json_encode($generate);
+    }
+
 }

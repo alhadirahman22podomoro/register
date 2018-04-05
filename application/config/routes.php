@@ -9,7 +9,10 @@ $route['translate_uri_dashes'] = FALSE;
 // === register ===
 $route['register/proses-register'] = 'c_register/proses_register';
 $route['register/formulir_submit'] = 'c_register/formulir_submit';
+$route['register/formulir_submit_offline'] = 'c_register/formulir_submit_offline';
+
 $route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
+$route['formulir-registration-offline/(:any)'] = 'c_register/formulir_registration_offline/$1';
 $route['checkDocument'] = 'c_register/checkDocument';
 $route['getDataDokument'] = 'c_register/getDataDokument';
 $route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';
@@ -40,6 +43,7 @@ $route['api/__getUkuranJacket'] = 'api/c_api/getUkuranJacket';
 $route['api/__getDataPekerjaan'] = 'api/c_api/getDataPekerjaan';
 $route['api/__getDataPenghasilan'] = 'api/c_api/getDataPenghasilan';
 $route['api/__getDataDokument'] = 'api/c_api/getDataDokument';
+$route['api/__getDataSekolah'] = 'api/c_api/getDataSekolah';
 
 
 

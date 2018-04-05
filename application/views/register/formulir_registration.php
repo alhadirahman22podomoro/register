@@ -84,7 +84,7 @@
 						      
 						    </div>
 						    <div class="col-xs-6 col-md-4">
-								<b>Formulir Number / Nomor Formulir : <?php echo $this->session->userdata('FormulirCode') ?></b>						    	
+								<b>Formulir Number / Nomor Formulir : <?php echo $this->session->userdata('FormulirCode') ?></b>					    	
 						    </div>
     					</div>
     					<div class="row">
@@ -266,7 +266,7 @@
 										<div class="form-group">
 										    <label class="col-lg-3 control-label">Email</label>
 										    	<div class="col-md-6">
-										    	  <input type="text" name="weight" placeholder="Input Phone Number..." id = "Email" value = "<?php echo $this->session->userdata('Email') ?>">
+										    	  <input type="text" name="weight" placeholder="Input Email..." id = "Email" value = "<?php echo $this->session->userdata('Email') ?>">
 										    	</div>
 										</div>
 										<div class="panel panel-primary">
@@ -274,6 +274,16 @@
 												<h3 class="panel-title">Your School / Sekolah Anda</h3>
 											</div>
 											<div class="panel-body">
+												<?php if ($this->uri->segment(1) == 'formulir-registration-offline'): ?>
+												<div class="form-group">
+												    <label class="col-lg-3 control-label">Select Region</label>
+												    	<div class="col-md-6">
+												    	  <select class="select2-select-00 col-md-12 full-width-fix" id="selectWilayah">
+												    	    <option></option>
+												    	  </select>
+												    	</div>
+												</div>
+												<?php endif ?>
 												<div class="form-group">
 												    <label class="col-lg-3 control-label">School / Sekolah</label>
 												    	<div class="col-md-6">
@@ -653,9 +663,9 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		  $('#FullName').prop('disabled', true);
-		  $('#Email').prop('disabled', true);
-		  $('#selectSchool').prop('disabled', true);
+		  // $('#FullName').prop('disabled', true);
+		  // $('#Email').prop('disabled', true);
+		  // $('#selectSchool').prop('disabled', true);
 		  $('#selectSchool').select2({
 		     //allowClear: true
 		  });
@@ -683,7 +693,9 @@
   	  loadCountry();
   	  loadTipeSekolah();
   	  loadMajorSekolah();
+  	  <?php if ($this->uri->segment(1) != 'formulir-registration-offline'): ?>
   	  loadAlamatSekolah();
+  	  <?php endif ?>
   	  loadTahunLulus();
   	  loadPenerimaKPS();
   	  loadUkuranJacket();
@@ -692,10 +704,56 @@
   	  // function untuk data master orang tua
   	  loadDataPekerjaan();
   	  loadDataPenghasilan();
+  	  <?php if ($this->uri->segment(1) == 'formulir-registration-offline'): ?>
+  	  	loadDataRegionSchool();
+  	  <?php endif ?>
 
   	  setTimeout(function () {
   	      $('#NotificationModal').modal('hide');
-  	  },1000);  
+  	  },3000);  
+  }
+
+  function loadDataRegionSchool()
+  {
+  	var url = base_url_js+'api/__getWilayahURLJson';
+  	    $.get(url,function (data_json) {
+  	        for(var i=0;i<data_json.length;i++){
+  	            //var selected = (i==0) ? 'selected' : '';
+  	            var selected = (data_json[i].RegionName=='Kota Jakarta Pusat') ? 'selected' : '';
+  	            $('#selectWilayah').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
+  	        }
+  	        $('#selectWilayah').select2({
+  	           //allowClear: true
+  	        });
+  	        var selectWilayah = $('#selectWilayah').find(':selected').val();
+  	        loadDataSchool(selectWilayah);
+  	    }).done(function () {
+  	      
+  	    });
+  }
+
+  function loadDataSchool(selectWilayah)
+  {
+    //var selectWilayah = $('#selectWilayah').find(':selected').val();
+    var url = base_url_js+"api/__getSMAWilayah";
+    var data = {
+              wilayah : selectWilayah
+          };
+    var token = jwt_encode(data,"UAP)(*");
+    $('#selectSchool').empty()
+    $.post(url,{token:token},function (data_json) {
+          for(var i=0;i<data_json.length;i++){
+              var selected = (i==0) ? 'selected' : '';
+              //var selected = (data_json[i].RegionName=='Kota Jakarta Pusat') ? 'selected' : '';
+              $('#selectSchool').append('<option value="'+data_json[i].ID+'" '+selected+'>'+data_json[i].SchoolName+'</option>');
+          }
+          $('#selectSchool').select2({
+             //allowClear: true
+          });
+    }).done(function () {
+      loadAlamatSekolah();
+    });
+
   }
 
   function loadDataPenghasilan()
@@ -923,12 +981,14 @@
 
   	    var selectProvinsiSchool = $('#selectProvinsiSchool').find(':selected').val();
   	    loadRegionSchool(selectProvinsiSchool,data_json[0]['CityID']);
-
-  	    
-
   	    $("#AlamatSchool").val(data_json[0]['SchoolAddress']);
   	    $('#AlamatSchool').prop('disabled', true);
-  	})
+
+  	}).done(function () {
+	    setTimeout(function () {
+	        
+	    },500);
+	});
 
   }
 
@@ -1374,6 +1434,14 @@
   		});
   }
 
+  $(document).on('change','#selectWilayah',function () {
+      loadDataSchool(this.value);
+  });
+
+  $(document).on('change','#selectSchool',function () {
+      loadAlamatSekolah();
+  });
+
   $(document).on('change','#Bulan_lahir', function () {
   	var tahun = $("#Tahun_lahir").find(':selected').val();
   	var bulan = $(this).find(':selected').val();
@@ -1690,7 +1758,11 @@
   {
   	var form_data = new FormData();
   	var fileData = document.getElementById("imgInp").files[0];
+  	<?php if ($this->uri->segment(1) != 'formulir-registration-offline'): ?>
   	var url = base_url_js + "register/formulir_submit";
+  	<?php else: ?>
+  	var url = base_url_js + "register/formulir_submit_offline";
+  	<?php endif ?>
   	var token = jwt_encode(DataArr,"UAP)(*");
   	form_data.append('token',token);
   	form_data.append('fileData',fileData);
@@ -1732,7 +1804,9 @@
   function getDataInput()
   {
   	 var data = {};
+  	 <?php if ($this->uri->segment(1) != 'formulir-registration-offline'): ?>
   	 var ID_register_verified = "<?php echo $this->session->userdata('ID_register_verified') ?>";
+  	 <?php endif ?>
   	 var ID_program_study = getCheckbox('chkProStudy');
   	 var Gender = $('input[name=radioGender]:checked').val(); 
   	 var IdentityCard = $("#IdentityCard").val().trim();
@@ -1786,8 +1860,15 @@
   	 var radioAlamatAyah = $('input[name=radioAlamatAyah]:checked').val(); 
   	 var radioAlamatIbu = $('input[name=radioAlamatIbu]:checked').val(); 
 
+  	 <?php if ($this->uri->segment(1) == 'formulir-registration-offline'): ?>
+		var Email = $('#Email').val().trim();
+		var selectSchool = $('#selectSchool').find(':selected').val();
+		var FullName = $('#FullName').val();
+	<?php endif ?>	
   	 data = {
+  	 	<?php if ($this->uri->segment(1) != 'formulir-registration-offline'): ?>
   	 	     ID_register_verified :ID_register_verified,
+  	 	<?php endif ?>
   	 	     ID_program_study :ID_program_study,
   	 	     Gender :Gender,
   	 	     IdentityCard :IdentityCard,
@@ -1836,7 +1917,13 @@
   	 	     MotherAddress : MotherAddress,
   	 	     ChoicesAlamatAyah : radioAlamatAyah,
   	 	     ChoicesAlamatIbu : radioAlamatIbu,
-  	 	     file_validation : file_validation()
+  	 	     file_validation : file_validation(),
+	          <?php if ($this->uri->segment(1) == 'formulir-registration-offline'): ?>
+	     		Email : Email,
+	     		SchoolID : selectSchool,
+	     		FullName : FullName,
+	     		FormulirCode : "<?php echo $this->session->userdata('FormulirCode') ?>",
+	     	 <?php endif ?>
   	 };	
   	 return data;
   }

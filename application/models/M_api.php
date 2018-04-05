@@ -337,5 +337,11 @@ where a.DistrictID = b.DistrictID and a.RegionID = ?";
             return $query;
     }
 
+    public function getDataSekolah(){
+        $sql = "select ID,SchoolName from db_admission.school";
+        $query=$this->db->query($sql, array())->result_array();
+        return $query;
+    }
+
 
 }
