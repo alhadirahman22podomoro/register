@@ -377,7 +377,7 @@ class M_register extends CI_Model {
         for ($i=0; $i < count($arr_temp) - 7; $i++) { 
             $result[] = $arr_temp[$i];
         }
-
+        
         array_push($result, $namaFile);
         return $result;
     }
@@ -440,7 +440,7 @@ class M_register extends CI_Model {
     public function getPriceFormulir_offline()
     {
         $price_formulir = $this->price_formulir_offline();
-        $count_account = $this->count_account();
+        /*$count_account = $this->count_account();
         $getAllPriceFormulir = $this->getAllPriceFormulir_offline();
         // get account by loop
         if (count($getAllPriceFormulir) == 0) {
@@ -454,7 +454,7 @@ class M_register extends CI_Model {
                     break;
                 }
             }
-        }
+        }*/
         
         return $price_formulir;
     }
