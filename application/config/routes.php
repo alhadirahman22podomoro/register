@@ -13,6 +13,12 @@ $route['register/formulir_submit_offline'] = 'c_register/formulir_submit_offline
 
 $route['formulir-registration/(:any)'] = 'c_register/formulir_registration/$1';
 $route['formulir-registration-offline/(:any)'] = 'c_register/formulir_registration_offline/$1';
+
+// to url
+$route['formulir-registration-edit/(:any)'] = 'c_register/formulir_registration_edit/$1';
+$route['formulir-upload-document/(:any)'] = 'c_register/formulir_upload_document/$1';
+$route['jadwal-ujian/(:any)'] = 'c_register/jadwal_ujian/$1';
+
 $route['checkDocument'] = 'c_register/checkDocument';
 $route['getDataDokument'] = 'c_register/getDataDokument';
 $route['downloadPDFFormulir'] = 'c_register/downloadPDFFormulir';

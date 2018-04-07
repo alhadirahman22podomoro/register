@@ -90,16 +90,19 @@
         <div id="login" class="animate form">
           <div class="crumbs">
               <ul id="breadcrumbs" class="breadcrumb">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="HTTP://localhost/siak/">Formulir</a>
-                </li>
-                <li class="current">
-                    <a href="javascript:void(0);" title="">Upload Document</a>
-                </li>
-                <li class="current">
-                    <a href="javascript:void(0);" title="">Jadwal Test</a>
-                </li>
+                  <li>
+                      <i class="icon-home"></i>
+                      <a href="<?php echo base_url().'formulir-registration-edit/'.$url ?>">Formulir</a>
+                  </li>
+                  <li class="current">
+                      <a href="<?php echo base_url().'formulir-upload-document/'.$url ?>">Upload Document</a>
+                  </li>
+                          <li class="current">
+                      <a href="<?php echo base_url().'jadwal-ujian/'.$url ?>" title="">Exam Schedule</a>
+                  </li>
+                  <li class="current">
+                      <a href="<?php echo base_url().'hasil-ujian/'.$url ?>" title="">Exam Results</a>
+                  </li>
               </ul>
           </div>
           <div class = "pageContain">
@@ -134,7 +137,7 @@
                                   <button class="btn btn-primary" id="btn-dwnformulir" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Formulir</button> 
                                 <!-- </div> -->
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                               <!-- <label class="control-label">Formulir </label> -->
                                 <!-- <div class="col-md-3"> -->
                                   <button class="btn btn-primary" id="btn-dwnadmss" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Admission Statement</button> 
@@ -146,15 +149,15 @@
                                   <button class="btn btn-primary" id="btn-dwnBebasNarkoab" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Pernyataan Bebas Narkoba</button> 
                                 <!-- </div> -->
                             </div>
-                            <div class="col-xs-3">
+                          </div>
+                          <br>
+                          <div class = "row">
+                            <div class="col-xs-5">
                               <!-- <label class="control-label">Formulir </label> -->
                                 <!-- <div class="col-md-3"> -->
                                   <button class="btn btn-primary" id="btn-dwnpernyattanSTTB" data-sbmt = "<?php echo $this->session->userdata('ID_register_formulir') ?>"><span class="glyphicon glyphicon-cloud-download"></span> Pernyataan Kesanggupan Kelengkapan STTB</button> 
                                 <!-- </div> -->
                             </div>
-                          </div>
-                          <br>
-                          <div class = "row">
                             <div class="col-xs-4">
                               <!-- <label class="control-label">Formulir </label> -->
                                 <!-- <div class="col-md-3"> -->

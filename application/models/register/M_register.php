@@ -327,7 +327,59 @@ class M_register extends CI_Model {
         }
 
         $this->db->insert('db_admission.register_formulir', $arr_save);
+
+        // check schedule ujian
+        $query = $this->caribasedprimary('db_admission.register_formulir','ID_register_verified',$this->session->userdata('ID_register_verified'));
+        $ID_register_formulir = $query[0]['ID'];
+        $ID_program_study = $query[0]['ID_program_study'];
+        $checkScheduleUjian = $this->checkScheduleUjian($ID_program_study);
+        if (count($checkScheduleUjian) > 0) {
+            $sql2 = 'select count(*) as total from db_admission.ujian_perprody_m where ID_ProgramStudy = ? limit 1';
+            $query2=$this->db->query($sql2, array($ID_program_study))->result_array();
+            $limit = $query2[0]['total'];
+            $sql = 'select a.ID,DATE(a.DateTimeTest) as tanggal from db_admission.register_jadwal_ujian as a
+                    join db_admission.ujian_perprody_m as b
+                    on a.ID_ujian_perprody = b.ID
+                    where b.ID_ProgramStudy = ? and datediff(DATE_ADD(DATE(a.DateTimeTest), INTERVAL 2 DAY), DATE(a.DateTimeTest)) >= 2
+                    order by a.ID,DATE(a.DateTimeTest) asc 
+                    limit '.$limit;
+            $query=$this->db->query($sql, array($ID_program_study))->result_array();
+            for ($i=0; $i < count($query); $i++) { 
+              try
+              {
+                  $dataSave = array(
+                          'ID_register_jadwal_ujian' => $query[$i]['ID'],
+                          'ID_register_formulir' => $ID_register_formulir,
+                  );
+                  $this->db->insert('db_admission.register_formulir_jadwal_ujian', $dataSave);
+                
+              }
+              catch(Exception $e)
+              {
+                continue;
+              }
+            }        
+        }
         
+    }
+
+    public function checkScheduleUjian($ID_program_study)
+    {
+        $sql = "select C.Name,a.ID_ujian_perprody,DATE(a.DateTimeTest) as tanggal
+                ,CONCAT((EXTRACT(HOUR FROM a.DateTimeTest)),':',(EXTRACT(MINUTE FROM a.DateTimeTest))) as jam,
+                a.Lokasi from db_admission.register_jadwal_ujian as a 
+                join db_admission.ujian_perprody_m as b
+                on a.ID_ujian_perprody = b.ID
+                join db_academic.program_study as c
+                on c.ID = b.ID_ProgramStudy
+                where datediff(DATE_ADD(DATE(a.DateTimeTest), INTERVAL 2 DAY), DATE(a.DateTimeTest)) >= 2
+                and b.ID_ProgramStudy = ?
+                GROUP BY C.Name,DATE(a.DateTimeTest)
+                ORDER by DATE(a.DateTimeTest) asc
+                limit 1";
+        $query=$this->db->query($sql, array($ID_program_study))->result_array();
+        return $query;        
+
     }
 
     public function saveDataFormulir_offline($arr,$namaFile)
@@ -363,6 +415,39 @@ class M_register extends CI_Model {
         $this->session->set_userdata('SchoolName',$SchoolName);
         $this->session->set_userdata('FormulirCode',$FormulirCode);
         $this->session->set_userdata('ID_register_verified',$ID_register_verified);
+
+         // check schedule ujian
+        $query = $this->caribasedprimary('db_admission.register_formulir','ID_register_verified',$this->session->userdata('ID_register_verified'));
+        $ID_register_formulir = $query[0]['ID'];
+        $ID_program_study = $query[0]['ID_program_study'];
+        $checkScheduleUjian = $this->checkScheduleUjian($ID_program_study);
+        if (count($checkScheduleUjian) > 0) {
+            $sql2 = 'select count(*) as total from db_admission.ujian_perprody_m where ID_ProgramStudy = ? limit 1';
+            $query2=$this->db->query($sql2, array($ID_program_study))->result_array();
+            $limit = $query2[0]['total'];
+            $sql = 'select a.ID,DATE(a.DateTimeTest) as tanggal from db_admission.register_jadwal_ujian as a
+                    join db_admission.ujian_perprody_m as b
+                    on a.ID_ujian_perprody = b.ID
+                    where b.ID_ProgramStudy = ? and datediff(DATE_ADD(DATE(a.DateTimeTest), INTERVAL 2 DAY), DATE(a.DateTimeTest)) >= 2
+                    order by a.ID,DATE(a.DateTimeTest) asc 
+                    limit '.$limit;
+            $query=$this->db->query($sql, array($ID_program_study))->result_array();
+            for ($i=0; $i < count($query); $i++) { 
+              try
+              {
+                  $dataSave = array(
+                          'ID_register_jadwal_ujian' => $query[$i]['ID'],
+                          'ID_register_formulir' => $ID_register_formulir,
+                  );
+                  $this->db->insert('db_admission.register_formulir_jadwal_ujian', $dataSave);
+                
+              }
+              catch(Exception $e)
+              {
+                continue;
+              }
+            }        
+        }
 
     }
 
@@ -520,6 +605,8 @@ class M_register extends CI_Model {
             ";
         $query=$this->db->query($sql, array($this->session->userdata('ID_register_verified')))->result_array();
         if ($query[0]['total'] > 0) {
+            $getIDRegisterFormulir = $this->getIDRegisterFormulir($this->session->userdata('ID_register_verified'));
+            $this->session->set_userdata('ID_register_formulir',$getIDRegisterFormulir);
             return true;
         }
         else
@@ -532,8 +619,9 @@ class M_register extends CI_Model {
     {
         $arr = array('result' => null,'count' => 0);
         $DataDocument = $this->getDocument();
-        $getIDRegisterFormulir = $this->getIDRegisterFormulir($this->session->userdata('ID_register_verified'));
-        $this->session->set_userdata('ID_register_formulir',$getIDRegisterFormulir);
+        // $getIDRegisterFormulir = $this->getIDRegisterFormulir($this->session->userdata('ID_register_verified'));
+        // $this->session->set_userdata('ID_register_formulir',$getIDRegisterFormulir);
+        $getIDRegisterFormulir = $this->session->userdata('ID_register_formulir');
         $getDataRegisterDokument_IDDoc = $this->getDataRegisterDokument_IDDoc($getIDRegisterFormulir);
         $arr_temp = array();
         for ($i=0; $i < count($DataDocument['ID_reg_doc_checklist']); $i++) { 
@@ -691,6 +779,44 @@ class M_register extends CI_Model {
         $sql = "select * from db_academic.program_study where ID = ?";
         $query=$this->db->query($sql, array($ID_program_study))->result_array();
         return $query[0]['Name'];
+    }
+
+    public function getJadwalUjian()
+    {
+        $sql = 'select C.Name as prody,a.ID_ujian_perprody,DATE(a.DateTimeTest) as tanggal
+                ,CONCAT((EXTRACT(HOUR FROM a.DateTimeTest)),":",(EXTRACT(MINUTE FROM a.DateTimeTest))) as jam,
+                a.Lokasi,
+                h.Name as NameCandidate,h.Email,i.SchoolName,f.FormulirCode,e.ID as ID_register_formulir
+                from db_admission.register_jadwal_ujian as a 
+                join db_admission.ujian_perprody_m as b
+                on a.ID_ujian_perprody = b.ID
+                join db_academic.program_study as c
+                on c.ID = b.ID_ProgramStudy
+                join db_admission.register_formulir_jadwal_ujian as d
+                ON a.ID = d.ID_register_jadwal_ujian
+                JOIN db_admission.register_formulir as e
+                on e.ID = d.ID_register_formulir
+                join db_admission.register_verified as f
+                on e.ID_register_verified = f.ID
+                join db_admission.register_verification as g
+                on g.ID = f.RegVerificationID
+                join db_admission.register as h
+                on h.ID = g.RegisterID
+                join db_admission.school as i
+                on i.ID = h.SchoolID
+                where e.ID = ?
+                GROUP BY C.Name,DATE(a.DateTimeTest),e.ID';
+        $query=$this->db->query($sql, array($this->session->userdata('ID_register_formulir')))->result_array();
+        return $query;
+    }
+
+    public function getDataUjian()
+    {
+        $query = $this->caribasedprimary('db_admission.register_formulir','ID_register_verified',$this->session->userdata('ID_register_verified'));
+        $ID_program_study = $query[0]['ID_program_study'];
+        $sql = 'select a.ID,b.Name as NamaProgramStudy,a.NamaUjian,a.Bobot,a.Active,a.CreateAT from db_admission.ujian_perprody_m as a join db_academic.program_study as b on a.ID_ProgramStudy = b.ID where a.ID_ProgramStudy = ?';
+        $query=$this->db->query($sql, array($ID_program_study))->result_array();
+        return $query;
     }
 
 }

@@ -223,6 +223,8 @@ class C_register extends CI_Controller {
     {
         error_reporting(0);
         try{
+            $this->GlobalProses['url'] = $url; // hanya untuk formulir online
+            $this->GlobalProses['headerNav'] = true;
             $case = "base_url";
             $key = "UAP)(*";
             $data = $this->jwt->decode($url,$key);
@@ -248,10 +250,10 @@ class C_register extends CI_Controller {
                     redirect(base_url());
                     break;
                 case 'url_formulir_registration':
-                    $content = $this->load->view('register/formulir_registration','',true);
+                    $content = $this->load->view('register/formulir_registration',$this->GlobalProses,true);
                     break;
                 case 'url_upload_dokument':
-                    $content = $this->load->view('register/formulir_upload','',true);
+                    $content = $this->load->view('register/formulir_upload',$this->GlobalProses,true);
                     break;
                 default:
                     redirect(base_url());
@@ -266,11 +268,137 @@ class C_register extends CI_Controller {
         
     }
 
+    public function formulir_registration_edit($url)
+    {
+        error_reporting(0);
+        $this->GlobalProses['url'] = $url;
+        $this->GlobalProses['headerNav'] = true;
+        try{
+            $case = "base_url";
+            $key = "UAP)(*";
+            $data = $this->jwt->decode($url,$key);
+            $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
+
+            if ($checkURL) {
+                /*$content = $this->load->view('register/formulir_registration',$this->GlobalProses,true);
+                $this->temp($content); */
+                $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                $this->temp($content);
+            }
+            else
+            {
+                // url page not authorize
+                $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                $this->temp($content);
+            }
+        }
+        catch(Exception $e)
+        {
+            // redirect(base_url());
+            $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+            $this->temp($content);
+        }
+        
+    }
+
+    public function formulir_upload_document($url)
+    {
+        error_reporting(0);
+        $this->GlobalProses['url'] = $url;
+        $this->GlobalProses['headerNav'] = true;
+        try{
+            $case = "base_url";
+            $key = "UAP)(*";
+            $data = $this->jwt->decode($url,$key);
+            $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
+
+            if ($checkURL) {
+                $case = "url_formulir_registration";
+                $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
+                if ($checkURL2) {
+                    $content = $this->load->view('register/formulir_upload',$this->GlobalProses,true);
+                    $this->temp($content); 
+                }
+                else
+                {
+                    // url page not authorize
+                    $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                    $this->temp($content);
+                }
+            }
+            else
+            {
+                // url page not authorize
+                $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                $this->temp($content);
+                // redirect(base_url());
+            }
+        }
+        catch(Exception $e)
+        {
+            // redirect(base_url());
+            $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+            $this->temp($content);
+        }
+    }
+
+    public function jadwal_ujian($url)
+    {
+        error_reporting(0);
+        $this->GlobalProses['url'] = $url;
+        $this->GlobalProses['headerNav'] = true;
+        try{
+            $case = "base_url";
+            $key = "UAP)(*";
+            $data = $this->jwt->decode($url,$key);
+            $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
+
+            if ($checkURL) {
+                $case = "url_formulir_registration";
+                $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
+                if ($checkURL2) {
+                    $this->GlobalProses['datadb'] = $this->m_reg->getJadwalUjian();
+                    $this->GlobalProses['dataujian'] = $this->m_reg->getDataUjian();
+                    $this->GlobalProses['no'] = 1;
+                    if (count($this->GlobalProses['datadb']) > 0) {
+                        $content = $this->load->view('register/jadwal_ujian',$this->GlobalProses,true);
+                        $this->temp($content);
+                    }
+                    else
+                    {
+                        $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                        $this->temp($content);
+                    }
+                }
+                else
+                {
+                    // url page not authorize
+                    $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                    $this->temp($content);
+                }
+            }
+            else
+            {
+                // url page not authorize
+                $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                $this->temp($content);
+                // redirect(base_url());
+            }
+        }
+        catch(Exception $e)
+        {
+            // redirect(base_url());
+            $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+            $this->temp($content);
+        }
+    }
+
     public function formulir_registration_offline($url)
     {
         // error_reporting(0);
         try{
-            $this->GlobalProses['headerNav'] = '';
+            $this->GlobalProses['url'] = $url;
+            $this->GlobalProses['headerNav'] = true;
             $case = "base_url";
             $key = "UAP)(*";
             $data = $this->jwt->decode($url,$key);
@@ -296,10 +424,10 @@ class C_register extends CI_Controller {
                     redirect(base_url());
                     break;
                 case 'url_formulir_registration':
-                    $content = $this->load->view('register/formulir_registration','',true);
+                    $content = $this->load->view('register/formulir_registration',$this->GlobalProses,true);
                     break;
                 case 'url_upload_dokument':
-                    $content = $this->load->view('register/formulir_upload','',true);
+                    $content = $this->load->view('register/formulir_upload',$this->GlobalProses,true);
                     break;
                 default:
                      redirect(base_url());

@@ -75,6 +75,21 @@
         <div id="container_demo" >
             <div id="wrapper" style="width: 90%;">
                 <div id="login" class="animate form">
+               		 <ul id="breadcrumbs" class="breadcrumb">
+                        <li>
+                            <i class="icon-home"></i>
+                            <a href="<?php echo base_url().'formulir-registration-edit/'.$url ?>">Formulir</a>
+                        </li>
+                        <li class="current">
+                            <a href="<?php echo base_url().'formulir-upload-document/'.$url ?>">Upload Document</a>
+                        </li>
+                                <li class="current">
+                            <a href="<?php echo base_url().'jadwal-ujian/'.$url ?>" title="">Exam Schedule</a>
+                        </li>
+                        <li class="current">
+                            <a href="<?php echo base_url().'hasil-ujian/'.$url ?>" title="">Exam Results</a>
+                        </li>
+                    </ul>
                 	<div class = "pageContain">
     					<div class="row">
 						    <div class="col-xs-6 col-md-4">
@@ -1386,9 +1401,10 @@
   {
   	  var url = base_url_js+'api/__getProgramStudy';
   	  $.get(url,function (data_json) {
-  	      var split = parseInt(data_json.length / 5);
-  	      var sisa = data_json.length % 5;
-  	      var splitBagi = 5;
+  	  	  var splitBagi = 3;
+  	      var split = parseInt(data_json.length / splitBagi);
+  	      var sisa = data_json.length % splitBagi;
+  	      
   	      if (sisa > 0) {
   	            split++;
   	      }
@@ -1791,7 +1807,8 @@
 
  		setTimeout(function () {
  	     $('#btn-proses').prop('disabled',false).html('Proses');
- 	     window.location.reload();  
+ 	     // window.location.reload(); 
+ 	     window.open(base_url_js+'formulir-upload-document/<?php echo $url ?>'); 
  	 	},1000);
   	  },
   	  error: function (data) {
