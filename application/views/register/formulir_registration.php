@@ -1807,8 +1807,14 @@
 
  		setTimeout(function () {
  	     $('#btn-proses').prop('disabled',false).html('Proses');
- 	     // window.location.reload(); 
- 	     window.open(base_url_js+'formulir-upload-document/<?php echo $url ?>'); 
+ 	     // window.location.href = 'http://www.google.com';
+ 	     <?php if ($this->uri->segment(1) != 'formulir-registration-offline'): ?> 
+ 	     	// window.open(base_url_js+'formulir-upload-document/<?php echo $url ?>');
+ 	     	window.location.href = base_url_js+'formulir-upload-document/<?php echo $url ?>';
+ 	     <?php else: ?>
+ 	     	// window.open(base_url_js+'formulir-upload-document/'+data.url);
+ 	     	window.location.href = base_url_js+'formulir-upload-document/'+data.url;
+ 	     <?php endif ?> 
  	 	},1000);
   	  },
   	  error: function (data) {

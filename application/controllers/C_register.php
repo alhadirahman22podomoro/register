@@ -310,6 +310,7 @@ class C_register extends CI_Controller {
             $case = "base_url";
             $key = "UAP)(*";
             $data = $this->jwt->decode($url,$key);
+            // var_dump($data);
             $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
 
             if ($checkURL) {
@@ -468,7 +469,18 @@ class C_register extends CI_Controller {
         $uploadFile = $this->uploadFoto($email);
         if (is_array($uploadFile)) {
             $this->m_reg->saveDataFormulir_offline($data_arr,$uploadFile['file_name']);
-            echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1));
+            $this->load->library('JWT');
+            $key = "UAP)(*";
+            $url = $this->jwt->encode($this->session->userdata('register_id').";".$this->session->userdata('Email'),$key);
+
+            $url_to = "formulir-registration/";
+            $text = 'Dear Candidate,<br><br>
+                        Please click link below to get next step Formulir Registration : <br>
+                        '.base_url().$url_to.$url;
+            $to = $email;
+            $subject = "Link Formulir Registration Podomoro University";
+            $sendEmail = $this->m_sendemail->sendEmail($to,$subject,null,null,null,null,$text);
+            echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1,'url' => $url));
         }
         else
         {
