@@ -1267,6 +1267,9 @@
   	  	                $('#selectRegion').append('<option value="'+data_json[i].RegionID+'" '+selected+'>'+data_json[i].RegionName+'</option>');
   	           	    break;    
   	  	       case  "ayah" :
+  	  	       			if (i == 0) {
+  	  	       				$('#selectRegionAyah').empty();
+  	  	       			}
   	  	       			if (set_default == null) {
  	  	       		 	 var value = $('#selectRegion').find(':selected').val();
 		      	         var selected = (value==data_json[i].RegionID) ? 'selected' : '';
@@ -1279,6 +1282,9 @@
   	  	       			}
   	  	             break;
   	  	       case  "ibu" :
+  	  	       			if (i == 0) {
+  	  	       				$('#selectRegionIbu').empty();
+  	  	       			}
    	  	       			if (set_default == null) {
   	  	       		 	 var value = $('#selectRegion').find(':selected').val();
  		      	         var selected = (value==data_json[i].RegionID) ? 'selected' : '';
@@ -1673,6 +1679,18 @@
       $(document).on('change','#selectRegion',function () {
           var selectRegion = $('#selectRegion').find(':selected').val();
           loadKecamatan(selectRegion);
+      });
+
+      $(document).on('change','#selectProvinsiAyah',function () {
+          var selectProvinsiAyah = $('#selectProvinsiAyah').find(':selected').val();
+	      loadRegion(selectProvinsiAyah,'ayah');
+          
+      });
+
+      $(document).on('change','#selectProvinsiIbu',function () {
+          var selectProvinsiIbu = $('#selectProvinsiIbu').find(':selected').val();
+	      loadRegion(selectProvinsiIbu,'ibu');
+          
       });
 
   // settting toastr	

@@ -391,7 +391,7 @@ class M_register extends CI_Model {
         $SchoolID = $arr['SchoolID'];
         $getPriceFormulir = $this->getPriceFormulir_offline();
         $this->saveToDBRegister($Name,$Email,$SchoolID,$getPriceFormulir,'',1);
-        $getData = $this->caribasedprimary('db_admission.register','PriceFormulir',$getPriceFormulir);
+        $getData = $this->caribasedprimary('db_admission.register','Email',$Email);
         $RegisterID = $getData[0]['ID'];
         // save data to register_verification
         $this->saveDataToVerification_offline($RegisterID);
