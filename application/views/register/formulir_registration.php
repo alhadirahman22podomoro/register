@@ -89,6 +89,12 @@
                         <li class="current">
                             <a href="<?php echo base_url().'hasil-ujian/'.$url ?>" title="">Exam Results</a>
                         </li>
+                        <li class="current">
+                            <a href="#" title="">Tuition Fee</a>
+                        </li>
+                        <li class="current">
+                            <a href="#" title="">Accepted</a>
+                        </li>
                     </ul>
                 	<div class = "pageContain">
     					<div class="row">
