@@ -394,6 +394,67 @@ class C_register extends CI_Controller {
         }
     }
 
+    public function hasil_ujian($url)
+    {
+        $this->GlobalProses['url'] = $url;
+        $this->GlobalProses['headerNav'] = true;
+        try{
+            $case = "base_url";
+            $key = "UAP)(*";
+            $data = $this->jwt->decode($url,$key);
+            $checkURL = $this->m_reg->checkURLFormulirRegistration($data);
+
+            if ($checkURL) {
+                $case = "url_formulir_registration";
+                $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
+                if ($checkURL2) {
+                    $this->GlobalProses['datadb'] = $this->m_reg->getJadwalUjian();
+                    $this->GlobalProses['dataujian'] = $this->m_reg->getDataUjian();
+                    $this->GlobalProses['no'] = 1;
+                    if (count($this->GlobalProses['datadb']) > 0) {
+                        // check hasil ujian
+                        $this->GlobalProses['hasil_ujian'] = $this->m_reg->getHasilUjian();
+                        $this->GlobalProses['kelulusan'] = $this->m_reg->getkelulusan();
+                        if (count($this->GlobalProses['hasil_ujian']) > 0) {
+                            $content = $this->load->view('register/hasil_ujian',$this->GlobalProses,true);
+                            $this->temp($content);
+                        }
+                        else
+                        {
+                            $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                            $this->temp($content);
+                        }
+                        
+                    }
+                    else
+                    {
+                        $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                        $this->temp($content);
+                    }
+                }
+                else
+                {
+                    // url page not authorize
+                    $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                    $this->temp($content);
+                }
+            }
+            else
+            {
+                // url page not authorize
+                $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+                $this->temp($content);
+                // redirect(base_url());
+            }
+        }
+        catch(Exception $e)
+        {
+            // redirect(base_url());
+            $content = $this->load->view('register/page_404',$this->GlobalProses,true);
+            $this->temp($content);
+        }
+    }
+
     public function formulir_registration_offline($url)
     {
         // error_reporting(0);

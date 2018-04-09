@@ -18,6 +18,8 @@ $route['formulir-registration-offline/(:any)'] = 'c_register/formulir_registrati
 $route['formulir-registration-edit/(:any)'] = 'c_register/formulir_registration_edit/$1';
 $route['formulir-upload-document/(:any)'] = 'c_register/formulir_upload_document/$1';
 $route['jadwal-ujian/(:any)'] = 'c_register/jadwal_ujian/$1';
+$route['hasil-ujian/(:any)'] = 'c_register/hasil_ujian/$1';
+
 
 $route['checkDocument'] = 'c_register/checkDocument';
 $route['getDataDokument'] = 'c_register/getDataDokument';

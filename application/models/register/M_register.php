@@ -819,4 +819,25 @@ class M_register extends CI_Model {
         return $query;
     }
 
+    public function getHasilUjian()
+    {
+        $sql = 'select d.ID as ID_hasil_ujian,c.ID as ID_register_formulir_jadwal_ujian,a.NamaUjian,a.Bobot,d.Value from db_admission.ujian_perprody_m as a
+            join db_admission.register_jadwal_ujian as b
+            on a.ID = b.ID_ujian_perprody
+            join db_admission.register_formulir_jadwal_ujian as c
+            on c.ID_register_jadwal_ujian = b.ID
+            join db_admission.register_hasil_ujian as d
+            on c.ID = d.ID_register_formulir_jadwal_ujian
+            where c.ID_register_formulir = ? ';
+        $query=$this->db->query($sql, array($this->session->userdata('ID_register_formulir')))->result_array();
+        return $query;       
+    }
+
+    public function getkelulusan()
+    {
+        $sql = 'select * from db_admission.register_kelulusan_ujian where ID_register_formulir = ?';
+        $query=$this->db->query($sql, array($this->session->userdata('ID_register_formulir')))->result_array();
+        return $query;  
+    }
+
 }
