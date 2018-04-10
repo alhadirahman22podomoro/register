@@ -88,23 +88,7 @@
     <div id="container_demo" >
       <div id="wrapper" style="width: 90%;">
         <div id="login" class="animate form">
-          <div class="crumbs">
-              <ul id="breadcrumbs" class="breadcrumb">
-                  <li>
-                      <i class="icon-home"></i>
-                      <a href="<?php echo base_url().'formulir-registration-edit/'.$url ?>">Formulir</a>
-                  </li>
-                  <li class="current">
-                      <a href="<?php echo base_url().'formulir-upload-document/'.$url ?>">Upload Document</a>
-                  </li>
-                          <li class="current">
-                      <a href="<?php echo base_url().'jadwal-ujian/'.$url ?>" title="">Exam Schedule</a>
-                  </li>
-                  <li class="current">
-                      <a href="<?php echo base_url().'hasil-ujian/'.$url ?>" title="">Exam Results</a>
-                  </li>
-              </ul>
-          </div>
+          <?php $this->load->view('template_backend/crumbs') ?>
           <div class = "pageContain">
               <div class="row">
                 <div class="col-xs-6 col-md-4">

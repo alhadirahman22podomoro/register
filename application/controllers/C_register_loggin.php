@@ -2,233 +2,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_register extends Frontend_Controller {
+class C_register_loggin extends Backend_Controller {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        
-    }
-
-    public function index()
-    {
-        $content = $this->load->view('register/index','',true);
-        $this->temp($content);
-    }
-
-    public function pagelogin()
-    {
-        $data['loginURL'] = $this->google->loginURL();
-        $content = $this->load->view('auth/login',$data,true);
-        $this->temp($content);
-    }
-
-    public function authentification_google()
-    {   
-        error_reporting(0);
-        if(isset($_GET['code'])){
-
-            try{
-                //authenticate user
-                $this->google->getAuthenticate();
-
-                //get user info from google
-                $gpInfo = $this->google->getUserInfo();
-
-                //preparing data for database insertion
-                $Email = $gpInfo['email'];
-                $getData = $this->m_reg->caribasedprimary('db_admission.register','Email',$Email);
-                $ID_register = '';
-                if (count($getData) > 0) {
-                    $ID_register = $getData[0]['ID'];
-                }
-                
-                $checkLogin = $this->m_reg->checkDatatoDB($ID_register,$Email);
-                if ($checkLogin) {
-                    // print_r($this->session->all_userdata());
-                    $url = $this->encryptURL($ID_register,$Email);
-                    redirect(base_url().'formulir-registration/'.$url);
-                }
-
-            } catch (Exception $err){
-                /*$content = $this->load->view('register/page_404',$this->GlobalProses,true);
-                $this->temp($content);*/
-                redirect(base_url());
-                // redirect(base_url());
-                //echo 'err';
-            }
-
-
-        }
-    }
-
-    public function logMeOut(){
-        $this->session->sess_destroy();
-        return 1;
-    }
-
-    public function test()
-    {
-        echo 'overide';
-    }
-
-    public function proses_register()
-    {
-        if (!$this->input->is_ajax_request()) 
-        {
-            exit('No direct script access allowed');
-        }
-        else
-        {
-            $this->GlobalProses['errorMSG'] = "";
-            $alreadyExistingEmail = $this->alreadyExistingEmail();
-            if ($this->GlobalProses['errorMSG'] == "") {
-                $priceFormulir = $this->getPriceFormulir();
-                //$password = $this->getPasswordRegister();
-                $getUrlEncrypt = $this->input->post('token');
-                $momenUnix = $this->getMomenUnix();
-                $sendEmail = $this->sendEmailtoUser($priceFormulir,$getUrlEncrypt);
-                $this->GlobalProses['statusEmail'] = $sendEmail['status'];
-                $this->GlobalProses['msgEmail'] = $sendEmail['msg'];
-                if ($this->GlobalProses['statusEmail'] == 1) {
-                    $saveData = $this->saveToDBRegister($priceFormulir,$momenUnix);
-                }
-            }
-            return print_r(json_encode($this->GlobalProses));
-        }
-    }
-
-    public function getMomenUnix()
-    {
-        $input = $this->getInputToken();
-        return $input['momentUnix'];
-    }
-
-    public function alreadyExistingEmail()
-    {
-        $input = $this->getInputToken();
-        $alreadyExistingEmail = $this->m_reg->alreadyExistingEmail($input['Email']);
-        $this->GlobalProses['errorMSG'] = $alreadyExistingEmail['errorMSG'];
-        return $alreadyExistingEmail;
-    }
-
-    public function getPriceFormulir()
-    {
-        $priceFormulir = $this->m_reg->getPriceFormulir();
-        return $priceFormulir;
-    }
-
-    public function getPasswordRegister()
-    {
-        $password = rand();
-        $this->GlobalProses['clearPassword'] = $password;
-        $input = $this->getInputToken();
-        $password = $this->genratePassword($input['Email'],$password);
-        return $password;
-    }
-
-    public function sendEmailtoUser($priceFormulir,$getUrlEncrypt)
-    {
-        $input = $this->getInputToken();
-        $to = $input['Email'];
-        $subject = "Podomoro University Registration";
-        $text = array($getUrlEncrypt,$priceFormulir);
-        $sendEmail = $this->m_api->sendEmail($to,$subject,$text);
-        return $sendEmail;
-    }
-
-    public function saveToDBRegister($priceFormulir,$momenUnix)
-    {
-        $input = $this->getInputToken();
-        $name = ucwords($input['Firstname']). " ".ucwords($input['Lastname']);
-        $saveToDBRegister = $this->m_reg->saveToDBRegister($name,$input['Email'],$input['SchoolName'],$priceFormulir,$momenUnix);
-        $this->GlobalProses['statusDB'] = "The data has been saved to db";
-    }
-
-    public function formupload($url)
-    {
-        $checkURL = $this->checkURL($url);
-        if ($checkURL) {
-            $content = $this->load->view('register/form_upload','',true);
-            $this->temp($content);    
-
-        }
-        else
-        {
-            redirect(base_url());
-        }
-    }
-
-    public function checkURL($url)
-    {
-        error_reporting(0);
-        try{
-            $key = "UAP)(*";
-            $data_arr = (array) $this->jwt->decode($url,$key);
-            $email = $data_arr['Email'];
-            $momenUnix = $data_arr['momentUnix'];
-            $queryCheckUrl= $this->m_reg->checkURL($email,$momenUnix);
-            return $queryCheckUrl;
-        }   
-        catch(Exception $e)
-        {
-            return false;
-        }
-        
-        return true;
-    }
-
-    public function formupload_submit()
-    {
-        if (!$this->input->is_ajax_request()) 
-        {
-            exit('No direct script access allowed');
-        }
-        else
-        {
-            $uploadFile = $this->uploadFile($this->session->userdata('Email'));
-            if (is_array($uploadFile)) {
-                $this->m_reg->saveDataToVerification($uploadFile['file_name']);
-                $url_toVerifikasiFinance = "finance/penerimaan-pembayaran/verifikasi-pembayaran/registration_online";
-                $text = 'Dear Team,<br><br>
-                            You have notification by Registration Online, Please check in url below :<br>
-                            '.$this->GlobalProses['urlSiak'].$url_toVerifikasiFinance.'    
-                        ';
-                $to = $this->m_sendemail->getToEmail('Notify Upload Payment');
-                $subject = "Notify Upload Payment Registration Online";
-                $sendEmail = $this->m_sendemail->sendEmail($to,$subject,null,null,null,null,$text);
-                echo json_encode(array('msg' => 'The file has been successfully uploaded','status' => 1));
-            }
-            else
-            {
-                echo json_encode(array('msg' => 'The file did not upload successfully','status' => 0));
-            }
-
-        }
-    }
-
-    public function uploadFile($email)
-    {
-         // upload file
-         $filename = md5($email);
-         $config['upload_path']   = './upload/';
-         $config['overwrite'] = TRUE; 
-         $config['allowed_types'] = 'png|PNG|jpg|JPG|jpeg|jpeg'; 
-         $config['file_name'] = $filename;
-         //$config['max_size']      = 100; 
-         //$config['max_width']     = 300; 
-         //$config['max_height']    = 300;  
-         $this->load->library('upload', $config);
-            
-         if ( ! $this->upload->do_upload('fileData')) {
-            return $error = $this->upload->display_errors(); 
-            //$this->load->view('upload_form', $error); 
-         }
-            
-         else { 
-           return $data =  $this->upload->data(); 
-            //$this->load->view('upload_success', $data); 
-         }
     }
 
     public function formulir_registration($url)
@@ -236,7 +14,7 @@ class C_register extends Frontend_Controller {
         error_reporting(0);
         try{
             $this->GlobalProses['url'] = $url; // hanya untuk formulir online
-            $this->GlobalProses['headerNav'] = true;
+            // $this->GlobalProses['crumbs'] = $this->crumbs();
             $case = "base_url";
             $key = "UAP)(*";
             $data = $this->jwt->decode($url,$key);
@@ -245,37 +23,53 @@ class C_register extends Frontend_Controller {
             # jika sudah pernah arahkan ke url print formulir sekaligus download pdfnya.
             # Buat dua tab, satu tab untuk view formulir, satu tab lagi untuk upload attachment
             # jika belum pernah arahkan ke url isi formulir
-            if ($checkURL) {
-                $case = "url_formulir_registration";
-                $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
-                if ($checkURL2) {
-                    // jika upload dokumen berhasil maka send email to user dan matikan link ini redirect ke url telah berhasil registrasi
-                    $case = "url_upload_dokument";
-                }
-                else
-                {
+
+            // check url dengan session
+            // $url_sess = $this->encryptURL($this->session->userdata('register_id').';'.$this->session->userdata('Email'));
+            $register_id = $this->session->userdata('register_id');
+            $Email = $this->session->userdata('Email');
+            $url_sess = $this->encryptURL($register_id,$Email);
+
+            if ($url_sess == $url) {
+                if ($checkURL) {
                     $case = "url_formulir_registration";
+                    $checkURL2 = $this->m_reg->checkURLFormulirTelahdiisi();
+                    if ($checkURL2) {
+                        // jika upload dokumen berhasil maka send email to user dan matikan link ini redirect ke url telah berhasil registrasi
+                        $case = "url_upload_dokument";
+                    }
+                    else
+                    {
+                        $case = "url_formulir_registration";
+                    }
                 }
+                switch ($case) {
+                    case 'base_url':
+                        redirect(base_url());
+                        break;
+                    case 'url_formulir_registration':
+                        $content = $this->load->view('register/formulir_registration',$this->GlobalProses,true);
+                        break;
+                    case 'url_upload_dokument':
+                        $content = $this->load->view('register/formulir_upload',$this->GlobalProses,true);
+                        break;
+                    default:
+                        redirect(base_url());
+                        break;
+                }
+                $this->temp($content); 
             }
-            switch ($case) {
-                case 'base_url':
-                    redirect(base_url());
-                    break;
-                case 'url_formulir_registration':
-                    $content = $this->load->view('register/formulir_registration',$this->GlobalProses,true);
-                    break;
-                case 'url_upload_dokument':
-                    $content = $this->load->view('register/formulir_upload',$this->GlobalProses,true);
-                    break;
-                default:
-                    redirect(base_url());
-                    break;
+            else
+            {
+                redirect(base_url());
             }
-            $this->temp($content); 
+            // die();
+            
         }
         catch(Exception $e)
         {
             redirect(base_url());
+            // print_r($e);
         }
         
     }
