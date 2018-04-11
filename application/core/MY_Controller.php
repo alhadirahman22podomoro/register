@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
-    public $GlobalProses = array('urlSiak' => 'http://10.1.10.230/siak/');
+    public $GlobalProses = array('urlSiak' => 'http://http://demo.web.podomorouniversity.ac.id/siak/');
     function __construct()
     {
         parent::__construct();

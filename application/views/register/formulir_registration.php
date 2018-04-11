@@ -1817,7 +1817,8 @@
  	     	window.location.href = base_url_js+'formulir-upload-document/<?php echo $url ?>';
  	     <?php else: ?>
  	     	// window.open(base_url_js+'formulir-upload-document/'+data.url);
- 	     	window.location.href = base_url_js+'formulir-upload-document/'+data.url;
+ 	     	// window.location.href = base_url_js+'formulir-upload-document/'+data.url;
+ 	     	window.location.href = base_url_js+'login';
  	     <?php endif ?> 
  	 	},1000);
   	  },

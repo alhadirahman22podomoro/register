@@ -28,6 +28,7 @@ class C_register_loggin extends Backend_Controller {
             // $url_sess = $this->encryptURL($this->session->userdata('register_id').';'.$this->session->userdata('Email'));
             $register_id = $this->session->userdata('register_id');
             $Email = $this->session->userdata('Email');
+            print_r($Email.'<br>');
             $url_sess = $this->encryptURL($register_id,$Email);
 
             if ($url_sess == $url) {
@@ -62,6 +63,9 @@ class C_register_loggin extends Backend_Controller {
             else
             {
                 redirect(base_url());
+                // print_r($url_sess.'<br>');
+                // print_r($url.'<br>');
+                // die();
             }
             // die();
             

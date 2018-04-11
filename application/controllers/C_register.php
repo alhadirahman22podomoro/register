@@ -45,9 +45,14 @@ class C_register extends Frontend_Controller {
                 
                 $checkLogin = $this->m_reg->checkDatatoDB($ID_register,$Email);
                 if ($checkLogin) {
-                    // print_r($this->session->all_userdata());
+                    $ID_register = $this->session->userdata('register_id');
                     $url = $this->encryptURL($ID_register,$Email);
+                    // print_r($ID_register.'<br>');
                     redirect(base_url().'formulir-registration/'.$url);
+                }
+                else
+                {
+                     redirect(base_url());
                 }
 
             } catch (Exception $err){
@@ -59,6 +64,10 @@ class C_register extends Frontend_Controller {
             }
 
 
+        }
+        else
+        {
+            print_r('Please logout your email first');
         }
     }
 
@@ -547,9 +556,13 @@ class C_register extends Frontend_Controller {
             $url = $this->jwt->encode($this->session->userdata('register_id').";".$this->session->userdata('Email'),$key);
 
             $url_to = "formulir-registration/";
-            $text = 'Dear Candidate,<br><br>
+            /*$text = 'Dear Candidate,<br><br>
                         Please click link below to get next step Formulir Registration : <br>
-                        '.base_url().$url_to.$url;
+                        '.base_url().$url_to.$url;*/
+
+            $text = 'Dear Candidate,<br><br>
+                        Please click link below to login your portal : <br>
+                        '.base_url().'login';            
             $to = $email;
             $subject = "Link Formulir Registration Podomoro University";
             $sendEmail = $this->m_sendemail->sendEmail($to,$subject,null,null,null,null,$text);
@@ -1653,20 +1666,15 @@ class C_register extends Frontend_Controller {
 
     public function testing()
     {
-        //error_reporting(0);
-        //include autoload composer
-        include_once APPPATH.'vendor/autoload.php';
-        //include APPPATH.'/vendor/gumlet/php-image-resize/lib/ImageResize.php';
-        // $image = new \Gumlet\ImageResize('./foto_formulir/2d5b30f708b3c6ad7cd70a43b939a53e.jpg');
-        // $image->scale(50);
-        // $image->save('image2.jpg');
+        $length = 8;
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+           $charactersLength = strlen($characters);
+           $randomString = '';
+           for ($i = 0; $i < $length; $i++) {
+               $randomString .= $characters[rand(0, $charactersLength - 1)];
+           }
+        print_r($randomString);   
 
-        $image = new \Gumlet\ImageResize('./foto_formulir/2d5b30f708b3c6ad7cd70a43b939a53e.jpg');
-        //$image->resizeToHeight(75);
-        //$image->resizeToWidth(113.38582677);
-        //$image->resizeToBestFit(75, 113);
-        $image->resize(75, 113);
-        $image->save('image2.jpg');
     }
 
     public function upload_dokument()

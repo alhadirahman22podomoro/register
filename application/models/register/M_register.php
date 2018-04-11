@@ -59,7 +59,7 @@ class M_register extends CI_Model {
     {
         $dataSave = array(
                 'Name' => $name,
-                'Email' => $Email,
+                'Email' => strtolower($Email),
                 'MomenUnix' => $momenUnix,
                 'SchoolID' => $SchoolName,
                 'PriceFormulir' => $priceFormulir,
